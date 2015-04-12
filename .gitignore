@@ -1,3 +1,4 @@
 /bin/
+/src/util/ConexaoSQL.java
 /.classpath
 /.project
