@@ -23,7 +23,7 @@ public class TelaLogin extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField txtUsuario;
 	private JPasswordField passwordField;
 
 	/**
@@ -73,11 +73,11 @@ public class TelaLogin extends JFrame {
 		lblUsuario.setBounds(50, 40, 40, 20);
 		panel.add(lblUsuario);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		textField.setBounds(100, 40, 150, 20);
-		panel.add(textField);
-		textField.setColumns(10);
+		txtUsuario = new JTextField();
+		txtUsuario.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtUsuario.setBounds(100, 40, 150, 20);
+		panel.add(txtUsuario);
+		txtUsuario.setColumns(10);
 		
 		JLabel lblSenha = new JLabel("Senha");
 		lblSenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));

@@ -15,6 +15,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 import javax.swing.JList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TelaPrincipal extends JFrame {
 
@@ -53,11 +55,11 @@ public class TelaPrincipal extends JFrame {
 		contentPane.setLayout(null);
 		setVisible(true);
 		
-		JLabel lblListaTransacoes = new JLabel("Lista de Transa\u00E7\u00F5es");
-		lblListaTransacoes.setBounds(50, 10, 400, 20);
-		lblListaTransacoes.setHorizontalAlignment(SwingConstants.CENTER);
-		lblListaTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		contentPane.add(lblListaTransacoes);
+		JLabel lblListaDeTransacoes = new JLabel("Lista de Transa\u00E7\u00F5es");
+		lblListaDeTransacoes.setBounds(50, 10, 400, 20);
+		lblListaDeTransacoes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblListaDeTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		contentPane.add(lblListaDeTransacoes);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -94,7 +96,13 @@ public class TelaPrincipal extends JFrame {
 		listaTransacoes.add("Taxi");
 		listaTransacoes.add("Lanche no Burger King");
 		listaTransacoes.add("Taxa dde AABB");
-		JList<Object> list = new JList<Object>(listaTransacoes.toArray());
+		final JList<Object> list = new JList<Object>(listaTransacoes.toArray());
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				new AtualizarTransacao(list.getSelectedValue());
+			}
+		});
 		list.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		list.setBounds(20, 60, 360, 200);
 		panel.add(list);
