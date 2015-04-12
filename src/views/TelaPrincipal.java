@@ -3,20 +3,22 @@ package views;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.JButton;
-import javax.swing.JList;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaPrincipal extends JFrame {
 
@@ -76,17 +78,18 @@ public class TelaPrincipal extends JFrame {
 		List<String> listaCategorias = new ArrayList<String>();
 		listaCategorias.add("(Todas as Categorias)");
 		listaCategorias.add("Viagem");
-		JComboBox<Object> comboBox = new JComboBox<Object>(listaCategorias.toArray());
-		comboBox.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		comboBox.setBounds(70, 20, 150, 20);
-		comboBox.setSelectedIndex(0);
-		panel.add(comboBox);
+		JComboBox<Object> cbFiltro = new JComboBox<Object>(listaCategorias.toArray());
+		cbFiltro.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbFiltro.setBounds(70, 20, 150, 20);
+		cbFiltro.setSelectedIndex(0);
+		panel.add(cbFiltro);
 		
 		JButton btnListar = new JButton("Listar");
 		btnListar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnListar.setBounds(300, 20, 80, 20);
 		panel.add(btnListar);
 		
+		//Essas transacoes serão buscadas atraves do comboBox das categorias
 		List<String> listaTransacoes = new ArrayList<String>();
 		listaTransacoes.add("IPTU");
 		listaTransacoes.add("Pensão");
@@ -96,15 +99,35 @@ public class TelaPrincipal extends JFrame {
 		listaTransacoes.add("Taxi");
 		listaTransacoes.add("Lanche no Burger King");
 		listaTransacoes.add("Taxa dde AABB");
-		final JList<Object> list = new JList<Object>(listaTransacoes.toArray());
-		list.addMouseListener(new MouseAdapter() {
+		final JList<Object> lstTransacoes = new JList<Object>(listaTransacoes.toArray());
+		lstTransacoes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new AtualizarTransacao(list.getSelectedValue());
+				new AtualizarTransacao(lstTransacoes.getSelectedValue());
 			}
 		});
-		list.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		list.setBounds(20, 60, 360, 200);
-		panel.add(list);
+		lstTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lstTransacoes.setBounds(20, 60, 360, 200);
+		panel.add(lstTransacoes);
+		
+		JButton btnCriarTransacao = new JButton("Criar Transa\u00E7\u00E3o");
+		btnCriarTransacao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new CadastrarTransacao();
+			}
+		});
+		btnCriarTransacao.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnCriarTransacao.setBounds(20, 270, 120, 20);
+		panel.add(btnCriarTransacao);
+		
+		JButton btnRelatorio = new JButton("Relat\u00F3rio");
+		btnRelatorio.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnRelatorio.setBounds(160, 270, 100, 20);
+		panel.add(btnRelatorio);
+		
+		JButton btnSincronizar = new JButton("Sincronizar");
+		btnSincronizar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnSincronizar.setBounds(280, 270, 100, 20);
+		panel.add(btnSincronizar);
 	}
 }

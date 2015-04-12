@@ -24,7 +24,7 @@ public class TelaLogin extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtUsuario;
-	private JPasswordField passwordField;
+	private JPasswordField pfSenha;
 
 	/**
 	 * Launch the application.
@@ -56,7 +56,7 @@ public class TelaLogin extends JFrame {
 		setVisible(true);
 		
 		JLabel lblSejaBemVindo = new JLabel("Seja Bem-vindo");
-		lblSejaBemVindo.setBounds(100, 30, 300, 50);
+		lblSejaBemVindo.setBounds(97, 30, 300, 50);
 		lblSejaBemVindo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSejaBemVindo.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		contentPane.add(lblSejaBemVindo);
@@ -64,24 +64,24 @@ public class TelaLogin extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBounds(100, 100, 300, 200);
+		panel.setBounds(97, 100, 300, 200);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblUsuario = new JLabel("Usuario");
 		lblUsuario.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblUsuario.setBounds(50, 40, 40, 20);
+		lblUsuario.setBounds(40, 40, 40, 20);
 		panel.add(lblUsuario);
 		
 		txtUsuario = new JTextField();
 		txtUsuario.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		txtUsuario.setBounds(100, 40, 150, 20);
+		txtUsuario.setBounds(90, 40, 180, 20);
 		panel.add(txtUsuario);
 		txtUsuario.setColumns(10);
 		
 		JLabel lblSenha = new JLabel("Senha");
 		lblSenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblSenha.setBounds(50, 80, 40, 20);
+		lblSenha.setBounds(40, 80, 40, 20);
 		panel.add(lblSenha);
 		
 		JButton btnEntrar = new JButton("Entrar");
@@ -92,22 +92,21 @@ public class TelaLogin extends JFrame {
 			}
 		});
 		btnEntrar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnEntrar.setBounds(50, 130, 80, 30);
+		btnEntrar.setBounds(110, 120, 80, 20);
 		panel.add(btnEntrar);
 		
-		passwordField = new JPasswordField();
-		passwordField.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		passwordField.setBounds(100, 80, 150, 20);
-		panel.add(passwordField);
+		pfSenha = new JPasswordField();
+		pfSenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		pfSenha.setBounds(90, 80, 180, 20);
+		panel.add(pfSenha);
 		
-		JButton btnSair = new JButton("Sair");
-		btnSair.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		btnSair.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnSair.setBounds(170, 130, 80, 30);
-		panel.add(btnSair);
+		JButton btnEsqueciASenha = new JButton("Esqueci a Senha");
+		btnEsqueciASenha.setBounds(160, 160, 110, 20);
+		panel.add(btnEsqueciASenha);
+		
+		JButton btnCriarConta = new JButton("Criar Conta");
+		btnCriarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnCriarConta.setBounds(40, 160, 90, 20);
+		panel.add(btnCriarConta);
 	}
 }
