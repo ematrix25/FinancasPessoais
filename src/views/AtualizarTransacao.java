@@ -117,6 +117,7 @@ public class AtualizarTransacao extends JFrame {
 		List<String> listaCategorias = new ArrayList<String>();
 		listaCategorias.add("(Todas as Categorias)");
 		listaCategorias.add("Viagem");
+		listaCategorias.add("Salário");
 		JComboBox<Object> cbCategoria = new JComboBox<Object>(listaCategorias.toArray());
 		cbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbCategoria.setBounds(80, 80, 180, 20);
