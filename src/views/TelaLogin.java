@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaLogin extends JFrame {
 
@@ -31,8 +33,7 @@ public class TelaLogin extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaLogin frame = new TelaLogin();
-					frame.setVisible(true);
+					new TelaLogin();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -52,6 +53,7 @@ public class TelaLogin extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setVisible(true);
 		
 		JLabel lblSejaBemVindo = new JLabel("Seja Bem-vindo");
 		lblSejaBemVindo.setBounds(100, 30, 300, 50);
@@ -67,27 +69,44 @@ public class TelaLogin extends JFrame {
 		panel.setLayout(null);
 		
 		JLabel lblUsuario = new JLabel("Usuario");
+		lblUsuario.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblUsuario.setBounds(50, 40, 40, 20);
 		panel.add(lblUsuario);
 		
 		textField = new JTextField();
+		textField.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		textField.setBounds(100, 40, 150, 20);
 		panel.add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblSenha = new JLabel("Senha");
+		lblSenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblSenha.setBounds(50, 80, 40, 20);
 		panel.add(lblSenha);
 		
 		JButton btnEntrar = new JButton("Entrar");
+		btnEntrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+				new TelaPrincipal();
+				dispose();
+			}
+		});
+		btnEntrar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnEntrar.setBounds(50, 130, 80, 30);
 		panel.add(btnEntrar);
 		
 		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		passwordField.setBounds(100, 80, 150, 20);
 		panel.add(passwordField);
 		
 		JButton btnSair = new JButton("Sair");
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnSair.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnSair.setBounds(170, 130, 80, 30);
 		panel.add(btnSair);
 	}
