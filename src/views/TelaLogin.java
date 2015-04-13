@@ -101,6 +101,7 @@ public class TelaLogin extends JFrame {
 		panel.add(pfSenha);
 		
 		JButton btnEsqueciASenha = new JButton("Esqueci a Senha");
+		btnEsqueciASenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnEsqueciASenha.setBounds(160, 160, 110, 20);
 		panel.add(btnEsqueciASenha);
 		
