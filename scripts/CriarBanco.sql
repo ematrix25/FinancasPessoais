@@ -1,3 +1,4 @@
+-- Script para criar o banco no postgres
 -- Database: financas
 
 -- DROP DATABASE financas;
