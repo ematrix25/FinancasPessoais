@@ -98,7 +98,7 @@ public class TelaPrincipal extends JFrame {
 		listaTransacoes.add("Noitada");
 		listaTransacoes.add("Taxi");
 		listaTransacoes.add("Lanche no Burger King");
-		listaTransacoes.add("Taxa dde AABB");
+		listaTransacoes.add("Taxa de AABB");
 		final JList<Object> lstTransacoes = new JList<Object>(listaTransacoes.toArray());
 		lstTransacoes.addMouseListener(new MouseAdapter() {
 			@Override
@@ -121,6 +121,11 @@ public class TelaPrincipal extends JFrame {
 		panel.add(btnCriarTransacao);
 		
 		JButton btnRelatorio = new JButton("Relat\u00F3rio");
+		btnRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new TelaRelatorio();
+			}
+		});
 		btnRelatorio.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnRelatorio.setBounds(160, 270, 100, 20);
 		panel.add(btnRelatorio);

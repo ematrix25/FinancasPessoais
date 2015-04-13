@@ -160,12 +160,14 @@ public class CadastrarTransacao extends JFrame {
 		cbTipoDeTransacao.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				if(cbTipoDeTransacao.getSelectedIndex()==0) {
+					txtTitulo.setText("");
 					panel.remove(lblConta);
 					panel.add(lblFormaDePgmt);
 					panel.remove(txtConta);
 					panel.add(txtFormaDePgmt);
 				}
 				else {
+					txtTitulo.setText("");
 					panel.remove(lblFormaDePgmt);
 					panel.add(lblConta);
 					panel.remove(txtFormaDePgmt);
