@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -84,6 +85,8 @@ public class TelaRelatorio extends JFrame {
 		listaCategorias.add("Aluguel");
 
 		JLabel lblListaDeDespesas = new JLabel("");
+		lblListaDeDespesas.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblListaDeDespesas.setOpaque(true);
 		lblListaDeDespesas.setVerticalAlignment(SwingConstants.TOP);
 		lblListaDeDespesas.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblListaDeDespesas.setBounds(20, 50, 100, 120);
@@ -94,6 +97,8 @@ public class TelaRelatorio extends JFrame {
 		lblListaDeReceitas.setVerticalAlignment(SwingConstants.TOP);
 		lblListaDeReceitas.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblListaDeReceitas.setBounds(160, 50, 100, 120);
+		lblListaDeReceitas.setBorder(BorderFactory.createLineBorder(Color.black));
+		lblListaDeReceitas.setOpaque(true);
 		panel.add(lblListaDeReceitas);
 		lblListaDeReceitas.setText(addReceitas(listaCategorias));
 	}
