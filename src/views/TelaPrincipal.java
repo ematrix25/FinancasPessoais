@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JToggleButton;
 
 public class TelaPrincipal extends JFrame {
 
@@ -89,6 +90,11 @@ public class TelaPrincipal extends JFrame {
 		btnListar.setBounds(300, 20, 80, 20);
 		panel.add(btnListar);
 		
+		final JToggleButton tglbtnRemover = new JToggleButton("Remover");
+		tglbtnRemover.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		tglbtnRemover.setBounds(280, 270, 100, 20);
+		panel.add(tglbtnRemover);
+		
 		//Essas transacoes serão buscadas atraves do comboBox das categorias
 		List<String> listaTransacoes = new ArrayList<String>();
 		listaTransacoes.add("IPTU");
@@ -103,7 +109,10 @@ public class TelaPrincipal extends JFrame {
 		lstTransacoes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new AtualizarTransacao(lstTransacoes.getSelectedValue());
+				if(tglbtnRemover.isSelected())
+					new RemoverTransacao(lstTransacoes.getSelectedValue());
+				else
+					new AtualizarTransacao(lstTransacoes.getSelectedValue());
 			}
 		});
 		lstTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -129,10 +138,5 @@ public class TelaPrincipal extends JFrame {
 		btnRelatorio.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnRelatorio.setBounds(160, 270, 100, 20);
 		panel.add(btnRelatorio);
-		
-		JButton btnSincronizar = new JButton("Sincronizar");
-		btnSincronizar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnSincronizar.setBounds(280, 270, 100, 20);
-		panel.add(btnSincronizar);
 	}
 }
