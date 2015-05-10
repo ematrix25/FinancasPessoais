@@ -198,7 +198,7 @@ public class TelaExtrato extends JFrame {
 			}
 		});
 		btnGerarRelatorio.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnGerarRelatorio.setBounds(170, 280, 120, 20);
+		btnGerarRelatorio.setBounds(300, 280, 120, 20);
 		panel.add(btnGerarRelatorio);
 	}
 }
