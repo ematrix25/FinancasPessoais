@@ -1,4 +1,4 @@
-package views.conta;
+package views.categoria;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -18,8 +18,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-//Ambiente de cadastro da conta
-public class TelaCadastroConta extends JFrame {
+//Ambiente de cadastro da categoria
+public class TelaCadastroCategoria extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -37,7 +37,7 @@ public class TelaCadastroConta extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new TelaCadastroConta();
+					new TelaCadastroCategoria();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -48,7 +48,7 @@ public class TelaCadastroConta extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaCadastroConta() {
+	public TelaCadastroCategoria() {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

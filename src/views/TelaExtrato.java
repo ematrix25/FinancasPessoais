@@ -15,22 +15,24 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import views.transacao.TelaAtualizacaoItemDeExtrato;
-import views.transacao.TelaCadastroItemDeExtrato;
-import views.transacao.TelaRemocaoItemDeExtrato;
+import views.categoria.TelaAtualizacaoCategoria;
+import views.categoria.TelaCadastroCategoria;
+import views.conta.TelaAtualizacaoConta;
+import views.conta.TelaCadastroConta;
+import views.item_de_extrato.TelaAtualizacaoItemDeExtrato;
+import views.item_de_extrato.TelaCadastroItemDeExtrato;
 
 //Ambiente de visualização do extrato
 public class TelaExtrato extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
@@ -63,85 +65,169 @@ public class TelaExtrato extends JFrame {
 		contentPane.setLayout(null);
 		setVisible(true);
 		
-		JLabel lblListaDeTransacoes = new JLabel("Lista de Transa\u00E7\u00F5es");
-		lblListaDeTransacoes.setBounds(50, 10, 400, 20);
-		lblListaDeTransacoes.setHorizontalAlignment(SwingConstants.CENTER);
-		lblListaDeTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		contentPane.add(lblListaDeTransacoes);
+		JLabel lblExtrato = new JLabel("Extrato");
+		lblExtrato.setBounds(22, 10, 450, 20);
+		lblExtrato.setHorizontalAlignment(SwingConstants.CENTER);
+		lblExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		contentPane.add(lblExtrato);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBounds(50, 50, 400, 300);
+		panel.setBounds(22, 40, 450, 310);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblFiltro = new JLabel("Filtro");
-		lblFiltro.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblFiltro.setBounds(20, 20, 40, 20);
-		panel.add(lblFiltro);
+		JLabel lblConta = new JLabel("Conta");
+		lblConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblConta.setBounds(20, 10, 40, 20);
+		panel.add(lblConta);
 		
-		List<String> listaCategorias = new ArrayList<String>();
-		listaCategorias.add("(Todas as Categorias)");
-		listaCategorias.add("Viagem");
-		JComboBox<Object> cbFiltro = new JComboBox<Object>(listaCategorias.toArray());
-		cbFiltro.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbFiltro.setBounds(70, 20, 150, 20);
-		cbFiltro.setSelectedIndex(0);
-		panel.add(cbFiltro);
+		//Esses dados serão buscados do banco de dados
+		List<String> listaContas = new ArrayList<String>();
+		listaContas.add("Bradesco"+"         "+"3213-4"+"         "+"27854-3");
+		listaContas.add("Banco do Brasil"+"         "+"2134-3"+"         "+"78543-2");
+		
+		final JComboBox<Object> cbConta = new JComboBox<Object>(listaContas.toArray());
+		cbConta.setSelectedIndex(0);
+		cbConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbConta.setBounds(60, 10, 270, 20);
+		panel.add(cbConta);
+		
+		JMenuBar mnbConta = new JMenuBar();
+		mnbConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		mnbConta.setBounds(340, 10, 80, 20);
+		panel.add(mnbConta);
+		
+		JMenu mnConta = new JMenu("Op\u00E7\u00F5es Conta");
+		mnConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		mnbConta.add(mnConta);
+		
+		JMenuItem mntmCadastrarConta = new JMenuItem("Cadastrar");
+		mntmCadastrarConta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new TelaCadastroConta();
+			}
+		});
+		mntmCadastrarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		mnConta.add(mntmCadastrarConta);
+		
+		JMenuItem mntmAtualizarConta = new JMenuItem("Atualizar");
+		mntmAtualizarConta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new TelaAtualizacaoConta(cbConta.getSelectedItem().toString());
+			}
+		});
+		mntmAtualizarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		mnConta.add(mntmAtualizarConta);
+		
+		JLabel lblAno = new JLabel("Ano");
+		lblAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblAno.setBounds(220, 40, 30, 20);
+		panel.add(lblAno);
+		
+		//Esses anos serão buscados do banco de dados
+		List<String> listaAnos = new ArrayList<String>();
+		listaAnos.add("2015");
+		listaAnos.add("2014");
+		
+		JComboBox<Object> cbAno = new JComboBox<Object>(listaAnos.toArray());
+		cbAno.setSelectedIndex(0);
+		cbAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbAno.setBounds(260, 40, 70, 20);
+		panel.add(cbAno);
+		
+		JLabel lblMes = new JLabel("Mes");
+		lblMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblMes.setBounds(20, 40, 30, 20);
+		panel.add(lblMes);
+		
+		//Esses meses serão buscados do banco de dados
+		List<String> listaMeses = new ArrayList<String>();
+		listaMeses.add("Janeiro");
+		listaMeses.add("Fevereiro");
+		listaMeses.add("Março");
+		listaMeses.add("Abril");
+				
+		JComboBox<Object> cbMes = new JComboBox<Object>(listaMeses.toArray());
+		cbMes.setSelectedIndex(0);
+		cbMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbMes.setBounds(60, 40, 140, 20);
+		panel.add(cbMes);
 		
 		JButton btnListar = new JButton("Listar");
 		btnListar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnListar.setBounds(300, 20, 80, 20);
+		btnListar.setBounds(340, 40, 80, 20);
 		panel.add(btnListar);
 		
-		final JToggleButton tglbtnRemover = new JToggleButton("Remover");
-		tglbtnRemover.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		tglbtnRemover.setBounds(280, 270, 100, 20);
-		panel.add(tglbtnRemover);
+		//Esses itens de extrato serão buscados do banco de dados
+		List<String> listaDeItensDeExtrato = new ArrayList<String>();
+		listaDeItensDeExtrato.add("IPTU");
+		listaDeItensDeExtrato.add("Pensão");
+		listaDeItensDeExtrato.add("Passagem para Miami");
+		listaDeItensDeExtrato.add("Playstation 4");
+		listaDeItensDeExtrato.add("Noitada");
+		listaDeItensDeExtrato.add("Taxi");
+		listaDeItensDeExtrato.add("Lanche no Burger King");
+		listaDeItensDeExtrato.add("Taxa de AABB");
 		
-		//Essas transacoes serão buscadas atraves do comboBox das categorias
-		List<String> listaTransacoes = new ArrayList<String>();
-		listaTransacoes.add("IPTU");
-		listaTransacoes.add("Pensão");
-		listaTransacoes.add("Passagem para Miami");
-		listaTransacoes.add("Playstation 4");
-		listaTransacoes.add("Noitada");
-		listaTransacoes.add("Taxi");
-		listaTransacoes.add("Lanche no Burger King");
-		listaTransacoes.add("Taxa de AABB");
-		final JList<Object> lstTransacoes = new JList<Object>(listaTransacoes.toArray());
-		lstTransacoes.addMouseListener(new MouseAdapter() {
+		final JList<Object> lstItensDeExtrato = new JList<Object>(listaDeItensDeExtrato.toArray());
+		lstItensDeExtrato.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lstItensDeExtrato.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(tglbtnRemover.isSelected())
-					new TelaRemocaoItemDeExtrato(lstTransacoes.getSelectedValue());
-				else
-					new TelaAtualizacaoItemDeExtrato(lstTransacoes.getSelectedValue());
+				new TelaAtualizacaoItemDeExtrato(lstItensDeExtrato.getSelectedValue());
 			}
 		});
-		lstTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lstTransacoes.setBounds(20, 60, 360, 200);
-		panel.add(lstTransacoes);
+		lstItensDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lstItensDeExtrato.setBounds(20, 70, 400, 200);
+		panel.add(lstItensDeExtrato);
 		
-		JButton btnCriarTransacao = new JButton("Criar Transa\u00E7\u00E3o");
-		btnCriarTransacao.addActionListener(new ActionListener() {
+		JButton btnCriarItemDeExtrato = new JButton("Criar Item de Extrato");
+		btnCriarItemDeExtrato.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new TelaCadastroItemDeExtrato();
 			}
 		});
-		btnCriarTransacao.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnCriarTransacao.setBounds(20, 270, 120, 20);
-		panel.add(btnCriarTransacao);
+		btnCriarItemDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnCriarItemDeExtrato.setBounds(20, 280, 140, 20);
+		panel.add(btnCriarItemDeExtrato);
 		
-		JButton btnRelatorio = new JButton("Relat\u00F3rio");
-		btnRelatorio.addActionListener(new ActionListener() {
+		JButton btnGerarRelatorio = new JButton("Gerar Relat\u00F3rio");
+		btnGerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new TelaRelatorio();
 			}
 		});
-		btnRelatorio.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnRelatorio.setBounds(160, 270, 100, 20);
-		panel.add(btnRelatorio);
+		btnGerarRelatorio.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnGerarRelatorio.setBounds(170, 280, 120, 20);
+		panel.add(btnGerarRelatorio);				
+				
+		JMenuBar mnbCategoria = new JMenuBar();
+		mnbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		mnbCategoria.setBounds(320, 280, 100, 20);
+		panel.add(mnbCategoria);
+		
+		JMenu mnCategoria = new JMenu("Op\u00E7\u00F5es Categoria");
+		mnCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		mnbCategoria.add(mnCategoria);
+		
+		JMenuItem mntmCadastrarCategoria = new JMenuItem("Cadastrar");
+		mntmCadastrarCategoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new TelaCadastroCategoria();
+			}
+		});
+		mntmCadastrarCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));		
+		mnCategoria.add(mntmCadastrarCategoria);
+		
+		JMenuItem mntmAtualizarCategoria = new JMenuItem("Atualizar");
+		mntmAtualizarCategoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new TelaAtualizacaoCategoria();
+			}
+		});
+		mntmAtualizarCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		mnCategoria.add(mntmAtualizarCategoria);
 	}
 }

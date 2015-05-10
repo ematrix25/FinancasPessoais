@@ -1,4 +1,4 @@
-package views.transacao;
+package views.item_de_extrato;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +17,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class TelaRemocaoItemDeExtrato extends JFrame {
+//Ambiente de atualização do item do extrato
+public class TelaAtualizacaoItemDeExtrato extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -26,7 +28,6 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 	private JTextField txtFormaDePgmt;
 	private JTextField txtConta;	
 	private JTextField txtObservacoes;
-	private JTextField txtCategoria;
 
 	/**
 	 * Launch the application.
@@ -35,7 +36,7 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new TelaRemocaoItemDeExtrato("Test");
+					new TelaAtualizacaoItemDeExtrato("Test");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -46,7 +47,7 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaRemocaoItemDeExtrato(Object transacao) {
+	public TelaAtualizacaoItemDeExtrato(Object transacao) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -57,7 +58,7 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 		contentPane.setLayout(null);
 		setVisible(true);
 		
-		JLabel lblListaTransacoes = new JLabel("Remover Transa\u00E7\u00E3o");
+		JLabel lblListaTransacoes = new JLabel("Atualizar Transa\u00E7\u00E3o");
 		lblListaTransacoes.setBounds(17, 10, 280, 20);
 		lblListaTransacoes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblListaTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -82,7 +83,6 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 		txtTitulo.setColumns(10);
 		//Buscar os dados pelo titulo da transacao
 		txtTitulo.setText(transacao.toString());
-		txtTitulo.setEditable(false);
 		
 		JLabel lblRecorrencia = new JLabel("x");
 		lblRecorrencia.setHorizontalAlignment(SwingConstants.CENTER);
@@ -95,7 +95,6 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 		txtRecorrencia.setBounds(190, 50, 70, 20);
 		panel.add(txtRecorrencia);
 		txtRecorrencia.setColumns(10);
-		txtRecorrencia.setEditable(false);
 		
 		JLabel lblValor = new JLabel("Valor");
 		lblValor.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -107,7 +106,6 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 		txtValor.setBounds(70, 50, 100, 20);
 		panel.add(txtValor);
 		txtValor.setColumns(10);
-		txtValor.setEditable(false);
 		
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -116,17 +114,13 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 		
 		List<String> listaCategorias = new ArrayList<String>();
 		listaCategorias.add("Viagem");
-		listaCategorias.add("Salário");		
-		txtCategoria = new JTextField();
-		txtCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		txtCategoria.setBounds(80, 80, 180, 20);	
-		txtCategoria.setColumns(10);
-		if(new Random().nextBoolean())
-			txtCategoria.setText(listaCategorias.get(0));
-		else
-			txtCategoria.setText(listaCategorias.get(1));
-		txtCategoria.setEditable(false);
-		panel.add(txtCategoria);
+		listaCategorias.add("Salário");
+		JComboBox<Object> cbCategoria = new JComboBox<Object>(listaCategorias.toArray());
+		cbCategoria.setEditable(true);
+		cbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbCategoria.setBounds(80, 80, 180, 20);
+		cbCategoria.setSelectedIndex(-1);
+		panel.add(cbCategoria);
 		
 		JLabel lblFormaDePgmt = new JLabel("Forma de Pgmt");
 		lblFormaDePgmt.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -134,9 +128,9 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 		
 		txtFormaDePgmt = new JTextField();
 		txtFormaDePgmt.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		txtFormaDePgmt.setBounds(110, 110, 150, 20);		
+		txtFormaDePgmt.setBounds(110, 110, 150, 20);
+		
 		txtFormaDePgmt.setColumns(10);
-		txtFormaDePgmt.setEditable(false);
 		
 		JLabel lblConta = new JLabel("Conta");
 		lblConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -146,7 +140,6 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 		txtConta = new JTextField();
 		txtConta.setBounds(70, 110, 190, 20);
 		txtConta.setColumns(10);
-		txtConta.setEditable(false);
 		
 		//Tipo da transacao buscado pelo parametro transacao
 		String tipoTransacao = "Despesa";
@@ -161,10 +154,10 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 			panel.add(txtConta);
 		}
 		
-		JButton btnApagar = new JButton("Apagar");
-		btnApagar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnApagar.setBounds(100, 171, 80, 20);
-		panel.add(btnApagar);
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnSalvar.setBounds(100, 170, 80, 20);
+		panel.add(btnSalvar);
 		
 		txtObservacoes = new JTextField();
 		txtObservacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -172,6 +165,5 @@ public class TelaRemocaoItemDeExtrato extends JFrame {
 		txtObservacoes.setBounds(20, 140, 240, 20);
 		panel.add(txtObservacoes);
 		txtObservacoes.setColumns(10);
-		txtObservacoes.setEditable(false);
 	}
 }

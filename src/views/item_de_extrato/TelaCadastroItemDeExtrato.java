@@ -1,4 +1,4 @@
-package views.conta;
+package views.item_de_extrato;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -18,8 +18,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-//Ambiente de cadastro da conta
-public class TelaCadastroConta extends JFrame {
+//Ambiente de cadastro do item do extrato
+public class TelaCadastroItemDeExtrato extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -37,7 +37,7 @@ public class TelaCadastroConta extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new TelaCadastroConta();
+					new TelaCadastroItemDeExtrato();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -48,7 +48,7 @@ public class TelaCadastroConta extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaCadastroConta() {
+	public TelaCadastroItemDeExtrato() {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -59,11 +59,11 @@ public class TelaCadastroConta extends JFrame {
 		contentPane.setLayout(null);
 		setVisible(true);
 		
-		JLabel lblCadastrarConta = new JLabel("Cadastrar Conta");
-		lblCadastrarConta.setBounds(17, 10, 280, 20);
-		lblCadastrarConta.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCadastrarConta.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		contentPane.add(lblCadastrarConta);
+		JLabel lblListaTransacoes = new JLabel("Cadastrar Transa\u00E7\u00E3o");
+		lblListaTransacoes.setBounds(17, 10, 280, 20);
+		lblListaTransacoes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblListaTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		contentPane.add(lblListaTransacoes);
 		
 		final JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
