@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -112,7 +113,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblCategoria.setBounds(20, 80, 60, 20);
+		lblCategoria.setBounds(20, 80, 50, 20);
 		panel.add(lblCategoria);
 		
 		//Esses dados serão buscados do banco de dados
@@ -120,12 +121,38 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		listaCategorias.add("Viagem");
 		listaCategorias.add("Salário");
 		
-		JComboBox<Object> cbCategoria = new JComboBox<Object>(listaCategorias.toArray());
+		final JComboBox<Object> cbCategoria = new JComboBox<Object>(listaCategorias.toArray());
 		cbCategoria.setEditable(true);
 		cbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbCategoria.setBounds(80, 80, 180, 20);
+		cbCategoria.setBounds(70, 80, 100, 20);
 		cbCategoria.setSelectedIndex(-1);
 		panel.add(cbCategoria);
+		
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(cbCategoria.getSelectedItem() == null)
+					return;
+				String categoria = cbCategoria.getSelectedItem().toString();
+				Object opcoes[] = {"Atualizar", "Remover"};
+				int resposta = JOptionPane.showOptionDialog(null,
+						"O que deseja fazer com a categoria "+categoria+"?",
+						"Atualizar Categoria", 
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.PLAIN_MESSAGE,
+						null, opcoes, null);
+				if(resposta == JOptionPane.NO_OPTION)
+					System.out.println("Remover");
+				if(resposta == JOptionPane.YES_OPTION)
+					categoria = JOptionPane.showInputDialog(null,
+							"Qual será o novo nome da categoria "+categoria+"?",
+							"Atualizar Categoria", JOptionPane.PLAIN_MESSAGE);
+				System.out.println("Categoria atualizada para "+categoria);
+			}
+		});
+		btnEditar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnEditar.setBounds(180, 80, 80, 20);
+		panel.add(btnEditar);
 		
 		JLabel lblData = new JLabel("Data");
 		lblData.setFont(new Font("Times New Roman", Font.PLAIN, 12));

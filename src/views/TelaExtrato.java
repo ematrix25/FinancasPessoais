@@ -23,8 +23,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import views.categoria.TelaAtualizacaoCategoria;
-import views.categoria.TelaCadastroCategoria;
 import views.conta.TelaAtualizacaoConta;
 import views.conta.TelaCadastroConta;
 import views.item_de_extrato.TelaAtualizacaoItemDeExtrato;
@@ -201,33 +199,6 @@ public class TelaExtrato extends JFrame {
 		});
 		btnGerarRelatorio.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnGerarRelatorio.setBounds(170, 280, 120, 20);
-		panel.add(btnGerarRelatorio);				
-				
-		JMenuBar mnbCategoria = new JMenuBar();
-		mnbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		mnbCategoria.setBounds(320, 280, 100, 20);
-		panel.add(mnbCategoria);
-		
-		JMenu mnCategoria = new JMenu("Op\u00E7\u00F5es Categoria");
-		mnCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		mnbCategoria.add(mnCategoria);
-		
-		JMenuItem mntmCadastrarCategoria = new JMenuItem("Cadastrar");
-		mntmCadastrarCategoria.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new TelaCadastroCategoria();
-			}
-		});
-		mntmCadastrarCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));		
-		mnCategoria.add(mntmCadastrarCategoria);
-		
-		JMenuItem mntmAtualizarCategoria = new JMenuItem("Atualizar");
-		mntmAtualizarCategoria.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new TelaAtualizacaoCategoria();
-			}
-		});
-		mntmAtualizarCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		mnCategoria.add(mntmAtualizarCategoria);
+		panel.add(btnGerarRelatorio);
 	}
 }
