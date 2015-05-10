@@ -206,8 +206,16 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 			}
 		});
 		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnSalvar.setBounds(20, 170, 80, 20);
+		btnSalvar.setBounds(100, 170, 70, 20);
 		panel.add(btnSalvar);
+		
+		final String[] tiposDeTransacao = {"Despesa","Receita"};
+		
+		final JComboBox<Object> cbTipo = new JComboBox<Object>(tiposDeTransacao);
+		cbTipo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbTipo.setBounds(20, 170, 70, 20);
+		cbTipo.setSelectedIndex(0);
+		panel.add(cbTipo);
 		
 		JButton btnApagar = new JButton("Apagar");
 		btnApagar.addActionListener(new ActionListener() {
@@ -216,7 +224,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 			}
 		});
 		btnApagar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnApagar.setBounds(180, 169, 80, 20);
+		btnApagar.setBounds(180, 170, 80, 20);
 		panel.add(btnApagar);
 	}
 }

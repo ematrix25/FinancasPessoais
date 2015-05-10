@@ -201,7 +201,7 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		
 		final JComboBox<Object> cbTipo = new JComboBox<Object>(tiposDeTransacao);
 		cbTipo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbTipo.setBounds(20, 170, 120, 20);
+		cbTipo.setBounds(20, 170, 70, 20);
 		cbTipo.setSelectedIndex(0);
 		panel.add(cbTipo);
 		
