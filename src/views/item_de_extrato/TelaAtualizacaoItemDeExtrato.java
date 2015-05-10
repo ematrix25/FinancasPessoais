@@ -3,9 +3,10 @@ package views.item_de_extrato;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,10 +24,11 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtTitulo;
-	private JTextField txtRecorrencia;
+	private JTextField txtOcorrencia;
 	private JTextField txtValor;
-	private JTextField txtFormaDePgmt;
-	private JTextField txtConta;	
+	private JTextField txtDia;
+	private JTextField txtMes;
+	private JTextField txtAno;
 	private JTextField txtObservacoes;
 
 	/**
@@ -58,11 +60,11 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		contentPane.setLayout(null);
 		setVisible(true);
 		
-		JLabel lblListaTransacoes = new JLabel("Atualizar Transa\u00E7\u00E3o");
-		lblListaTransacoes.setBounds(17, 10, 280, 20);
-		lblListaTransacoes.setHorizontalAlignment(SwingConstants.CENTER);
-		lblListaTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		contentPane.add(lblListaTransacoes);
+		JLabel lblAtualizarItem = new JLabel("Atualizar Item de Extrato");
+		lblAtualizarItem.setBounds(17, 10, 280, 20);
+		lblAtualizarItem.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAtualizarItem.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		contentPane.add(lblAtualizarItem);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -84,17 +86,18 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		//Buscar os dados pelo titulo da transacao
 		txtTitulo.setText(transacao.toString());
 		
-		JLabel lblRecorrencia = new JLabel("x");
-		lblRecorrencia.setHorizontalAlignment(SwingConstants.CENTER);
-		lblRecorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblRecorrencia.setBounds(170, 50, 20, 20);
-		panel.add(lblRecorrencia);
+		JLabel lblOcorrencia = new JLabel("x");
+		lblOcorrencia.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOcorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblOcorrencia.setBounds(170, 50, 20, 20);
+		panel.add(lblOcorrencia);
 		
-		txtRecorrencia = new JTextField();
-		txtRecorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		txtRecorrencia.setBounds(190, 50, 70, 20);
-		panel.add(txtRecorrencia);
-		txtRecorrencia.setColumns(10);
+		txtOcorrencia = new JTextField();
+		txtOcorrencia.setText("Vezes");
+		txtOcorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtOcorrencia.setBounds(190, 50, 70, 20);
+		panel.add(txtOcorrencia);
+		txtOcorrencia.setColumns(10);
 		
 		JLabel lblValor = new JLabel("Valor");
 		lblValor.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -122,42 +125,43 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		cbCategoria.setSelectedIndex(-1);
 		panel.add(cbCategoria);
 		
-		JLabel lblFormaDePgmt = new JLabel("Forma de Pgmt");
-		lblFormaDePgmt.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblFormaDePgmt.setBounds(20, 110, 80, 20);
+		JLabel lblData = new JLabel("Data");
+		lblData.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblData.setBounds(20, 110, 40, 20);
+		panel.add(lblData);
 		
-		txtFormaDePgmt = new JTextField();
-		txtFormaDePgmt.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		txtFormaDePgmt.setBounds(110, 110, 150, 20);
+		txtDia = new JTextField();
+		txtDia.setText("Dia");
+		txtDia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtDia.setBounds(70, 110, 40, 20);
+		panel.add(txtDia);
+		txtDia.setColumns(10);
 		
-		txtFormaDePgmt.setColumns(10);
+		JLabel lblBarra1 = new JLabel("/");
+		lblBarra1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBarra1.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblBarra1.setBounds(110, 110, 20, 20);
+		panel.add(lblBarra1);
 		
-		JLabel lblConta = new JLabel("Conta");
-		lblConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblConta.setBounds(20, 110, 40, 20);
+		txtMes = new JTextField();
+		txtMes.setText("M\u00EAs");
+		txtMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtMes.setColumns(10);
+		txtMes.setBounds(130, 110, 40, 20);
+		panel.add(txtMes);
 		
+		JLabel lblBarra2 = new JLabel("/");
+		lblBarra2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBarra2.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblBarra2.setBounds(170, 111, 20, 20);
+		panel.add(lblBarra2);
 		
-		txtConta = new JTextField();
-		txtConta.setBounds(70, 110, 190, 20);
-		txtConta.setColumns(10);
-		
-		//Tipo da transacao buscado pelo parametro transacao
-		String tipoTransacao = "Despesa";
-		if(new Random().nextBoolean())
-			tipoTransacao = "Receita";
-		if(tipoTransacao.equals("Despesa")) {
-			panel.add(lblFormaDePgmt);
-			panel.add(txtFormaDePgmt);
-		}			
-		else {
-			panel.add(lblConta);
-			panel.add(txtConta);
-		}
-		
-		JButton btnSalvar = new JButton("Salvar");
-		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnSalvar.setBounds(100, 170, 80, 20);
-		panel.add(btnSalvar);
+		txtAno = new JTextField();
+		txtAno.setText("Ano");
+		txtAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtAno.setColumns(10);
+		txtAno.setBounds(200, 110, 60, 20);
+		panel.add(txtAno);
 		
 		txtObservacoes = new JTextField();
 		txtObservacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -165,5 +169,25 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		txtObservacoes.setBounds(20, 140, 240, 20);
 		panel.add(txtObservacoes);
 		txtObservacoes.setColumns(10);
+		
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnSalvar.setBounds(20, 170, 80, 20);
+		panel.add(btnSalvar);
+		
+		JButton btnApagar = new JButton("Apagar");
+		btnApagar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnApagar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnApagar.setBounds(180, 169, 80, 20);
+		panel.add(btnApagar);
 	}
 }

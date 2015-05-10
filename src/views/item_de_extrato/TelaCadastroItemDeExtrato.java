@@ -3,8 +3,8 @@ package views.item_de_extrato;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +24,11 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtTitulo;
-	private JTextField txtRecorrencia;
+	private JTextField txtOcorrencia;
 	private JTextField txtValor;
-	private JTextField txtFormaDePgmt;
-	private JTextField txtConta;	
+	private JTextField txtDia;
+	private JTextField txtMes;
+	private JTextField txtAno;
 	private JTextField txtObservacoes;
 
 	/**
@@ -59,11 +60,11 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		contentPane.setLayout(null);
 		setVisible(true);
 		
-		JLabel lblListaTransacoes = new JLabel("Cadastrar Transa\u00E7\u00E3o");
-		lblListaTransacoes.setBounds(17, 10, 280, 20);
-		lblListaTransacoes.setHorizontalAlignment(SwingConstants.CENTER);
-		lblListaTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		contentPane.add(lblListaTransacoes);
+		JLabel lblCadastrarItem = new JLabel("Cadastrar Item de Extrato");
+		lblCadastrarItem.setBounds(17, 10, 280, 20);
+		lblCadastrarItem.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCadastrarItem.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		contentPane.add(lblCadastrarItem);
 		
 		final JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -83,17 +84,18 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		panel.add(txtTitulo);
 		txtTitulo.setColumns(10);
 		
-		JLabel lblRecorrencia = new JLabel("x");
-		lblRecorrencia.setHorizontalAlignment(SwingConstants.CENTER);
-		lblRecorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblRecorrencia.setBounds(170, 50, 20, 20);
-		panel.add(lblRecorrencia);
+		JLabel lblOcorrencia = new JLabel("x");
+		lblOcorrencia.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOcorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblOcorrencia.setBounds(170, 50, 20, 20);
+		panel.add(lblOcorrencia);
 		
-		txtRecorrencia = new JTextField();
-		txtRecorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		txtRecorrencia.setBounds(190, 50, 70, 20);
-		panel.add(txtRecorrencia);
-		txtRecorrencia.setColumns(10);
+		txtOcorrencia = new JTextField();
+		txtOcorrencia.setText("Vezes");
+		txtOcorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtOcorrencia.setBounds(190, 50, 70, 20);
+		panel.add(txtOcorrencia);
+		txtOcorrencia.setColumns(10);
 		
 		JLabel lblValor = new JLabel("Valor");
 		lblValor.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -121,29 +123,43 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		cbCategoria.setSelectedIndex(-1);
 		panel.add(cbCategoria);
 		
-		final JLabel lblFormaDePgmt = new JLabel("Forma de Pgmt");
-		lblFormaDePgmt.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblFormaDePgmt.setBounds(20, 110, 80, 20);
-		panel.add(lblFormaDePgmt);
+		JLabel lblData = new JLabel("Data");
+		lblData.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblData.setBounds(20, 110, 40, 20);
+		panel.add(lblData);
 		
-		txtFormaDePgmt = new JTextField();
-		txtFormaDePgmt.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		txtFormaDePgmt.setBounds(110, 110, 150, 20);
-		panel.add(txtFormaDePgmt);
-		txtFormaDePgmt.setColumns(10);
+		txtDia = new JTextField();
+		txtDia.setText("Dia");
+		txtDia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtDia.setBounds(70, 110, 40, 20);
+		panel.add(txtDia);
+		txtDia.setColumns(10);
 		
-		final JLabel lblConta = new JLabel("Conta");
-		lblConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblConta.setBounds(20, 110, 40, 20);
+		JLabel lblBarra1 = new JLabel("/");
+		lblBarra1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBarra1.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblBarra1.setBounds(110, 110, 20, 20);
+		panel.add(lblBarra1);
 		
-		txtConta = new JTextField();
-		txtConta.setBounds(70, 110, 190, 20);
-		txtConta.setColumns(10);
+		txtMes = new JTextField();
+		txtMes.setText("M\u00EAs");
+		txtMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtMes.setColumns(10);
+		txtMes.setBounds(130, 110, 40, 20);
+		panel.add(txtMes);
 		
-		JButton btnSalvar = new JButton("Salvar");
-		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnSalvar.setBounds(180, 170, 80, 20);
-		panel.add(btnSalvar);
+		JLabel lblBarra2 = new JLabel("/");
+		lblBarra2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBarra2.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblBarra2.setBounds(170, 111, 20, 20);
+		panel.add(lblBarra2);
+		
+		txtAno = new JTextField();
+		txtAno.setText("Ano");
+		txtAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtAno.setColumns(10);
+		txtAno.setBounds(200, 110, 60, 20);
+		panel.add(txtAno);
 		
 		txtObservacoes = new JTextField();
 		txtObservacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -153,29 +169,22 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		txtObservacoes.setColumns(10);
 		
 		final String[] tiposDeTransacao = {"Despesa","Receita"};
-		final JComboBox<Object> cbTipoDeTransacao = new JComboBox<Object>(tiposDeTransacao);
-		cbTipoDeTransacao.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				if(cbTipoDeTransacao.getSelectedIndex()==0) {
-					txtTitulo.setText("");
-					panel.remove(lblConta);
-					panel.add(lblFormaDePgmt);
-					panel.remove(txtConta);
-					panel.add(txtFormaDePgmt);
-				}
-				else {
-					txtTitulo.setText("");
-					panel.remove(lblFormaDePgmt);
-					panel.add(lblConta);
-					panel.remove(txtFormaDePgmt);
-					panel.add(txtConta);
-				}
+		
+		final JComboBox<Object> cbTipo = new JComboBox<Object>(tiposDeTransacao);
+		cbTipo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbTipo.setBounds(20, 170, 120, 20);
+		cbTipo.setSelectedIndex(0);
+		panel.add(cbTipo);
+		
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
-		cbTipoDeTransacao.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbTipoDeTransacao.setBounds(20, 170, 120, 20);
-		cbTipoDeTransacao.setSelectedIndex(0);
-		panel.add(cbTipoDeTransacao);
+		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnSalvar.setBounds(180, 170, 80, 20);
+		panel.add(btnSalvar);
 	}
 
 }
