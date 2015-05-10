@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,8 +20,7 @@ public class TelaCadastroConta extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txtBanco;
-	private JTextField txtConta;	
+	private JTextField txtBanco;	
 	private JTextField txtAgencia;
 	private JTextField txtNumero;
 
@@ -62,7 +59,7 @@ public class TelaCadastroConta extends JFrame {
 		lblCadastrarConta.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		contentPane.add(lblCadastrarConta);
 		
-		final JPanel panel = new JPanel();
+		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(Color.LIGHT_GRAY);
 		panel.setBounds(17, 50, 230, 140);
@@ -90,18 +87,6 @@ public class TelaCadastroConta extends JFrame {
 		txtAgencia.setColumns(10);
 		txtAgencia.setBounds(70, 50, 140, 20);
 		panel.add(txtAgencia);
-		
-		List<String> listaCategorias = new ArrayList<String>();
-		listaCategorias.add("Viagem");
-		listaCategorias.add("Salário");
-		
-		final JLabel lblConta = new JLabel("Conta");
-		lblConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblConta.setBounds(20, 110, 40, 20);
-		
-		txtConta = new JTextField();
-		txtConta.setBounds(70, 110, 190, 20);
-		txtConta.setColumns(10);
 		
 		JLabel lblNumero = new JLabel("Numero");
 		lblNumero.setFont(new Font("Times New Roman", Font.PLAIN, 12));

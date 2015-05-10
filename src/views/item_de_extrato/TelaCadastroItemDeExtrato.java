@@ -113,9 +113,11 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		lblCategoria.setBounds(20, 80, 60, 20);
 		panel.add(lblCategoria);
 		
+		//Esses dados serão buscados do banco de dados
 		List<String> listaCategorias = new ArrayList<String>();
 		listaCategorias.add("Viagem");
 		listaCategorias.add("Salário");
+		
 		JComboBox<Object> cbCategoria = new JComboBox<Object>(listaCategorias.toArray());
 		cbCategoria.setEditable(true);
 		cbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
