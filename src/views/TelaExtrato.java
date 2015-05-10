@@ -3,6 +3,8 @@ package views;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -14,14 +16,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JToggleButton;
 
-public class TelaPrincipal extends JFrame {
+import views.transacao.TelaAtualizacaoItemDeExtrato;
+import views.transacao.TelaCadastroItemDeExtrato;
+import views.transacao.TelaRemocaoItemDeExtrato;
+
+//Ambiente de visualização do extrato
+public class TelaExtrato extends JFrame {
 
 	/**
 	 * 
@@ -36,7 +41,7 @@ public class TelaPrincipal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new TelaPrincipal();
+					new TelaExtrato();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,7 +52,7 @@ public class TelaPrincipal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaPrincipal() {
+	public TelaExtrato() {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,9 +115,9 @@ public class TelaPrincipal extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(tglbtnRemover.isSelected())
-					new RemoverTransacao(lstTransacoes.getSelectedValue());
+					new TelaRemocaoItemDeExtrato(lstTransacoes.getSelectedValue());
 				else
-					new AtualizarTransacao(lstTransacoes.getSelectedValue());
+					new TelaAtualizacaoItemDeExtrato(lstTransacoes.getSelectedValue());
 			}
 		});
 		lstTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -122,7 +127,7 @@ public class TelaPrincipal extends JFrame {
 		JButton btnCriarTransacao = new JButton("Criar Transa\u00E7\u00E3o");
 		btnCriarTransacao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new CadastrarTransacao();
+				new TelaCadastroItemDeExtrato();
 			}
 		});
 		btnCriarTransacao.setFont(new Font("Times New Roman", Font.PLAIN, 12));

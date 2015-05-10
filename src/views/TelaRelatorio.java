@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+//Ambiente de visualização do relatório
 public class TelaRelatorio extends JFrame {
 
 	/**

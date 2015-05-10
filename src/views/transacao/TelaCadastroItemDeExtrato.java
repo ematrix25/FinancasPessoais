@@ -1,13 +1,15 @@
-package views;
+package views.transacao;
 
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class RemoverTransacao extends JFrame {
+public class TelaCadastroItemDeExtrato extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -26,7 +28,6 @@ public class RemoverTransacao extends JFrame {
 	private JTextField txtFormaDePgmt;
 	private JTextField txtConta;	
 	private JTextField txtObservacoes;
-	private JTextField txtCategoria;
 
 	/**
 	 * Launch the application.
@@ -35,7 +36,7 @@ public class RemoverTransacao extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new RemoverTransacao("Test");
+					new TelaCadastroItemDeExtrato();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -46,7 +47,7 @@ public class RemoverTransacao extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RemoverTransacao(Object transacao) {
+	public TelaCadastroItemDeExtrato() {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -57,13 +58,13 @@ public class RemoverTransacao extends JFrame {
 		contentPane.setLayout(null);
 		setVisible(true);
 		
-		JLabel lblListaTransacoes = new JLabel("Remover Transa\u00E7\u00E3o");
+		JLabel lblListaTransacoes = new JLabel("Cadastrar Transa\u00E7\u00E3o");
 		lblListaTransacoes.setBounds(17, 10, 280, 20);
 		lblListaTransacoes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblListaTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		contentPane.add(lblListaTransacoes);
 		
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(Color.LIGHT_GRAY);
 		panel.setBounds(17, 50, 280, 200);
@@ -80,9 +81,6 @@ public class RemoverTransacao extends JFrame {
 		txtTitulo.setBounds(70, 20, 190, 20);
 		panel.add(txtTitulo);
 		txtTitulo.setColumns(10);
-		//Buscar os dados pelo titulo da transacao
-		txtTitulo.setText(transacao.toString());
-		txtTitulo.setEditable(false);
 		
 		JLabel lblRecorrencia = new JLabel("x");
 		lblRecorrencia.setHorizontalAlignment(SwingConstants.CENTER);
@@ -95,7 +93,6 @@ public class RemoverTransacao extends JFrame {
 		txtRecorrencia.setBounds(190, 50, 70, 20);
 		panel.add(txtRecorrencia);
 		txtRecorrencia.setColumns(10);
-		txtRecorrencia.setEditable(false);
 		
 		JLabel lblValor = new JLabel("Valor");
 		lblValor.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -107,7 +104,6 @@ public class RemoverTransacao extends JFrame {
 		txtValor.setBounds(70, 50, 100, 20);
 		panel.add(txtValor);
 		txtValor.setColumns(10);
-		txtValor.setEditable(false);
 		
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -116,55 +112,37 @@ public class RemoverTransacao extends JFrame {
 		
 		List<String> listaCategorias = new ArrayList<String>();
 		listaCategorias.add("Viagem");
-		listaCategorias.add("Salário");		
-		txtCategoria = new JTextField();
-		txtCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		txtCategoria.setBounds(80, 80, 180, 20);	
-		txtCategoria.setColumns(10);
-		if(new Random().nextBoolean())
-			txtCategoria.setText(listaCategorias.get(0));
-		else
-			txtCategoria.setText(listaCategorias.get(1));
-		txtCategoria.setEditable(false);
-		panel.add(txtCategoria);
+		listaCategorias.add("Salário");
+		JComboBox<Object> cbCategoria = new JComboBox<Object>(listaCategorias.toArray());
+		cbCategoria.setEditable(true);
+		cbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbCategoria.setBounds(80, 80, 180, 20);
+		cbCategoria.setSelectedIndex(-1);
+		panel.add(cbCategoria);
 		
-		JLabel lblFormaDePgmt = new JLabel("Forma de Pgmt");
+		final JLabel lblFormaDePgmt = new JLabel("Forma de Pgmt");
 		lblFormaDePgmt.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblFormaDePgmt.setBounds(20, 110, 80, 20);
+		panel.add(lblFormaDePgmt);
 		
 		txtFormaDePgmt = new JTextField();
 		txtFormaDePgmt.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		txtFormaDePgmt.setBounds(110, 110, 150, 20);		
+		txtFormaDePgmt.setBounds(110, 110, 150, 20);
+		panel.add(txtFormaDePgmt);
 		txtFormaDePgmt.setColumns(10);
-		txtFormaDePgmt.setEditable(false);
 		
-		JLabel lblConta = new JLabel("Conta");
+		final JLabel lblConta = new JLabel("Conta");
 		lblConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblConta.setBounds(20, 110, 40, 20);
-		
 		
 		txtConta = new JTextField();
 		txtConta.setBounds(70, 110, 190, 20);
 		txtConta.setColumns(10);
-		txtConta.setEditable(false);
 		
-		//Tipo da transacao buscado pelo parametro transacao
-		String tipoTransacao = "Despesa";
-		if(new Random().nextBoolean())
-			tipoTransacao = "Receita";
-		if(tipoTransacao.equals("Despesa")) {
-			panel.add(lblFormaDePgmt);
-			panel.add(txtFormaDePgmt);
-		}			
-		else {
-			panel.add(lblConta);
-			panel.add(txtConta);
-		}
-		
-		JButton btnApagar = new JButton("Apagar");
-		btnApagar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnApagar.setBounds(100, 171, 80, 20);
-		panel.add(btnApagar);
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnSalvar.setBounds(180, 170, 80, 20);
+		panel.add(btnSalvar);
 		
 		txtObservacoes = new JTextField();
 		txtObservacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -172,6 +150,31 @@ public class RemoverTransacao extends JFrame {
 		txtObservacoes.setBounds(20, 140, 240, 20);
 		panel.add(txtObservacoes);
 		txtObservacoes.setColumns(10);
-		txtObservacoes.setEditable(false);
+		
+		final String[] tiposDeTransacao = {"Despesa","Receita"};
+		final JComboBox<Object> cbTipoDeTransacao = new JComboBox<Object>(tiposDeTransacao);
+		cbTipoDeTransacao.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if(cbTipoDeTransacao.getSelectedIndex()==0) {
+					txtTitulo.setText("");
+					panel.remove(lblConta);
+					panel.add(lblFormaDePgmt);
+					panel.remove(txtConta);
+					panel.add(txtFormaDePgmt);
+				}
+				else {
+					txtTitulo.setText("");
+					panel.remove(lblFormaDePgmt);
+					panel.add(lblConta);
+					panel.remove(txtFormaDePgmt);
+					panel.add(txtConta);
+				}
+			}
+		});
+		cbTipoDeTransacao.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbTipoDeTransacao.setBounds(20, 170, 120, 20);
+		cbTipoDeTransacao.setSelectedIndex(0);
+		panel.add(cbTipoDeTransacao);
 	}
+
 }

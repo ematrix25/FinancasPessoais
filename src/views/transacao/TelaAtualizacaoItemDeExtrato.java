@@ -1,4 +1,4 @@
-package views;
+package views.transacao;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class AtualizarTransacao extends JFrame {
+public class TelaAtualizacaoItemDeExtrato extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -35,7 +35,7 @@ public class AtualizarTransacao extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new AtualizarTransacao("Test");
+					new TelaAtualizacaoItemDeExtrato("Test");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -46,7 +46,7 @@ public class AtualizarTransacao extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AtualizarTransacao(Object transacao) {
+	public TelaAtualizacaoItemDeExtrato(Object transacao) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

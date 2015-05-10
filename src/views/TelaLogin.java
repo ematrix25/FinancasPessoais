@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+//Ambiente de login do usuário
 public class TelaLogin extends JFrame {
 
 	/**
@@ -86,7 +87,7 @@ public class TelaLogin extends JFrame {
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
-				new TelaPrincipal();
+				new TelaExtrato();
 				dispose();
 			}
 		});
