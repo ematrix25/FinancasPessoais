@@ -3,15 +3,18 @@ package views;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -84,6 +87,11 @@ public class TelaLogin extends JFrame {
 		lblSenha.setBounds(40, 80, 40, 20);
 		panel.add(lblSenha);
 		
+		pfSenha = new JPasswordField();
+		pfSenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		pfSenha.setBounds(90, 80, 180, 20);
+		panel.add(pfSenha);
+				
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
@@ -95,19 +103,30 @@ public class TelaLogin extends JFrame {
 		btnEntrar.setBounds(110, 120, 80, 20);
 		panel.add(btnEntrar);
 		
-		pfSenha = new JPasswordField();
-		pfSenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		pfSenha.setBounds(90, 80, 180, 20);
-		panel.add(pfSenha);
-		
-		JButton btnEsqueciASenha = new JButton("Esqueci a Senha");
-		btnEsqueciASenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnEsqueciASenha.setBounds(160, 160, 110, 20);
-		panel.add(btnEsqueciASenha);
-		
 		JButton btnCriarConta = new JButton("Criar Conta");
+		btnCriarConta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				String email = JOptionPane.showInputDialog(null, 
+						"Digite seu e-mail", "Criar Conta do Usuario", 
+						JOptionPane.PLAIN_MESSAGE);
+				System.out.println("O email "+email+" foi salvo no servidor");
+			}
+		});
 		btnCriarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnCriarConta.setBounds(40, 160, 90, 20);
 		panel.add(btnCriarConta);
+		
+		JButton btnEsqueciASenha = new JButton("Esqueci a Senha");
+		btnEsqueciASenha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				int codigo = JOptionPane.showInputDialog(null, 
+						"Digite o codigo enviado para seu email com sua nova senha", "Recriar Senha do Usuario", 
+						JOptionPane.PLAIN_MESSAGE).split("/")[1].replaceAll(" ", "").hashCode();
+				System.out.println("Nova senha encriptada para "+codigo+" e salva no servidor");
+			}
+		});
+		btnEsqueciASenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnEsqueciASenha.setBounds(160, 160, 110, 20);
+		panel.add(btnEsqueciASenha);
 	}
 }
