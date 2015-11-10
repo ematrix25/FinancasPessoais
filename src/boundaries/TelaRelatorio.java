@@ -1,4 +1,4 @@
-package views;
+package boundaries;
 
 import java.awt.Color;
 import java.awt.EventQueue;
