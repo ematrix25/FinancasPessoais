@@ -53,7 +53,7 @@ public class TelaRelatorio extends JFrame {
 		contentPane.setLayout(null);
 		setVisible(true);
 
-		JLabel lblListaTransacoes = new JLabel("Relatório das Transações");
+		JLabel lblListaTransacoes = new JLabel("Relatório");
 		lblListaTransacoes.setBounds(17, 10, 280, 20);
 		lblListaTransacoes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblListaTransacoes.setFont(new Font("Times New Roman", Font.PLAIN, 20));
