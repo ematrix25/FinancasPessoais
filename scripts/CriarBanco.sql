@@ -1,4 +1,5 @@
 -- Script para criar o banco no postgres
+-- Lembrar de usar postgres como senha
 
 CREATE DATABASE financas
   WITH OWNER = postgres

@@ -38,7 +38,7 @@ CREATE TABLE "ItemDeExtrato" (
 
 CREATE TABLE "Usuario" (
     nome character varying(50) NOT NULL,
-    senha integer NOT NULL,
+    senha character varying(50) NOT NULL,
     email character varying(50) NOT NULL
 );
 
