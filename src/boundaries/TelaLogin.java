@@ -139,9 +139,9 @@ public class TelaLogin extends JFrame {
 				}
 				Usuario usuario = new Usuario(nome, senha, email);
 				if(usuarioCon.cadastrar(usuario))
-					JOptionPane.showMessageDialog(null, "A conta do usuário foi criada");
+					JOptionPane.showMessageDialog(null, "A conta do usuário foi criada com sucesso");
 				else
-					JOptionPane.showMessageDialog(null, "A conta do usuário não foi criada");
+					JOptionPane.showMessageDialog(null, "A conta do usuário não foi criada! Nome de usuário já existe");
 			}
 		});
 		btnCriarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
