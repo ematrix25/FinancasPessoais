@@ -22,8 +22,9 @@ public class UsuarioCon {
 		return usuarioDAO.addUsuario(usuario);
 	}
 
-	public Usuario getFuncionario(String nome) {
-		return usuarioDAO.getUsuario(nome);
+	public boolean autenticar(Usuario usuario) {
+		String senha = usuarioDAO.getUsuario(usuario.getNome()).getSenha();
+		return senha.equals(usuario.getSenha());
 	}
 
 	public boolean atualizar(Usuario usuario) {

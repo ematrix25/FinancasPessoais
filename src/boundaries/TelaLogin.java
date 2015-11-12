@@ -102,8 +102,30 @@ public class TelaLogin extends JFrame {
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new TelaExtrato();
-				dispose();
+				String nome = txtUsuario.getText();
+				if (nome.equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o nome do usuario", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+
+				String senha = new String(pfSenha.getPassword());
+				if (senha.equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira a senha do usuario", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				Criptografia cripto = new Criptografia();
+				senha = cripto.criptografar(senha);
+				
+				Usuario usuario = new Usuario(nome, senha);
+				if(usuarioCon.autenticar(usuario)) {
+					new TelaExtrato();
+					dispose();
+				}
+				else
+					JOptionPane.showMessageDialog(null, "A autenticação falhou! Usuário ou senha errados");
+				
 			}
 		});
 		btnEntrar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -137,6 +159,7 @@ public class TelaLogin extends JFrame {
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				
 				Usuario usuario = new Usuario(nome, senha, email);
 				if(usuarioCon.cadastrar(usuario))
 					JOptionPane.showMessageDialog(null, "A conta do usuário foi criada com sucesso");

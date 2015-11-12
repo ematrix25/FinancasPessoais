@@ -25,21 +25,21 @@ public class UsuarioDAO {
 			declaracao = conexao.prepareStatement(sql);
 			declaracao.setString(1, nome);
 			resultado = declaracao.executeQuery();
-			if(resultado.next())
+			if (resultado.next())
 				existeUsuario = true;
 			resultado.close();
 			declaracao.close();
 			conexao.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
+		}
 		return existeUsuario;
 	}
-	
+
 	public boolean addUsuario(Usuario usuario) {
-		String sql = "Insert into \"Usuario\" (nome, senha, email) values (?, ?, ?)";
-		if(temUsuario(usuario.getNome()))
+		if (temUsuario(usuario.getNome()))
 			return false;
+		String sql = "Insert into \"Usuario\" (nome, senha, email) values (?, ?, ?)";
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
@@ -51,13 +51,30 @@ public class UsuarioDAO {
 			conexao.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
+		}
 		return true;
 	}
 
 	// Falta desenvolver
 	public Usuario getUsuario(String nome) {
-		return null;
+		String sql = "Select * from \"Usuario\" where nome = ?";
+		Usuario usuario = null;
+		try {
+			conexao = ConexaoSQL.getConnection();
+			declaracao = conexao.prepareStatement(sql);
+			declaracao.setString(1, nome);
+			resultado = declaracao.executeQuery();
+			if (resultado.next())
+				usuario = new Usuario(nome, resultado.getString("senha"));
+			else
+				usuario = new Usuario();
+			resultado.close();
+			declaracao.close();
+			conexao.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return usuario;
 	}
 
 	// Falta desenvolver

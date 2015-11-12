@@ -15,8 +15,12 @@ public class Usuario {
 		this.email = email;
 	}
 
-	public Usuario() {
+	public Usuario(String nome, String senha) {
+		this(nome, senha, "");
+	}
 
+	public Usuario() {
+		this("", "", "");
 	}
 
 	public String getNome() {
