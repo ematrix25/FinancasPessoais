@@ -55,7 +55,6 @@ public class UsuarioDAO {
 		return true;
 	}
 
-	// Falta desenvolver
 	public Usuario getUsuario(String nome) {
 		String sql = "Select * from \"Usuario\" where nome = ?";
 		Usuario usuario = null;
@@ -65,7 +64,7 @@ public class UsuarioDAO {
 			declaracao.setString(1, nome);
 			resultado = declaracao.executeQuery();
 			if (resultado.next())
-				usuario = new Usuario(nome, resultado.getString("senha"));
+				usuario = new Usuario(nome, resultado.getString("senha"), resultado.getString("email"));
 			else
 				usuario = new Usuario();
 			resultado.close();
@@ -77,8 +76,19 @@ public class UsuarioDAO {
 		return usuario;
 	}
 
-	// Falta desenvolver
 	public boolean setUsuario(Usuario usuario) {
+		String sql = "Update \"Usuario\" set senha = ? where nome = ?";		
+		try {
+			conexao = ConexaoSQL.getConnection();
+			declaracao = conexao.prepareStatement(sql);
+			declaracao.setString(1, usuario.getSenha());
+			declaracao.setString(2, usuario.getNome());
+			declaracao.executeUpdate();
+			declaracao.close();
+			conexao.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 }

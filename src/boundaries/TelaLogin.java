@@ -17,7 +17,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import utilities.Criptografia;
 import controllers.UsuarioCon;
 import entities.Usuario;
 
@@ -98,59 +97,48 @@ public class TelaLogin extends JFrame {
 
 		usuarioCon = new UsuarioCon();
 
-		//Autentica o usuario
+		// Autentica o usuario
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nome = txtUsuario.getText();
-				if (nome.equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira o nome do usuario", "Aviso",
-							JOptionPane.WARNING_MESSAGE);
+				if (usuarioEstaVazio(nome)) {
 					return;
 				}
 
 				String senha = new String(pfSenha.getPassword());
-				if (senha.equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira a senha do usuario", "Aviso",
-							JOptionPane.WARNING_MESSAGE);
+				if (senhaEstaVazio(senha)) {
 					return;
 				}
-				Criptografia cripto = new Criptografia();
-				senha = cripto.criptografar(senha);
-				
+
 				Usuario usuario = new Usuario(nome, senha);
-				if(usuarioCon.autenticar(usuario)) {
+				if (usuarioCon.autenticar(usuario)) {
 					new TelaExtrato();
 					dispose();
-				}
-				else
+				} else
 					JOptionPane.showMessageDialog(null, "A autenticação falhou! Usuário ou senha errados");
-				
+
 			}
 		});
 		btnEntrar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnEntrar.setBounds(110, 120, 80, 20);
 		panel.add(btnEntrar);
-		
-		//Cria conta verificando se os dados foram preenchidos e se o email é valido
+
+		// Cria conta verificando se os dados foram preenchidos e se o email é
+		// valido
 		JButton btnCriarConta = new JButton("Criar Conta");
 		btnCriarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// Lembrar de verificar se já existe usuário com esse nome
 				String nome = txtUsuario.getText();
-				if (nome.equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira o nome do usuario", "Aviso",
-							JOptionPane.WARNING_MESSAGE);
+				if (usuarioEstaVazio(nome)) {
 					return;
 				}
 
 				String senha = new String(pfSenha.getPassword());
-				if (senha.equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira a senha do usuario", "Aviso",
-							JOptionPane.WARNING_MESSAGE);
+				if (senhaEstaVazio(senha)) {
 					return;
 				}
-				Criptografia cripto = new Criptografia();
-				senha = cripto.criptografar(senha);
 
 				String email = JOptionPane.showInputDialog(null, "Digite seu e-mail", "Criar Conta do Usuario",
 						JOptionPane.PLAIN_MESSAGE);
@@ -159,9 +147,9 @@ public class TelaLogin extends JFrame {
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				
+
 				Usuario usuario = new Usuario(nome, senha, email);
-				if(usuarioCon.cadastrar(usuario))
+				if (usuarioCon.cadastrar(usuario))
 					JOptionPane.showMessageDialog(null, "A conta do usuário foi criada com sucesso");
 				else
 					JOptionPane.showMessageDialog(null, "A conta do usuário não foi criada! Nome de usuário já existe");
@@ -171,18 +159,50 @@ public class TelaLogin extends JFrame {
 		btnCriarConta.setBounds(40, 160, 90, 20);
 		panel.add(btnCriarConta);
 
-		//Recupera o acesso a conta atraves de uma nova senha
+		// Recupera o acesso a conta atraves de uma nova senha
 		JButton btnEsqueciASenha = new JButton("Esqueci a Senha");
 		btnEsqueciASenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int codigo = JOptionPane.showInputDialog(null,
+				String nome = txtUsuario.getText();
+				if (usuarioEstaVazio(nome)) {
+					return;
+				}
+
+				if (!usuarioCon.enviarEmail(nome)) {
+					JOptionPane.showMessageDialog(null, "Nome do usuário invalido! Tente de novo", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+
+				String codNovaSenha = JOptionPane.showInputDialog(null,
 						"Digite o codigo enviado para seu email com sua nova senha", "Recriar Senha do Usuario",
-						JOptionPane.PLAIN_MESSAGE).split("/")[1].replaceAll(" ", "").hashCode();
-				System.out.println("Nova senha encriptada para " + codigo + " e salva no servidor");
+						JOptionPane.PLAIN_MESSAGE);
+				
+				Usuario usuario = new Usuario(nome, codNovaSenha);
+				if (usuarioCon.atualizar(usuario))
+					JOptionPane.showMessageDialog(null, "Senha atualizada com sucesso");
+				else
+					JOptionPane.showMessageDialog(null, "A senha não foi atualizada");
 			}
 		});
 		btnEsqueciASenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnEsqueciASenha.setBounds(160, 160, 110, 20);
 		panel.add(btnEsqueciASenha);
+	}
+
+	private boolean usuarioEstaVazio(String nome) {
+		if (nome.equals("")) {
+			JOptionPane.showMessageDialog(null, "Insira o nome do usuario", "Aviso", JOptionPane.WARNING_MESSAGE);
+			return true;
+		}
+		return false;
+	}
+
+	private boolean senhaEstaVazio(String senha) {
+		if (senha.equals("")) {
+			JOptionPane.showMessageDialog(null, "Insira a senha do usuario", "Aviso", JOptionPane.WARNING_MESSAGE);
+			return true;
+		}
+		return false;
 	}
 }
