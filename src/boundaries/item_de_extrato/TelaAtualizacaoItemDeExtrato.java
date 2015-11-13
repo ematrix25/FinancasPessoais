@@ -39,7 +39,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new TelaAtualizacaoItemDeExtrato("Test");
+					new TelaAtualizacaoItemDeExtrato("Test", "Test");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,7 +50,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaAtualizacaoItemDeExtrato(Object transacao) {
+	public TelaAtualizacaoItemDeExtrato(String dadosConta, String tituloItemDeExtrato) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -85,7 +85,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		panel.add(txtTitulo);
 		txtTitulo.setColumns(10);
 		//Buscar os dados pelo titulo da transacao
-		txtTitulo.setText(transacao.toString());
+		txtTitulo.setText(tituloItemDeExtrato.toString());
 		
 		JLabel lblOcorrencia = new JLabel("x");
 		lblOcorrencia.setHorizontalAlignment(SwingConstants.CENTER);

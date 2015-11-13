@@ -113,7 +113,7 @@ public class TelaLogin extends JFrame {
 
 				Usuario usuario = new Usuario(nome, senha);
 				if (usuarioCon.autenticar(usuario)) {
-					new TelaExtrato();
+					new TelaExtrato(usuario.getNome());
 					dispose();
 				} else
 					JOptionPane.showMessageDialog(null, "A autenticação falhou! Usuário ou senha errados");

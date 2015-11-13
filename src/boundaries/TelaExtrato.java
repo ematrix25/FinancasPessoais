@@ -41,7 +41,7 @@ public class TelaExtrato extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new TelaExtrato();
+					new TelaExtrato("generico");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -52,7 +52,7 @@ public class TelaExtrato extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaExtrato() {
+	public TelaExtrato(final String nomeUsuario) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,7 +104,7 @@ public class TelaExtrato extends JFrame {
 		JMenuItem mntmCadastrarConta = new JMenuItem("Cadastrar");
 		mntmCadastrarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new TelaCadastroConta();
+				new TelaCadastroConta(nomeUsuario);
 			}
 		});
 		mntmCadastrarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -113,7 +113,7 @@ public class TelaExtrato extends JFrame {
 		JMenuItem mntmAtualizarConta = new JMenuItem("Atualizar");
 		mntmAtualizarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new TelaAtualizacaoConta(cbConta.getSelectedItem().toString());
+				new TelaAtualizacaoConta(nomeUsuario, cbConta.getSelectedItem().toString());
 			}
 		});
 		mntmAtualizarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -174,7 +174,7 @@ public class TelaExtrato extends JFrame {
 		lstItensDeExtrato.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				new TelaAtualizacaoItemDeExtrato(lstItensDeExtrato.getSelectedValue());
+				new TelaAtualizacaoItemDeExtrato(cbConta.getSelectedItem().toString(), lstItensDeExtrato.getSelectedValue().toString());
 			}
 		});
 		lstItensDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -184,7 +184,7 @@ public class TelaExtrato extends JFrame {
 		JButton btnCriarItemDeExtrato = new JButton("Criar Item de Extrato");
 		btnCriarItemDeExtrato.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new TelaCadastroItemDeExtrato();
+				new TelaCadastroItemDeExtrato(cbConta.getSelectedItem().toString());
 			}
 		});
 		btnCriarItemDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));

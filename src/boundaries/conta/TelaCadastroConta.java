@@ -31,7 +31,7 @@ public class TelaCadastroConta extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new TelaCadastroConta();
+					new TelaCadastroConta("generico");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -42,7 +42,7 @@ public class TelaCadastroConta extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaCadastroConta() {
+	public TelaCadastroConta(String nomeUsuario) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -39,7 +39,7 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new TelaCadastroItemDeExtrato();
+					new TelaCadastroItemDeExtrato("Teste");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,7 +50,7 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaCadastroItemDeExtrato() {
+	public TelaCadastroItemDeExtrato(String dadosConta) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

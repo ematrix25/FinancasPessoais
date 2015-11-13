@@ -30,7 +30,7 @@ public class TelaAtualizacaoConta extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new TelaAtualizacaoConta("Test");
+					new TelaAtualizacaoConta("generico", "Test");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -41,7 +41,7 @@ public class TelaAtualizacaoConta extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaAtualizacaoConta(Object transacao) {
+	public TelaAtualizacaoConta(String nomeUsuario, String dadosConta) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
