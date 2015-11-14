@@ -9,11 +9,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
+import controllers.ContaCon;
+import entities.Conta;
 
 //Ambiente de cadastro da conta
 public class TelaCadastroConta extends JFrame {
@@ -23,6 +27,7 @@ public class TelaCadastroConta extends JFrame {
 	private JTextField txtBanco;	
 	private JTextField txtAgencia;
 	private JTextField txtNumero;
+	private ContaCon contaCon;
 
 	/**
 	 * Launch the application.
@@ -99,9 +104,34 @@ public class TelaCadastroConta extends JFrame {
 		txtNumero.setBounds(70, 80, 140, 20);
 		panel.add(txtNumero);
 		
+		contaCon = new ContaCon(nomeUsuario);
+		
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String banco = txtBanco.getText();
+				if (banco.equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o nome do banco", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				} 
+				
+				String agencia = txtAgencia.getText();
+				if (agencia.equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o nome da agencia", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				} 
+				
+				String numero = txtNumero.getText();
+				if (numero.equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o numero da conta", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				} 
+				
+				Conta conta = new Conta(banco, agencia, numero);
+				if (contaCon.cadastrar(conta))
+					JOptionPane.showMessageDialog(null, "A conta foi registrada com sucesso");
+				else
+					JOptionPane.showMessageDialog(null, "A conta não foi criada! Essa conta já existe");
 				dispose();
 			}
 		});
