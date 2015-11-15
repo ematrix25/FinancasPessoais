@@ -1,7 +1,6 @@
 package boundaries.item_de_extrato;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,24 +32,9 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 	private JTextField txtObservacoes;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new TelaAtualizacaoItemDeExtrato("Test", "Test");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public TelaAtualizacaoItemDeExtrato(String dadosConta, String tituloItemDeExtrato) {
+	public TelaAtualizacaoItemDeExtrato(int idConta, String tituloItemDeExtrato) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -61,10 +61,13 @@ ALTER TABLE ONLY "ItemDeExtrato"
     ADD CONSTRAINT fk_categoria FOREIGN KEY ("idCategoria") REFERENCES "Categoria"(nome) ON UPDATE CASCADE ON DELETE SET NULL;	
 
 ALTER TABLE ONLY "Extrato"
-    ADD CONSTRAINT fk_conta FOREIGN KEY ("idConta") REFERENCES "Conta"("idConta") ON DELETE CASCADE;
+    ADD CONSTRAINT fk_conta FOREIGN KEY ("idConta") REFERENCES "Conta"("idConta") ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY "ItemDeExtrato"
     ADD CONSTRAINT fk_extrato FOREIGN KEY ("idExtrato") REFERENCES "Extrato"("idExtrato") ON DELETE CASCADE;
 	
 ALTER TABLE ONLY "Conta"
     ADD CONSTRAINT fk_usuario FOREIGN KEY ("idUsuario") REFERENCES "Usuario"(nome);
+    
+ALTER TABLE ONLY "Categoria"
+    ADD CONSTRAINT fk_usuario FOREIGN KEY ("idUsuario") REFERENCES "Usuario"(nome);    

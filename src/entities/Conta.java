@@ -6,19 +6,21 @@ public class Conta {
 	private String agencia;
 	private String numero;
 	
+	public Conta(int id, String banco, String agencia, String numero) {
+		this(banco, agencia, numero);
+		this.id = id;
+	}
+	
 	public Conta(String banco, String agencia, String numero) {
 		this.banco = banco;
 		this.agencia = agencia;
 		this.numero = numero;
 		setId();
-	}	
-
-	public Conta(int id, String banco, String agencia, String numero) {
-		this(banco, agencia, numero);
-		this.id = id;
 	}
-
-
+	
+	public Conta() {
+		this("", "", "");
+	}
 
 	/**
 	 * @return the banco
@@ -71,6 +73,11 @@ public class Conta {
 	
 	private void setId() {
 		id = agencia.hashCode() + banco.hashCode() + numero.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Conta [" + id + ", " + banco + ", " + agencia + ", " + numero + "]";
 	}
 
 }

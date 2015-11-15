@@ -17,7 +17,7 @@ public class UsuarioDAO {
 	private PreparedStatement declaracao;
 	private ResultSet resultado;
 
-	private boolean temUsuario(String nome) {
+	private boolean existeUsuario(String nome) {
 		String sql = "Select 1 from \"Usuario\" where nome = ?";
 		boolean existeUsuario = false;
 		try {
@@ -36,8 +36,8 @@ public class UsuarioDAO {
 		return existeUsuario;
 	}
 
-	public boolean addUsuario(Usuario usuario) {
-		if (temUsuario(usuario.getNome()))
+	public boolean adicionarUsuario(Usuario usuario) {
+		if (existeUsuario(usuario.getNome()))
 			return false;
 		String sql = "Insert into \"Usuario\" (nome, senha, email) values (?, ?, ?)";
 		try {
@@ -55,7 +55,7 @@ public class UsuarioDAO {
 		return true;
 	}
 
-	public Usuario getUsuario(String nome) {
+	public Usuario buscarUsuario(String nome) {
 		String sql = "Select * from \"Usuario\" where nome = ?";
 		Usuario usuario = null;
 		try {
@@ -76,7 +76,9 @@ public class UsuarioDAO {
 		return usuario;
 	}
 
-	public boolean setUsuario(Usuario usuario) {
+	public boolean atualizarUsuario(Usuario usuario) {
+		if (!existeUsuario(usuario.getNome()))
+			return false;
 		String sql = "Update \"Usuario\" set senha = ? where nome = ?";		
 		try {
 			conexao = ConexaoSQL.getConnection();
