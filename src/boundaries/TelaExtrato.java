@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -70,77 +71,95 @@ public class TelaExtrato extends JFrame {
 
 		contaCon = new ContaCon(nomeUsuario);
 		final List<Conta> contas = contaCon.getContas();
-		
-		final List<String> listaNumConta = new ArrayList<String>();		
+
+		DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
+		Conta contaAux;
 		for (int i = 0; i < contas.size(); i++) {
-			Conta contaAux = contas.get(i);
+			contaAux = contas.get(i);
 			if (contas.get(0).getAgencia().equals(contaAux.getAgencia()))
-				listaNumConta.add(contaAux.getNumero());
+				if (modelo.getIndexOf(contaAux.getNumero()) == -1)
+					modelo.addElement(contaAux.getNumero());
 		}
 
-		final JComboBox<Object> cbNumConta = new JComboBox<Object>(listaNumConta.toArray());
+		final JComboBox<Object> cbNumConta = new JComboBox<Object>(modelo);
 		cbNumConta.setSelectedIndex(0);
 		cbNumConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbNumConta.setBounds(260, 10, 70, 20);
 		panel.add(cbNumConta);
-		
+
 		JLabel lblAgencia = new JLabel("Agencia");
 		lblAgencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblAgencia.setBounds(99, 10, 50, 20);
 		panel.add(lblAgencia);
 
-		final List<String> listaAgencias = new ArrayList<String>();
+		modelo = new DefaultComboBoxModel<Object>();
 		for (int i = 0; i < contas.size(); i++) {
-			Conta contaAux = contas.get(i);
+			contaAux = contas.get(i);
 			if (contas.get(0).getBanco().equals(contaAux.getBanco()))
-				listaAgencias.add(contaAux.getAgencia());
+				if (modelo.getIndexOf(contaAux.getAgencia()) == -1)
+					modelo.addElement(contaAux.getAgencia());
 		}
-		
-		final JComboBox<Object> cbAgencia = new JComboBox<Object>(listaAgencias.toArray());
+
+		final JComboBox<Object> cbAgencia = new JComboBox<Object>(modelo);
 		cbAgencia.setSelectedIndex(0);
 		cbAgencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				listaNumConta.clear();
+				DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
+				cbNumConta.removeAllItems();
+				modelo.removeAllElements();
+				if (cbAgencia.getSelectedIndex() == -1)
+					return;
+				Conta contaAux;
 				for (int i = 0; i < contas.size(); i++) {
-					Conta contaAux = contas.get(i);
-					if (cbAgencia.getSelectedItem().equals(contaAux.getAgencia()))
-						listaNumConta.add(contaAux.getNumero());
+					contaAux = contas.get(i);
+					if (cbAgencia.getSelectedItem().toString().equals(contaAux.getAgencia()))
+						if (modelo.getIndexOf(contaAux.getNumero()) == -1)
+							modelo.addElement(contaAux.getNumero());
 				}
+				cbNumConta.setModel(modelo);
 			}
 		});
 		cbAgencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbAgencia.setBounds(150, 10, 60, 20);
-		panel.add(cbAgencia);		
-		
-		List<String> listaBancos = new ArrayList<String>();
+		panel.add(cbAgencia);
+
+		modelo = new DefaultComboBoxModel<Object>();
 		for (int i = 0; i < contas.size(); i++) {
-			Conta contaAux = contas.get(i);
-			listaBancos.add(contaAux.getBanco());
+			contaAux = contas.get(i);
+			if (modelo.getIndexOf(contaAux.getBanco()) == -1)
+				modelo.addElement(contaAux.getBanco());
 		}
 
-		final JComboBox<Object> cbBanco = new JComboBox<Object>(listaBancos.toArray());
+		final JComboBox<Object> cbBanco = new JComboBox<Object>(modelo);
 		cbBanco.setSelectedIndex(0);
 		cbBanco.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				listaAgencias.clear();
-				listaNumConta.clear();
+				DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
+				DefaultComboBoxModel<Object> modeloAux = new DefaultComboBoxModel<Object>();
+				cbAgencia.removeAllItems();
+				cbNumConta.removeAllItems();
+				String agenciaInicial = "";
+				Conta contaAux;
 				for (int i = 0; i < contas.size(); i++) {
-					Conta contaAux = contas.get(i);
-					String agenciaInicial = "";
-					if (cbBanco.getSelectedItem().equals(contaAux.getBanco())) {
-						if(listaAgencias.isEmpty()) {
+					contaAux = contas.get(i);
+					if (cbBanco.getSelectedItem().toString().equals(contaAux.getBanco())) {
+						if (modelo.getSize() == 0) {
 							agenciaInicial = contaAux.getAgencia();
 						}
-						listaAgencias.add(contaAux.getAgencia());
-						if(agenciaInicial.equals(contaAux.getAgencia()))
-							listaNumConta.add(contaAux.getNumero());
+						if (modelo.getIndexOf(contaAux.getAgencia()) == -1)
+							modelo.addElement(contaAux.getAgencia());
+						if (agenciaInicial.equals(contaAux.getAgencia()))
+							if (modeloAux.getIndexOf(contaAux.getNumero()) == -1)
+								modeloAux.addElement(contaAux.getNumero());
 					}
 				}
+				cbNumConta.setModel(modeloAux);
+				cbAgencia.setModel(modelo);
 			}
 		});
 		cbBanco.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbBanco.setBounds(20, 10, 70, 20);
-		panel.add(cbBanco);		
+		panel.add(cbBanco);
 
 		JMenuBar mnbConta = new JMenuBar();
 		mnbConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -150,13 +169,13 @@ public class TelaExtrato extends JFrame {
 		JMenu mnConta = new JMenu("Op\u00E7\u00F5es Conta");
 		mnConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		mnbConta.add(mnConta);
-		
+
 		final TelaExtrato tela = this;
-		
+
 		JMenuItem mntmCadastrarConta = new JMenuItem("Cadastrar");
 		mntmCadastrarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new TelaCadastroConta(tela, nomeUsuario);					
+				new TelaCadastroConta(tela, nomeUsuario);
 			}
 		});
 		mntmCadastrarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
