@@ -73,6 +73,9 @@ public class ContaDAO {
 			while (resultado.next())
 				contas.add(new Conta(resultado.getString("banco"), resultado.getString("agencia"),
 						resultado.getString("numero")));
+			resultado.close();
+			declaracao.close();
+			conexao.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

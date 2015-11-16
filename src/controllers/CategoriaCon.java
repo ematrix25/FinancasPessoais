@@ -9,20 +9,20 @@ import entities.Categoria;
 public class CategoriaCon {
 	private CategoriaDAO categoriaDAO;
 	
-	public CategoriaCon() {
-		categoriaDAO = new CategoriaDAO();
+	public CategoriaCon(String nomeUsuario) {
+		categoriaDAO = new CategoriaDAO(nomeUsuario);
 	}
 	
 	public boolean cadastrar(Categoria categoria) {
-		return categoriaDAO.addCategoria(categoria);
+		return categoriaDAO.adicionarCategoria(categoria);
 	}
 	
 	public boolean atualizar(Categoria categoria) {
-		return categoriaDAO.setCategoria(categoria);
+		return categoriaDAO.atualizarCategoria(categoria);
 	}
 	
 	public boolean remover(String nome) {
-		return true;
+		return categoriaDAO.deletarCategoria(nome);
 	}
 		
 	

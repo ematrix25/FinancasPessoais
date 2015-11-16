@@ -6,7 +6,8 @@ CREATE TYPE tipoitemdeextrato AS ENUM (
 );
 
 CREATE TABLE "Categoria" (
-    nome character varying(50) NOT NULL
+    nome character varying(50) NOT NULL,
+    "idUsuario" character varying(50) NOT NULL
 );
 
 CREATE TABLE "Conta" (
