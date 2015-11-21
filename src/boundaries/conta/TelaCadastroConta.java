@@ -28,6 +28,7 @@ public class TelaCadastroConta extends JFrame {
 	private JTextField txtAgencia;
 	private JTextField txtNumero;
 	private ContaCon contaCon;
+	private JTextField txtSaldo;
 
 	/**
 	 * Create the frame.
@@ -36,7 +37,7 @@ public class TelaCadastroConta extends JFrame {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 270, 240);
+		setBounds(100, 100, 270, 270);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -52,7 +53,7 @@ public class TelaCadastroConta extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBounds(17, 50, 230, 140);
+		panel.setBounds(17, 50, 230, 170);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -113,8 +114,15 @@ public class TelaCadastroConta extends JFrame {
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				
+				float saldo = Float.parseFloat(txtSaldo.getText());
+				if (txtSaldo.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o saldo da conta", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 
-				Conta conta = new Conta(banco, agencia, numero);
+				Conta conta = new Conta(banco, agencia, numero, saldo);
 				if (contaCon.cadastrar(conta)) {
 					JOptionPane.showMessageDialog(null, "A conta foi registrada com sucesso");
 					tela.dispose();
@@ -124,8 +132,19 @@ public class TelaCadastroConta extends JFrame {
 				dispose();
 			}
 		});
+		
+		JLabel lblSaldo = new JLabel("Saldo");
+		lblSaldo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblSaldo.setBounds(20, 110, 40, 20);
+		panel.add(lblSaldo);
+		
+		txtSaldo = new JTextField();
+		txtSaldo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtSaldo.setColumns(10);
+		txtSaldo.setBounds(70, 110, 140, 20);
+		panel.add(txtSaldo);
 		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnSalvar.setBounds(75, 110, 80, 20);
+		btnSalvar.setBounds(75, 140, 80, 20);
 		panel.add(btnSalvar);
 	}
 }

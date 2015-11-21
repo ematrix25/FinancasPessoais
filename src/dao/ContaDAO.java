@@ -21,7 +21,7 @@ public class ContaDAO {
 		this.nomeUsuario = nomeUsuario;
 	}
 
-	private boolean existeConta(int id) {
+	private boolean existe(int id) {
 		String sql = "Select 1 from \"Conta\" where \"idConta\" = ? and \"idUsuario\" = ?";
 		boolean existeConta = false;
 		try {
@@ -41,18 +41,19 @@ public class ContaDAO {
 		return existeConta;
 	}
 
-	public boolean adicionarConta(Conta conta) {
-		if (existeConta(conta.getId()))
+	public boolean cadastrar(Conta conta) {
+		if (existe(conta.getId()))
 			return false;
-		String sql = "Insert into \"Conta\" (banco, agencia, numero, \"idConta\", \"idUsuario\") values (?, ?, ?, ?, ?)";
+		String sql = "Insert into \"Conta\" (banco, agencia, numero, saldo, \"idConta\", \"idUsuario\") values (?, ?, ?, ?, ?, ?)";
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
 			declaracao.setString(1, conta.getBanco());
 			declaracao.setString(2, conta.getAgencia());
 			declaracao.setString(3, conta.getNumero());
-			declaracao.setInt(4, conta.getId());
-			declaracao.setString(5, nomeUsuario);
+			declaracao.setFloat(4, conta.getSaldo());
+			declaracao.setInt(5, conta.getId());
+			declaracao.setString(6, nomeUsuario);
 			declaracao.executeUpdate();
 			declaracao.close();
 			conexao.close();
@@ -62,7 +63,7 @@ public class ContaDAO {
 		return true;
 	}
 	
-	public List<Conta> buscarContas() {
+	public List<Conta> buscar() {
 		String sql = "Select * from \"Conta\" where \"idUsuario\" = ?";
 		List<Conta> contas = new ArrayList<Conta>();
 		try {
@@ -72,7 +73,7 @@ public class ContaDAO {
 			resultado = declaracao.executeQuery();
 			while (resultado.next())
 				contas.add(new Conta(resultado.getString("banco"), resultado.getString("agencia"),
-						resultado.getString("numero")));
+						resultado.getString("numero"), resultado.getFloat("saldo")));
 			resultado.close();
 			declaracao.close();
 			conexao.close();
@@ -82,8 +83,8 @@ public class ContaDAO {
 		return contas;
 	}
 
-	public boolean atualizarConta(int idAntigo, Conta conta) {
-		if (!existeConta(idAntigo))
+	public boolean atualizar(int idAntigo, Conta conta) {
+		if (!existe(idAntigo))
 			return false;
 		String sql = "Update \"Conta\" set \"idConta\" = ?, banco = ?, agencia = ?, numero = ?  where \"idConta\" = ? and \"idUsuario\" = ?";
 		try {
@@ -104,8 +105,27 @@ public class ContaDAO {
 		return true;
 	}
 	
-	public boolean deletarConta(int id) {
-		if (!existeConta(id))
+	public boolean atualizarSaldo(Conta conta) {
+		if (!existe(conta.getId()))
+			return false;
+		String sql = "Update \"Conta\" set saldo = ?  where \"idConta\" = ? and \"idUsuario\" = ?";
+		try {
+			conexao = ConexaoSQL.getConnection();
+			declaracao = conexao.prepareStatement(sql);
+			declaracao.setFloat(1, conta.getSaldo());
+			declaracao.setInt(2, conta.getId());
+			declaracao.setString(3, nomeUsuario);
+			declaracao.executeUpdate();
+			declaracao.close();
+			conexao.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	public boolean remover(int id) {
+		if (!existe(id))
 			return false;
 		String sql = "Delete from \"Conta\" where \"idConta\" = ? and \"idUsuario\" = ?";
 		try {

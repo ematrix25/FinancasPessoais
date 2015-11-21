@@ -13,16 +13,19 @@ CREATE TABLE "Categoria" (
 CREATE TABLE "Conta" (
     banco character varying(50) NOT NULL,
     agencia character varying(50) NOT NULL,
-    numero character varying(50) NOT NULL,
+    numero character varying(50) NOT NULL,    
     "idConta" numeric(30,0) NOT NULL,
-    "idUsuario" character varying(50) NOT NULL
+    "idUsuario" character varying(50) NOT NULL,
+    saldo real NOT NULL
 );
 
 CREATE TABLE "Extrato" (
     "idExtrato" numeric(30,0) NOT NULL,
     mes smallint NOT NULL,
     ano smallint NOT NULL,
-    "idConta" numeric(30,0) NOT NULL
+    "idConta" numeric(30,0) NOT NULL,
+    "valorInicial" real NOT NULL,
+    "valorFinal" real NOT NULL
 );
 
 CREATE TABLE "ItemDeExtrato" (

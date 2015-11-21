@@ -5,21 +5,23 @@ public class Conta {
 	private String banco;
 	private String agencia;
 	private String numero;
+	private float saldo;
 	
-	public Conta(int id, String banco, String agencia, String numero) {
-		this(banco, agencia, numero);
+	public Conta(int id, String banco, String agencia, String numero, float saldo) {
+		this(banco, agencia, numero, saldo);
 		this.id = id;
 	}
 	
-	public Conta(String banco, String agencia, String numero) {
+	public Conta(String banco, String agencia, String numero, float saldo) {
 		this.banco = banco;
 		this.agencia = agencia;
 		this.numero = numero;
+		this.saldo = saldo;
 		setId();
 	}
 	
 	public Conta() {
-		this("", "", "");
+		this("", "", "", 0);
 	}
 
 	/**
@@ -65,6 +67,20 @@ public class Conta {
 	public void setNumero(String numero) {
 		this.numero = numero;
 		setId();
+	}
+	
+	/**
+	 * @return the saldo
+	 */
+	public float getSaldo() {
+		return saldo;
+	}
+
+	/**
+	 * @param banco the banco to set
+	 */
+	public void setSaldo(float saldo) {
+		this.saldo = saldo;
 	}
 	
 	public int getId() {

@@ -70,7 +70,7 @@ public class TelaExtrato extends JFrame {
 		panel.add(lblConta);
 
 		contaCon = new ContaCon(nomeUsuario);
-		final List<Conta> contas = contaCon.getContas();
+		final List<Conta> contas = contaCon.buscar();
 
 		DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
 		Conta contaAux;
@@ -82,7 +82,6 @@ public class TelaExtrato extends JFrame {
 		}
 
 		final JComboBox<Object> cbNumConta = new JComboBox<Object>(modelo);
-		cbNumConta.setSelectedIndex(0);
 		cbNumConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbNumConta.setBounds(260, 10, 70, 20);
 		panel.add(cbNumConta);
@@ -101,7 +100,6 @@ public class TelaExtrato extends JFrame {
 		}
 
 		final JComboBox<Object> cbAgencia = new JComboBox<Object>(modelo);
-		cbAgencia.setSelectedIndex(0);
 		cbAgencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
@@ -131,7 +129,6 @@ public class TelaExtrato extends JFrame {
 		}
 
 		final JComboBox<Object> cbBanco = new JComboBox<Object>(modelo);
-		cbBanco.setSelectedIndex(0);
 		cbBanco.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
@@ -185,7 +182,7 @@ public class TelaExtrato extends JFrame {
 		mntmAtualizarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(),
-						cbAgencia.getSelectedItem().toString(), cbNumConta.getSelectedItem().toString());
+						cbAgencia.getSelectedItem().toString(), cbNumConta.getSelectedItem().toString(), 0);
 				new TelaAtualizacaoConta(tela, nomeUsuario, contaAux);
 			}
 		});
@@ -247,7 +244,7 @@ public class TelaExtrato extends JFrame {
 		lstItensDeExtrato.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(),
-						cbAgencia.getSelectedItem().toString(), cbNumConta.getSelectedItem().toString());
+						cbAgencia.getSelectedItem().toString(), cbNumConta.getSelectedItem().toString(), 0);
 				new TelaAtualizacaoItemDeExtrato(contaAux.getId(), lstItensDeExtrato.getSelectedValue().toString());
 			}
 		});
@@ -259,7 +256,7 @@ public class TelaExtrato extends JFrame {
 		btnCriarItemDeExtrato.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(),
-						cbAgencia.getSelectedItem().toString(), cbNumConta.getSelectedItem().toString());
+						cbAgencia.getSelectedItem().toString(), cbNumConta.getSelectedItem().toString(), 0);
 				new TelaCadastroItemDeExtrato(contaAux.getId());
 			}
 		});

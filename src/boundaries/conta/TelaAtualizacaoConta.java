@@ -27,6 +27,7 @@ public class TelaAtualizacaoConta extends JFrame {
 	private JTextField txtBanco;
 	private JTextField txtAgencia;
 	private JTextField txtNumero;
+	private JTextField txtSaldo;
 	private ContaCon contaCon;
 
 	/**
@@ -36,7 +37,7 @@ public class TelaAtualizacaoConta extends JFrame {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 270, 240);
+		setBounds(100, 100, 270, 270);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -52,7 +53,7 @@ public class TelaAtualizacaoConta extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBounds(17, 50, 230, 140);
+		panel.setBounds(17, 50, 230, 170);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -84,11 +85,20 @@ public class TelaAtualizacaoConta extends JFrame {
 		panel.add(lblNumero);
 
 		txtNumero = new JTextField();
-		txtNumero = new JTextField();
 		txtNumero.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtNumero.setBounds(70, 80, 140, 20);
 		txtNumero.setText(conta.getNumero());
 		panel.add(txtNumero);
+				
+		JLabel lblSaldo = new JLabel("Saldo");
+		lblSaldo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblSaldo.setBounds(20, 110, 40, 20);
+		panel.add(lblSaldo);
+		
+		txtSaldo = new JTextField();
+		txtSaldo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		txtSaldo.setColumns(10);
+		txtSaldo.setBounds(70, 110, 140, 20);
 
 		contaCon = new ContaCon(nomeUsuario);
 
@@ -96,7 +106,7 @@ public class TelaAtualizacaoConta extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (contaCon.atualizar(conta.getId(),
-						new Conta(txtBanco.getText(), txtAgencia.getText(), txtNumero.getText()))) {
+						new Conta(txtBanco.getText(), txtAgencia.getText(), txtNumero.getText(), Float.parseFloat(txtSaldo.getText())))) {
 					JOptionPane.showMessageDialog(null, "A conta foi atualizada com sucesso");
 					tela.dispose();
 					new TelaExtrato(nomeUsuario);
@@ -105,8 +115,9 @@ public class TelaAtualizacaoConta extends JFrame {
 				dispose();
 			}
 		});
+		panel.add(txtSaldo);
 		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnSalvar.setBounds(20, 110, 80, 20);
+		btnSalvar.setBounds(20, 140, 80, 20);
 		panel.add(btnSalvar);
 
 		JButton btnApagar = new JButton("Apagar");
@@ -122,7 +133,7 @@ public class TelaAtualizacaoConta extends JFrame {
 			}
 		});
 		btnApagar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnApagar.setBounds(130, 110, 80, 20);
+		btnApagar.setBounds(130, 140, 80, 20);
 		panel.add(btnApagar);
 	}
 }

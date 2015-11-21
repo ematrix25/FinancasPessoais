@@ -14,16 +14,14 @@ public class CategoriaCon {
 	}
 	
 	public boolean cadastrar(Categoria categoria) {
-		return categoriaDAO.adicionarCategoria(categoria);
+		return categoriaDAO.cadastrar(categoria);
 	}
 	
 	public boolean atualizar(Categoria categoria) {
-		return categoriaDAO.atualizarCategoria(categoria);
+		return categoriaDAO.atualizar(categoria);
 	}
 	
 	public boolean remover(String nome) {
-		return categoriaDAO.deletarCategoria(nome);
-	}
-		
-	
+		return categoriaDAO.remover(nome);
+	}	
 }

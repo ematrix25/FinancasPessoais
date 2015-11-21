@@ -27,11 +27,11 @@ public class UsuarioCon {
 	public boolean cadastrar(Usuario usuario) {
 		String senhaCripto = cripto.criptografar(usuario.getSenha());
 		usuario.setSenha(senhaCripto);
-		return usuarioDAO.adicionarUsuario(usuario);
+		return usuarioDAO.cadastrar(usuario);
 	}
 
 	public boolean autenticar(Usuario usuario) {
-		String senha = usuarioDAO.buscarUsuario(usuario.getNome()).getSenha();
+		String senha = usuarioDAO.buscar(usuario.getNome()).getSenha();
 		return senha.equals(cripto.criptografar(usuario.getSenha()));
 	}
 
@@ -42,7 +42,7 @@ public class UsuarioCon {
 			senha = cripto.criptografar(senha);
 			usuario.setSenha(senha);
 		}
-		return usuarioDAO.atualizarUsuario(usuario);
+		return usuarioDAO.atualizar(usuario);
 	}
 
 	private String gerarCodigo() {
@@ -59,7 +59,7 @@ public class UsuarioCon {
 	}
 
 	public boolean enviarEmail(String nome) {
-		String email = usuarioDAO.buscarUsuario(nome).getEmail();
+		String email = usuarioDAO.buscar(nome).getEmail();
 		if(email.equals(""))
 			return false;
 		codigo = gerarCodigo();

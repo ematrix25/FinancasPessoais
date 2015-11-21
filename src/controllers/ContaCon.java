@@ -12,20 +12,20 @@ public class ContaCon {
 	public ContaCon(String nomeUsuario) {
 		contaDAO = new ContaDAO(nomeUsuario);
 	}
-	
-	public List<Conta> getContas() {
-		return contaDAO.buscarContas();
-	}
 
 	public boolean cadastrar(Conta conta) {
-		return contaDAO.adicionarConta(conta);
+		return contaDAO.cadastrar(conta);
+	}
+	
+	public List<Conta> buscar() {
+		return contaDAO.buscar();
 	}
 	
 	public boolean atualizar(int idAntigo, Conta conta) {
-		return contaDAO.atualizarConta(idAntigo, conta);
+		return contaDAO.atualizar(idAntigo, conta);
 	}
 	
 	public boolean remover(int id) {
-		return contaDAO.deletarConta(id);
+		return contaDAO.remover(id);
 	}
 }
