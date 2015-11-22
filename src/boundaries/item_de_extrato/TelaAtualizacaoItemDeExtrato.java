@@ -18,6 +18,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import controllers.CategoriaCon;
+import entities.Categoria;
+
 //Ambiente de atualização do item do extrato
 public class TelaAtualizacaoItemDeExtrato extends JFrame {
 
@@ -30,11 +33,12 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 	private JTextField txtMes;
 	private JTextField txtAno;
 	private JTextField txtObservacoes;
+	private CategoriaCon categoriaCon;
 
 	/**
 	 * Create the frame.
 	 */
-	public TelaAtualizacaoItemDeExtrato(int idConta, String tituloItemDeExtrato) {
+	public TelaAtualizacaoItemDeExtrato(String nomeUsuario, int idConta, String tituloItemDeExtrato) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -44,145 +48,152 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setVisible(true);
-		
+
 		JLabel lblAtualizarItem = new JLabel("Atualizar Item de Extrato");
 		lblAtualizarItem.setBounds(17, 10, 280, 20);
 		lblAtualizarItem.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAtualizarItem.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		contentPane.add(lblAtualizarItem);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(Color.LIGHT_GRAY);
 		panel.setBounds(17, 50, 280, 200);
 		contentPane.add(panel);
 		panel.setLayout(null);
-		
+
 		JLabel lblTitulo = new JLabel("T\u00EDtulo");
 		lblTitulo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblTitulo.setBounds(20, 20, 40, 20);
 		panel.add(lblTitulo);
-		
+
 		txtTitulo = new JTextField();
 		txtTitulo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtTitulo.setBounds(70, 20, 190, 20);
 		panel.add(txtTitulo);
 		txtTitulo.setColumns(10);
-		//Buscar os dados pelo titulo da transacao
+		// Buscar os dados pelo titulo da transacao
 		txtTitulo.setText(tituloItemDeExtrato.toString());
-		
+
 		JLabel lblOcorrencia = new JLabel("x");
 		lblOcorrencia.setHorizontalAlignment(SwingConstants.CENTER);
 		lblOcorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblOcorrencia.setBounds(170, 50, 20, 20);
 		panel.add(lblOcorrencia);
-		
+
 		txtOcorrencia = new JTextField();
 		txtOcorrencia.setText("Vezes");
 		txtOcorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtOcorrencia.setBounds(190, 50, 70, 20);
 		panel.add(txtOcorrencia);
 		txtOcorrencia.setColumns(10);
-		
+
 		JLabel lblValor = new JLabel("Valor");
 		lblValor.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblValor.setBounds(20, 50, 40, 20);
 		panel.add(lblValor);
-		
+
 		txtValor = new JTextField();
 		txtValor.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtValor.setBounds(70, 50, 100, 20);
 		panel.add(txtValor);
 		txtValor.setColumns(10);
-		
+
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblCategoria.setBounds(20, 80, 50, 20);
 		panel.add(lblCategoria);
-		
-		//Esses dados serão buscados do banco de dados
+
+		// Esses dados serão buscados do banco de dados
 		List<String> listaCategorias = new ArrayList<String>();
 		listaCategorias.add("Viagem");
 		listaCategorias.add("Salário");
-		
+
 		final JComboBox<Object> cbCategoria = new JComboBox<Object>(listaCategorias.toArray());
 		cbCategoria.setEditable(true);
 		cbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbCategoria.setBounds(70, 80, 100, 20);
 		cbCategoria.setSelectedIndex(-1);
 		panel.add(cbCategoria);
-		
+
+		categoriaCon = new CategoriaCon(nomeUsuario);
+
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(cbCategoria.getSelectedItem() == null)
+				if (cbCategoria.getSelectedItem() == null)
 					return;
 				String categoria = cbCategoria.getSelectedItem().toString();
-				Object opcoes[] = {"Atualizar", "Remover"};
+				Object opcoes[] = { "Atualizar", "Remover" };
 				int resposta = JOptionPane.showOptionDialog(null,
-						"O que deseja fazer com a categoria "+categoria+"?",
-						"Atualizar Categoria", 
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.PLAIN_MESSAGE,
-						null, opcoes, null);
-				if(resposta == JOptionPane.NO_OPTION)
-					System.out.println("Remover");
-				if(resposta == JOptionPane.YES_OPTION)
+						"O que deseja fazer com a categoria " + categoria + "?", "Atualizar Categoria",
+						JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, opcoes, null);
+				if (resposta == JOptionPane.NO_OPTION) {
+					if (categoriaCon.remover(categoria))
+						JOptionPane.showMessageDialog(null, "A categoria foi removida com sucesso");
+					else
+						JOptionPane.showMessageDialog(null, "A categoria não foi removida com sucesso");
+				}
+				if (resposta == JOptionPane.YES_OPTION) {
 					categoria = JOptionPane.showInputDialog(null,
-							"Qual será o novo nome da categoria "+categoria+"?",
-							"Atualizar Categoria", JOptionPane.PLAIN_MESSAGE);
-				System.out.println("Categoria atualizada para "+categoria);
+							"Qual será o novo nome da categoria " + categoria + "?", "Atualizar Categoria",
+							JOptionPane.PLAIN_MESSAGE);
+					if (categoriaCon.atualizar(new Categoria(categoria)))
+						JOptionPane.showMessageDialog(null, "A categoria foi atualizada com sucesso");
+					else
+						JOptionPane.showMessageDialog(null, "A categoria não foi atualizada com sucesso");
+				}
 			}
 		});
 		btnEditar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnEditar.setBounds(180, 80, 80, 20);
 		panel.add(btnEditar);
-		
+
 		JLabel lblData = new JLabel("Data");
 		lblData.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblData.setBounds(20, 110, 40, 20);
 		panel.add(lblData);
-		
+
 		txtDia = new JTextField();
 		txtDia.setText("Dia");
 		txtDia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtDia.setBounds(70, 110, 40, 20);
 		panel.add(txtDia);
 		txtDia.setColumns(10);
-		
+
 		JLabel lblBarra1 = new JLabel("/");
 		lblBarra1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBarra1.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblBarra1.setBounds(110, 110, 20, 20);
 		panel.add(lblBarra1);
-		
+
 		txtMes = new JTextField();
 		txtMes.setText("M\u00EAs");
 		txtMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtMes.setColumns(10);
 		txtMes.setBounds(130, 110, 40, 20);
 		panel.add(txtMes);
-		
+
 		JLabel lblBarra2 = new JLabel("/");
 		lblBarra2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBarra2.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblBarra2.setBounds(170, 111, 20, 20);
 		panel.add(lblBarra2);
-		
+
 		txtAno = new JTextField();
 		txtAno.setText("Ano");
 		txtAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtAno.setColumns(10);
 		txtAno.setBounds(200, 110, 60, 20);
 		panel.add(txtAno);
-		
+
 		txtObservacoes = new JTextField();
 		txtObservacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtObservacoes.setText("Observa\u00E7\u00F5es");
 		txtObservacoes.setBounds(20, 140, 240, 20);
 		panel.add(txtObservacoes);
 		txtObservacoes.setColumns(10);
-		
+
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -192,15 +203,15 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnSalvar.setBounds(100, 170, 70, 20);
 		panel.add(btnSalvar);
-		
-		final String[] tiposDeTransacao = {"Despesa","Receita"};
-		
+
+		final String[] tiposDeTransacao = { "Despesa", "Receita" };
+
 		final JComboBox<Object> cbTipo = new JComboBox<Object>(tiposDeTransacao);
 		cbTipo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbTipo.setBounds(20, 170, 70, 20);
 		cbTipo.setSelectedIndex(0);
 		panel.add(cbTipo);
-		
+
 		JButton btnApagar = new JButton("Apagar");
 		btnApagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

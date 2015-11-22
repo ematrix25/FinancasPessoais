@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import dao.CategoriaDAO;
 import entities.Categoria;
 
@@ -15,6 +17,10 @@ public class CategoriaCon {
 	
 	public boolean cadastrar(Categoria categoria) {
 		return categoriaDAO.cadastrar(categoria);
+	}
+	
+	public List<Categoria> buscar() {
+		return categoriaDAO.buscar();
 	}
 	
 	public boolean atualizar(Categoria categoria) {

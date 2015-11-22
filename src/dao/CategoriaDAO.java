@@ -61,8 +61,8 @@ public class CategoriaDAO {
 		}
 		return true;
 	}
-	
-	public List<Categoria> buscar(String nome) {
+
+	public List<Categoria> buscar() {
 		String sql = "Select * from \"Categoria\" where \"idUsuario\" = ?";
 		List<Categoria> categorias = new ArrayList<Categoria>();
 		try {
@@ -80,11 +80,11 @@ public class CategoriaDAO {
 		}
 		return categorias;
 	}
-	
+
 	public boolean atualizar(Categoria categoria) {
 		if (!existe(categoria.getNome()))
 			return false;
-		String sql = "Update \"Categoria\" set nome = ? where nome = ? and \"idUsuario\" = ?";		
+		String sql = "Update \"Categoria\" set nome = ? where nome = ? and \"idUsuario\" = ?";
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
@@ -115,5 +115,5 @@ public class CategoriaDAO {
 			e.printStackTrace();
 		}
 		return true;
-	}	
+	}
 }

@@ -245,7 +245,7 @@ public class TelaExtrato extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(),
 						cbAgencia.getSelectedItem().toString(), cbNumConta.getSelectedItem().toString(), 0);
-				new TelaAtualizacaoItemDeExtrato(contaAux.getId(), lstItensDeExtrato.getSelectedValue().toString());
+				new TelaAtualizacaoItemDeExtrato(nomeUsuario, contaAux.getId(), lstItensDeExtrato.getSelectedValue().toString());
 			}
 		});
 		lstItensDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -257,7 +257,7 @@ public class TelaExtrato extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(),
 						cbAgencia.getSelectedItem().toString(), cbNumConta.getSelectedItem().toString(), 0);
-				new TelaCadastroItemDeExtrato(contaAux.getId());
+				new TelaCadastroItemDeExtrato(nomeUsuario, contaAux.getId());
 			}
 		});
 		btnCriarItemDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));

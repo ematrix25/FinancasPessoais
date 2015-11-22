@@ -18,6 +18,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import controllers.CategoriaCon;
+import entities.Categoria;
+
 //Ambiente de cadastro do item do extrato
 public class TelaCadastroItemDeExtrato extends JFrame {
 
@@ -30,11 +33,12 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 	private JTextField txtMes;
 	private JTextField txtAno;
 	private JTextField txtObservacoes;
+	private CategoriaCon categoriaCon;
 
 	/**
 	 * Create the frame.
 	 */
-	public TelaCadastroItemDeExtrato(int idConta) {
+	public TelaCadastroItemDeExtrato(String nomeUsuario, int idConta) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -110,6 +114,8 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		cbCategoria.setSelectedIndex(-1);
 		panel.add(cbCategoria);
 		
+		categoriaCon = new CategoriaCon(nomeUsuario);
+		
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -118,18 +124,23 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 				String categoria = cbCategoria.getSelectedItem().toString();
 				Object opcoes[] = {"Atualizar", "Remover"};
 				int resposta = JOptionPane.showOptionDialog(null,
-						"O que deseja fazer com a categoria "+categoria+"?",
-						"Atualizar Categoria", 
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.PLAIN_MESSAGE,
-						null, opcoes, null);
-				if(resposta == JOptionPane.NO_OPTION)
-					System.out.println("Remover");
-				if(resposta == JOptionPane.YES_OPTION)
+						"O que deseja fazer com a categoria " + categoria + "?", "Atualizar Categoria",
+						JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, opcoes, null);
+				if (resposta == JOptionPane.NO_OPTION) {
+					if (categoriaCon.remover(categoria))
+						JOptionPane.showMessageDialog(null, "A categoria foi removida com sucesso");
+					else
+						JOptionPane.showMessageDialog(null, "A categoria não foi removida com sucesso");
+				}
+				if (resposta == JOptionPane.YES_OPTION) {
 					categoria = JOptionPane.showInputDialog(null,
-							"Qual será o novo nome da categoria "+categoria+"?",
-							"Atualizar Categoria", JOptionPane.PLAIN_MESSAGE);
-				System.out.println("Categoria atualizada para "+categoria);
+							"Qual será o novo nome da categoria " + categoria + "?", "Atualizar Categoria",
+							JOptionPane.PLAIN_MESSAGE);
+					if (categoriaCon.atualizar(new Categoria(categoria)))
+						JOptionPane.showMessageDialog(null, "A categoria foi atualizada com sucesso");
+					else
+						JOptionPane.showMessageDialog(null, "A categoria não foi atualizada com sucesso");
+				}
 			}
 		});
 		btnEditar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
