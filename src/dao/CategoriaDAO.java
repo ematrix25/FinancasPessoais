@@ -26,7 +26,7 @@ public class CategoriaDAO {
 
 	private boolean existe(String nome) {
 		String sql = "Select 1 from \"Categoria\" where nome = ? and \"idUsuario\" = ?";
-		boolean existeUsuario = false;
+		boolean existe = false;
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
@@ -34,14 +34,14 @@ public class CategoriaDAO {
 			declaracao.setString(1, nomeUsuario);
 			resultado = declaracao.executeQuery();
 			if (resultado.next())
-				existeUsuario = true;
+				existe = true;
 			resultado.close();
 			declaracao.close();
 			conexao.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return existeUsuario;
+		return existe;
 	}
 
 	public boolean cadastrar(Categoria categoria) {

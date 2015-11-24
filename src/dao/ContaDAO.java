@@ -23,7 +23,7 @@ public class ContaDAO {
 
 	private boolean existe(int id) {
 		String sql = "Select 1 from \"Conta\" where \"idConta\" = ? and \"idUsuario\" = ?";
-		boolean existeConta = false;
+		boolean existe = false;
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
@@ -31,14 +31,14 @@ public class ContaDAO {
 			declaracao.setString(2, nomeUsuario);
 			resultado = declaracao.executeQuery();
 			if (resultado.next())
-				existeConta = true;
+				existe = true;
 			resultado.close();
 			declaracao.close();
 			conexao.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return existeConta;
+		return existe;
 	}
 
 	public boolean cadastrar(Conta conta) {
@@ -62,7 +62,7 @@ public class ContaDAO {
 		}
 		return true;
 	}
-	
+
 	public List<Conta> buscar() {
 		String sql = "Select * from \"Conta\" where \"idUsuario\" = ?";
 		List<Conta> contas = new ArrayList<Conta>();
@@ -104,7 +104,7 @@ public class ContaDAO {
 		}
 		return true;
 	}
-	
+
 	public boolean atualizarSaldo(Conta conta) {
 		if (!existe(conta.getId()))
 			return false;
@@ -123,7 +123,7 @@ public class ContaDAO {
 		}
 		return true;
 	}
-	
+
 	public boolean remover(int id) {
 		if (!existe(id))
 			return false;

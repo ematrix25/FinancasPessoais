@@ -82,13 +82,16 @@ public class Conta {
 	public void setSaldo(float saldo) {
 		this.saldo = saldo;
 	}
-	
+
+	/**
+	 * @return the id
+	 */
 	public int getId() {
 		return id;
 	}
 	
 	private void setId() {
-		id = agencia.hashCode() + banco.hashCode() + numero.hashCode();
+		this.id = agencia.hashCode() + banco.hashCode() + numero.hashCode();
 	}
 
 	@Override

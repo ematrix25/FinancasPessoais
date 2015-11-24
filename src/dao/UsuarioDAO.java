@@ -19,21 +19,21 @@ public class UsuarioDAO {
 
 	private boolean existe(String nome) {
 		String sql = "Select 1 from \"Usuario\" where nome = ?";
-		boolean existeUsuario = false;
+		boolean existe = false;
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
 			declaracao.setString(1, nome);
 			resultado = declaracao.executeQuery();
 			if (resultado.next())
-				existeUsuario = true;
+				existe = true;
 			resultado.close();
 			declaracao.close();
 			conexao.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return existeUsuario;
+		return existe;
 	}
 
 	public boolean cadastrar(Usuario usuario) {

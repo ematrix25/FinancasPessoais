@@ -32,7 +32,7 @@ CREATE TABLE "ItemDeExtrato" (
     "idItemDeExtrato" numeric(30,0) NOT NULL,
     titulo character varying(50) NOT NULL,
     valor real NOT NULL,
-    observacoes character varying(50),
+    observacao character varying(50),
     dia smallint NOT NULL,
     ocorrencia smallint NOT NULL,
     "idExtrato" numeric(30,0) NOT NULL,
