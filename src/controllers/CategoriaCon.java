@@ -23,8 +23,8 @@ public class CategoriaCon {
 		return categoriaDAO.buscar();
 	}
 	
-	public boolean atualizar(Categoria categoria) {
-		return categoriaDAO.atualizar(categoria);
+	public boolean atualizar(String idAntigo, Categoria categoria) {
+		return categoriaDAO.atualizar(idAntigo, categoria);
 	}
 	
 	public boolean remover(String nome) {

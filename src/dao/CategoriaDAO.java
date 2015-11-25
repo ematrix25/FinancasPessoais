@@ -31,7 +31,7 @@ public class CategoriaDAO {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
 			declaracao.setString(1, nome);
-			declaracao.setString(1, nomeUsuario);
+			declaracao.setString(2, nomeUsuario);
 			resultado = declaracao.executeQuery();
 			if (resultado.next())
 				existe = true;
@@ -81,15 +81,16 @@ public class CategoriaDAO {
 		return categorias;
 	}
 
-	public boolean atualizar(Categoria categoria) {
-		if (!existe(categoria.getNome()))
+	public boolean atualizar(String idAntigo, Categoria categoria) {
+		if (!existe(idAntigo))
 			return false;
 		String sql = "Update \"Categoria\" set nome = ? where nome = ? and \"idUsuario\" = ?";
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
 			declaracao.setString(1, categoria.getNome());
-			declaracao.setString(2, nomeUsuario);
+			declaracao.setString(2, idAntigo);
+			declaracao.setString(3, nomeUsuario);
 			declaracao.executeUpdate();
 			declaracao.close();
 			conexao.close();

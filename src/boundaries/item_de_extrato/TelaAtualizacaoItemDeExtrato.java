@@ -135,10 +135,10 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 						JOptionPane.showMessageDialog(null, "A categoria não foi removida com sucesso");
 				}
 				if (resposta == JOptionPane.YES_OPTION) {
-					categoria = JOptionPane.showInputDialog(null,
+					String novaCategoria = JOptionPane.showInputDialog(null,
 							"Qual será o novo nome da categoria " + categoria + "?", "Atualizar Categoria",
 							JOptionPane.PLAIN_MESSAGE);
-					if (categoriaCon.atualizar(new Categoria(categoria)))
+					if (categoriaCon.atualizar(categoria, new Categoria(novaCategoria)))
 						JOptionPane.showMessageDialog(null, "A categoria foi atualizada com sucesso");
 					else
 						JOptionPane.showMessageDialog(null, "A categoria não foi atualizada com sucesso");
