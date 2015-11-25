@@ -14,11 +14,17 @@ import entities.TipoItemDeExtrato;
 public class ExtratoCon {
 	private ExtratoDAO extratoDAO;
 	private ItemDeExtratoDAO itemDeExtratoDAO;
+	private float valorExtrato;
 
 	public ExtratoCon(int idConta) {
 		extratoDAO = new ExtratoDAO(idConta);
+		valorExtrato = 0.0f;
 	}
 
+	public float getValorExtrato() {
+		return valorExtrato;
+	}
+	
 	private boolean atualizarValorFinal(Extrato extrato, ItemDeExtrato itemDeExtrato) {
 		if (itemDeExtrato.getTipo() == null)
 			return false;
@@ -26,17 +32,14 @@ public class ExtratoCon {
 			extrato.setValorFinal(extrato.getValorFinal() + itemDeExtrato.getValor());
 		if (itemDeExtrato.getTipo().equals(TipoItemDeExtrato.despesa))
 			extrato.setValorFinal(extrato.getValorFinal() - itemDeExtrato.getValor());
+		valorExtrato = extrato.getValorFinal();
 		return true;
 	}
 
 	public boolean cadastrar(Extrato extrato, ItemDeExtrato itemDeExtrato, String categoria) {
 		itemDeExtratoDAO = new ItemDeExtratoDAO(extrato.getId());
-		if (atualizarValorFinal(extrato, itemDeExtrato))
-			System.out.println("Atualizou o Valor Final");
-		else
-			System.out.println("Não atualizou o Valor Final");
 		extratoDAO.cadastrar(extrato);
-		return itemDeExtratoDAO.cadastrar(itemDeExtrato, categoria);
+		return itemDeExtratoDAO.cadastrar(itemDeExtrato, categoria) && atualizarValorFinal(extrato, itemDeExtrato);
 	}
 
 	public List<Extrato> buscar() {
