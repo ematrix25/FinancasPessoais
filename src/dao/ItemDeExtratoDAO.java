@@ -25,6 +25,13 @@ public class ItemDeExtratoDAO {
 		this.idExtrato = idExtrato;
 	}
 
+	/**
+	 * @param idExtrato the idExtrato to set
+	 */
+	public void setIdExtrato(int idExtrato) {
+		this.idExtrato = idExtrato;
+	}
+
 	private boolean existe(int id) {
 		String sql = "Select 1 from \"ItemDeExtrato\" where \"idItemDeExtrato\" = ? and \"idExtrato\" = ?";
 		boolean existe = false;
@@ -90,11 +97,11 @@ public class ItemDeExtratoDAO {
 		}
 		return itemDeExtratos;
 	}
-	
-	public boolean atualizar(int idAntigo, ItemDeExtrato itemDeExtrato) {
+
+	public boolean atualizar(int idAntigo, ItemDeExtrato itemDeExtrato, int idExtrato, String idCategoria) {
 		if (!existe(idAntigo))
 			return false;
-		String sql = "Update \"ItemDeExtrato\" set \"idItemDeExtrato\" = ?, titulo = ?, valor = ?, observacao = ?, dia = ?, ocorrencia = ?, tipo = ? where \"idItemDeExtrato\" = ? and \"idExtrato\" = ?";
+		String sql = "Update \"ItemDeExtrato\" set \"idItemDeExtrato\" = ?, titulo = ?, valor = ?, observacao = ?, dia = ?, ocorrencia = ?, tipo = ?, \"idItemDeExtrato\" = ?, \"idCategoria\" = ? where \"idItemDeExtrato\" = ? and \"idExtrato\" = ?";
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
@@ -103,10 +110,12 @@ public class ItemDeExtratoDAO {
 			declaracao.setFloat(3, itemDeExtrato.getValor());
 			declaracao.setString(4, itemDeExtrato.getObservacao());
 			declaracao.setInt(5, itemDeExtrato.getDia());
-			declaracao.setInt(5, itemDeExtrato.getOcorrencia());
-			declaracao.setObject(6, itemDeExtrato.getTipo().toString());
-			declaracao.setInt(6, idAntigo);
-			declaracao.setInt(7, idExtrato);
+			declaracao.setInt(6, itemDeExtrato.getOcorrencia());
+			declaracao.setObject(7, itemDeExtrato.getTipo().toString());
+			declaracao.setInt(8, idExtrato);
+			declaracao.setString(9, idCategoria);
+			declaracao.setInt(10, idAntigo);
+			declaracao.setInt(11, this.idExtrato);
 			declaracao.executeUpdate();
 			declaracao.close();
 			conexao.close();
@@ -115,45 +124,7 @@ public class ItemDeExtratoDAO {
 		}
 		return true;
 	}
-	
-	public boolean atualizarCategoria(int id, String idCategoria) {
-		if (!existe(id))
-			return false;
-		String sql = "Update \"ItemDeExtrato\" set \"idCategoria\" = ? where \"idItemDeExtrato\" = ? and \"idExtrato\" = ?";
-		try {
-			conexao = ConexaoSQL.getConnection();
-			declaracao = conexao.prepareStatement(sql);
-			declaracao.setString(1, idCategoria);
-			declaracao.setInt(2, id);
-			declaracao.setInt(3, idExtrato);
-			declaracao.executeUpdate();
-			declaracao.close();
-			conexao.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return true;
-	}
-	
-	public boolean atualizarExtrato(int id, int idExtrato) {
-		if (!existe(id))
-			return false;
-		String sql = "Update \"ItemDeExtrato\" set \"idExtrato\" = ? where \"idItemDeExtrato\" = ? and \"idExtrato\" = ?";
-		try {
-			conexao = ConexaoSQL.getConnection();
-			declaracao = conexao.prepareStatement(sql);
-			declaracao.setInt(1, idExtrato);
-			declaracao.setInt(2, id);
-			declaracao.setInt(3, idExtrato);
-			declaracao.executeUpdate();
-			declaracao.close();
-			conexao.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return true;
-	}
-	
+
 	public boolean remover(int id) {
 		if (!existe(id))
 			return false;
