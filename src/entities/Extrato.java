@@ -98,7 +98,10 @@ public class Extrato {
 	}
 
 	public void setId() {
-		this.id = Integer.valueOf(mes).hashCode() + Integer.valueOf(ano).hashCode();
+		final int primo = 31;
+		id = 1;
+		id = primo * id + Integer.toString(ano).hashCode();
+		id = primo * id + Integer.toString(mes).hashCode();
 	}
 
 	@Override

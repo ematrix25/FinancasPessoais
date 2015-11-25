@@ -91,12 +91,15 @@ public class Conta {
 	}
 	
 	private void setId() {
-		this.id = agencia.hashCode() + banco.hashCode() + numero.hashCode();
+		final int primo = 31;
+		id = 1;
+		id = primo * id + banco.hashCode();
+		id = primo * id + agencia.hashCode();
+		id = primo * id + numero.hashCode();
 	}
 
 	@Override
 	public String toString() {
 		return "Conta [" + id + ", " + banco + ", " + agencia + ", " + numero + "]";
 	}
-
 }
