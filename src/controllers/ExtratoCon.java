@@ -21,56 +21,69 @@ public class ExtratoCon {
 		valorExtrato = 0.0f;
 	}
 
-	public float getValorExtrato() {
-		return valorExtrato;
-	}
-	
-	private boolean atualizarValorFinal(Extrato extrato, ItemDeExtrato itemDeExtrato) {
-		if (itemDeExtrato.getTipo() == null)
-			return false;
-		if (itemDeExtrato.getTipo().equals(TipoItemDeExtrato.receita))
-			extrato.setValorFinal(extrato.getValorFinal() + itemDeExtrato.getValor());
-		if (itemDeExtrato.getTipo().equals(TipoItemDeExtrato.despesa))
-			extrato.setValorFinal(extrato.getValorFinal() - itemDeExtrato.getValor());
+	private boolean atualizarValorFinal(Extrato extrato, float valor) {
+		extrato.setValorFinal(extrato.getValorFinal() + valor);
 		valorExtrato = extrato.getValorFinal();
-		return true;
+		return extratoDAO.atualizar(extrato);
 	}
 
 	public boolean cadastrar(Extrato extrato, ItemDeExtrato itemDeExtrato, String categoria) {
 		itemDeExtratoDAO = new ItemDeExtratoDAO(extrato.getId());
 		extratoDAO.cadastrar(extrato);
-		return itemDeExtratoDAO.cadastrar(itemDeExtrato, categoria) && atualizarValorFinal(extrato, itemDeExtrato);
+		if (itemDeExtratoDAO.cadastrar(itemDeExtrato, categoria)) {
+			float valor = 0.0f;
+			if (itemDeExtrato.getTipo() == TipoItemDeExtrato.receita)
+				valor += itemDeExtrato.getValor();
+			if (itemDeExtrato.getTipo() == TipoItemDeExtrato.despesa)
+				valor -= itemDeExtrato.getValor();
+			return atualizarValorFinal(extrato, valor);
+		}
+		return false;
 	}
 
 	public List<Extrato> buscar() {
 		return extratoDAO.buscar();
 	}
 
-	public boolean atualizar(Extrato extratoAnt, Extrato extrato, int idAntItemDeExtrato, float valorAnt,
+	public boolean atualizarItemDeExtrato(int idAntExtrato, Extrato extrato, int idAntItemDeExtrato, float valorAnt,
 			ItemDeExtrato itemDeExtrato, String idCategoria) {
-		itemDeExtratoDAO.setIdExtrato(extratoAnt.getId());
-		if (extrato.getId() != extratoAnt.getId()) {
+		itemDeExtratoDAO.setIdExtrato(idAntExtrato);
+		if (extrato.getId() != idAntExtrato) {
 			extratoDAO.cadastrar(extrato);
-			if (itemDeExtrato.getValor() != valorAnt)
-				if (atualizarValorFinal(extrato, itemDeExtrato))
-					System.out.println("Atualizou o Valor Final");
-				else
-					System.out.println("Não atualizou o Valor Final");
 		}
-		if (itemDeExtrato.getValor() != valorAnt)
-			if (atualizarValorFinal(extratoAnt, itemDeExtrato))
-				System.out.println("Atualizou o Valor Final");
-			else
-				System.out.println("Não atualizou o Valor Final");
-		if (!itemDeExtratoDAO.atualizar(idAntItemDeExtrato, itemDeExtrato, extratoAnt.getId(), idCategoria))
-			return false;
-		if (itemDeExtratoDAO.buscar().size() == 0) {
-			extratoDAO.remover(extratoAnt.getId());
+		if (itemDeExtratoDAO.atualizar(idAntItemDeExtrato, itemDeExtrato, idAntExtrato, idCategoria)) {
+			if (itemDeExtratoDAO.buscar().size() == 0) {
+				extratoDAO.remover(idAntExtrato);
+			}
+			if (itemDeExtrato.getValor() != valorAnt) {
+				itemDeExtrato.setValor(itemDeExtrato.getValor() - valorAnt);
+				return atualizarValorFinal(extrato, itemDeExtrato.getValor());
+			}
 		}
-		return true;
+		return false;
 	}
 
-	public boolean remover(int id) {
-		return extratoDAO.remover(id);
+	public boolean remover(Extrato extrato, ItemDeExtrato itemDeExtrato) {
+		itemDeExtratoDAO.setIdExtrato(extrato.getId());
+		if (itemDeExtratoDAO.remover(itemDeExtrato.getId())) {
+			if (itemDeExtratoDAO.buscar().size() == 0) {
+				extratoDAO.remover(extrato.getId());
+			}
+			float valor = 0.0f;
+			if (itemDeExtrato.getTipo() == TipoItemDeExtrato.receita)
+				valor -= itemDeExtrato.getValor();
+			if (itemDeExtrato.getTipo() == TipoItemDeExtrato.despesa)
+				valor += itemDeExtrato.getValor();
+			return atualizarValorFinal(extrato, valor);
+		}
+		return false;
+	}
+
+	public boolean atualizarValores(Extrato extrato) {
+		float valorDiferenca = extrato.getValorFinal() - extrato.getValorInicial();
+		extrato.setValorInicial(valorExtrato);
+		extrato.setValorFinal(valorExtrato + valorDiferenca);
+		valorExtrato = extrato.getValorFinal();
+		return extratoDAO.atualizar(extrato);
 	}
 }

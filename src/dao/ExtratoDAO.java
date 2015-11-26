@@ -67,7 +67,7 @@ public class ExtratoDAO {
 	}
 
 	public List<Extrato> buscar() {
-		String sql = "Select * from \"Extrato\" where \"idConta\" = ? order by \"idExtrato\" desc";
+		String sql = "Select * from \"Extrato\" where \"idConta\" = ? order by \"idExtrato\"";
 		List<Extrato> extratos = new ArrayList<Extrato>();
 		try {
 			conexao = ConexaoSQL.getConnection();
@@ -86,8 +86,8 @@ public class ExtratoDAO {
 		return extratos;
 	}
 	
-	public boolean atualizar(int idAntigo, Extrato extrato) {
-		if (!existe(idAntigo))
+	public boolean atualizar(Extrato extrato) {
+		if (!existe(extrato.getId()))
 			return false;
 		String sql = "Update \"Extrato\" set \"idExtrato\" = ?, mes = ?, ano = ?, \"valorInicial\" = ?, \"valorFinal\" = ? where \"idExtrato\" = ? and \"idConta\" = ?";
 		try {
@@ -98,7 +98,7 @@ public class ExtratoDAO {
 			declaracao.setInt(3, extrato.getAno());
 			declaracao.setFloat(4, extrato.getValorInicial());
 			declaracao.setFloat(5, extrato.getValorFinal());
-			declaracao.setInt(6, idAntigo);
+			declaracao.setInt(6, extrato.getId());
 			declaracao.setInt(7, idConta);
 			declaracao.executeUpdate();
 			declaracao.close();

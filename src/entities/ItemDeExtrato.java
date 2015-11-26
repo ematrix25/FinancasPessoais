@@ -135,7 +135,11 @@ public class ItemDeExtrato {
 	}
 
 	public void setId() {
-		this.id = titulo.hashCode() + Integer.valueOf(dia).hashCode() + tipo.hashCode();
+		final int primo = 31;
+		id = 1;
+		id = primo * id + titulo.hashCode();
+		id = primo * id + Integer.valueOf(dia).hashCode();
+		id = primo * id + tipo.hashCode();
 	}
 
 	@Override
