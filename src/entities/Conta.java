@@ -1,7 +1,7 @@
 package entities;
 
 public class Conta {
-	private int id;
+	private long id;
 	private String banco;
 	private String agencia;
 	private String numero;
@@ -86,7 +86,7 @@ public class Conta {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 	

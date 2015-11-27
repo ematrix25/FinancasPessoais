@@ -21,13 +21,13 @@ public class ContaDAO {
 		this.nomeUsuario = nomeUsuario;
 	}
 
-	private boolean existe(int id) {
+	private boolean existe(long id) {
 		String sql = "Select 1 from \"Conta\" where \"idConta\" = ? and \"idUsuario\" = ?";
 		boolean existe = false;
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
-			declaracao.setInt(1, id);
+			declaracao.setLong(1, id);
 			declaracao.setString(2, nomeUsuario);
 			resultado = declaracao.executeQuery();
 			if (resultado.next())
@@ -52,7 +52,7 @@ public class ContaDAO {
 			declaracao.setString(2, conta.getAgencia());
 			declaracao.setString(3, conta.getNumero());
 			declaracao.setFloat(4, conta.getSaldo());
-			declaracao.setInt(5, conta.getId());
+			declaracao.setLong(5, conta.getId());
 			declaracao.setString(6, nomeUsuario);
 			declaracao.executeUpdate();
 			declaracao.close();
@@ -83,18 +83,18 @@ public class ContaDAO {
 		return contas;
 	}
 
-	public boolean atualizar(int idAntigo, Conta conta) {
+	public boolean atualizar(long idAntigo, Conta conta) {
 		if (!existe(idAntigo))
 			return false;
 		String sql = "Update \"Conta\" set \"idConta\" = ?, banco = ?, agencia = ?, numero = ?  where \"idConta\" = ? and \"idUsuario\" = ?";
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
-			declaracao.setInt(1, conta.getId());
+			declaracao.setLong(1, conta.getId());
 			declaracao.setString(2, conta.getBanco());
 			declaracao.setString(3, conta.getAgencia());
 			declaracao.setString(4, conta.getNumero());
-			declaracao.setInt(5, idAntigo);
+			declaracao.setLong(5, idAntigo);
 			declaracao.setString(6, nomeUsuario);
 			declaracao.executeUpdate();
 			declaracao.close();
@@ -113,7 +113,7 @@ public class ContaDAO {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
 			declaracao.setFloat(1, conta.getSaldo());
-			declaracao.setInt(2, conta.getId());
+			declaracao.setLong(2, conta.getId());
 			declaracao.setString(3, nomeUsuario);
 			declaracao.executeUpdate();
 			declaracao.close();
@@ -124,14 +124,14 @@ public class ContaDAO {
 		return true;
 	}
 
-	public boolean remover(int id) {
+	public boolean remover(long id) {
 		if (!existe(id))
 			return false;
 		String sql = "Delete from \"Conta\" where \"idConta\" = ? and \"idUsuario\" = ?";
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
-			declaracao.setInt(1, id);
+			declaracao.setLong(1, id);
 			declaracao.setString(2, nomeUsuario);
 			declaracao.executeUpdate();
 			declaracao.close();

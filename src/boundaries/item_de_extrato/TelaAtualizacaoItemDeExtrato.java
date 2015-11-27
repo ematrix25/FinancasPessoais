@@ -38,7 +38,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaAtualizacaoItemDeExtrato(String nomeUsuario, int idConta, String tituloItemDeExtrato) {
+	public TelaAtualizacaoItemDeExtrato(String nomeUsuario, long idConta, String tituloItemDeExtrato) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

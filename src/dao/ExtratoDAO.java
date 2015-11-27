@@ -18,20 +18,20 @@ public class ExtratoDAO {
 	private Connection conexao;
 	private PreparedStatement declaracao;
 	private ResultSet resultado;
-	private int idConta;
+	private long idConta;
 
-	public ExtratoDAO(int idConta) {
+	public ExtratoDAO(long idConta) {
 		this.idConta = idConta;
 	}
 
-	private boolean existe(int id) {
+	private boolean existe(long id) {
 		String sql = "Select 1 from \"Extrato\" where \"idExtrato\" = ? and \"idConta\" = ?";
 		boolean existe = false;
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
-			declaracao.setInt(1, id);
-			declaracao.setInt(2, idConta);
+			declaracao.setLong(1, id);
+			declaracao.setLong(2, idConta);
 			resultado = declaracao.executeQuery();
 			if (resultado.next())
 				existe = true;
@@ -55,8 +55,8 @@ public class ExtratoDAO {
 			declaracao.setInt(2, extrato.getAno());
 			declaracao.setFloat(3, extrato.getValorInicial());
 			declaracao.setFloat(4, extrato.getValorFinal());
-			declaracao.setInt(5, extrato.getId());
-			declaracao.setInt(6, idConta);
+			declaracao.setLong(5, extrato.getId());
+			declaracao.setLong(6, idConta);
 			declaracao.executeUpdate();
 			declaracao.close();
 			conexao.close();
@@ -72,11 +72,12 @@ public class ExtratoDAO {
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
-			declaracao.setInt(1, idConta);
+			declaracao.setLong(1, idConta);
 			resultado = declaracao.executeQuery();
 			while (resultado.next())
 				extratos.add(new Extrato(resultado.getInt("mes"), resultado.getInt("ano"),
-						resultado.getFloat("\"valorInicial\""), resultado.getFloat("\"valorFinal\"")));
+						resultado.getFloat("\"valorInicial\""), resultado.getFloat("\"valorFinal\""),
+						resultado.getLong("\"idConta\"")));
 			resultado.close();
 			declaracao.close();
 			conexao.close();
@@ -85,7 +86,7 @@ public class ExtratoDAO {
 		}
 		return extratos;
 	}
-	
+
 	public boolean atualizar(Extrato extrato) {
 		if (!existe(extrato.getId()))
 			return false;
@@ -93,13 +94,13 @@ public class ExtratoDAO {
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
-			declaracao.setInt(1, extrato.getId());
+			declaracao.setLong(1, extrato.getId());
 			declaracao.setInt(2, extrato.getMes());
 			declaracao.setInt(3, extrato.getAno());
 			declaracao.setFloat(4, extrato.getValorInicial());
 			declaracao.setFloat(5, extrato.getValorFinal());
-			declaracao.setInt(6, extrato.getId());
-			declaracao.setInt(7, idConta);
+			declaracao.setLong(6, extrato.getId());
+			declaracao.setLong(7, idConta);
 			declaracao.executeUpdate();
 			declaracao.close();
 			conexao.close();
@@ -108,16 +109,16 @@ public class ExtratoDAO {
 		}
 		return true;
 	}
-	
-	public boolean remover(int id) {
+
+	public boolean remover(long id) {
 		if (!existe(id))
 			return false;
 		String sql = "Delete from \"Extrato\" where \"idExtrato\" = ? and \"idConta\" = ?";
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);
-			declaracao.setInt(1, id);
-			declaracao.setInt(2, idConta);
+			declaracao.setLong(1, id);
+			declaracao.setLong(2, idConta);
 			declaracao.executeUpdate();
 			declaracao.close();
 			conexao.close();

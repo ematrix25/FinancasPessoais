@@ -21,11 +21,11 @@ public class ContaCon {
 		return contaDAO.buscar();
 	}
 	
-	public boolean atualizar(int idAntigo, Conta conta) {
+	public boolean atualizar(long idAntigo, Conta conta) {
 		return contaDAO.atualizar(idAntigo, conta);
 	}
 	
-	public boolean remover(int id) {
+	public boolean remover(long id) {
 		return contaDAO.remover(id);
 	}
 }

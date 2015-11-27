@@ -5,33 +5,35 @@ package entities;
  *
  */
 public class ItemDeExtrato {
-	private int id;
+	private long id;
 	private String titulo;
 	private float valor;
 	private String observacao;
 	private int dia;
 	private int ocorrencia;
 	private TipoItemDeExtrato tipo;
+	private long idExtrato;
 
-	public ItemDeExtrato(int id, String titulo, float valor, String observacoes, int dia, int ocorrencia,
-			TipoItemDeExtrato tipo) {
-		this(titulo, valor, observacoes, dia, ocorrencia, tipo);
+	public ItemDeExtrato(long id, String titulo, float valor, String observacoes, int dia, int ocorrencia,
+			TipoItemDeExtrato tipo, long idExtrato) {
+		this(titulo, valor, observacoes, dia, ocorrencia, tipo, idExtrato);
 		this.id = id;
 	}
 
 	public ItemDeExtrato(String titulo, float valor, String observacoes, int dia, int ocorrencia,
-			TipoItemDeExtrato tipo) {
+			TipoItemDeExtrato tipo, long idExtrato) {
 		this.titulo = titulo;
 		this.valor = valor;
 		this.observacao = observacoes;
 		this.dia = dia;
 		this.ocorrencia = ocorrencia;
 		this.tipo = tipo;
+		this.idExtrato = idExtrato;
 		setId();
 	}
 
 	public ItemDeExtrato() {
-		this("", 0.0f, "", 0, 0, null);
+		this("", 0.0f, "", 0, 0, null, 0);
 	}
 
 	/**
@@ -128,9 +130,24 @@ public class ItemDeExtrato {
 	}
 
 	/**
+	 * @return the idExtrato
+	 */
+	public long getIdExtrato() {
+		return idExtrato;
+	}
+
+	/**
+	 * @param idExtrato the idExtrato to set
+	 */
+	public void setIdExtrato(long idExtrato) {
+		this.idExtrato = idExtrato;
+		setId();
+	}
+
+	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -140,10 +157,11 @@ public class ItemDeExtrato {
 		id = primo * id + titulo.hashCode();
 		id = primo * id + Integer.valueOf(dia).hashCode();
 		id = primo * id + tipo.hashCode();
+		id = primo * id + Long.valueOf(idExtrato).hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return "ItemDeExtrato [" + id + ", " + titulo + ", " + dia + ", " + tipo + "]";
+		return "ItemDeExtrato [" + id + ", " + titulo + ", " + dia + ", " + tipo + ", "+ idExtrato +"]";
 	}
 }
