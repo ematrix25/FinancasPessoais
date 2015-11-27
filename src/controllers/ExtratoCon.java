@@ -1,12 +1,14 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.ExtratoDAO;
 import dao.ItemDeExtratoDAO;
 import entities.Extrato;
 import entities.ItemDeExtrato;
-import entities.TipoItemDeExtrato;
+import utilities.TipoItemDeExtrato;
+import utilities.ItemDoRelatorio;
 
 /**
  * @author Danilo
@@ -25,10 +27,10 @@ public class ExtratoCon {
 		return extratoDAO.atualizar(extrato);
 	}
 
-	public boolean cadastrar(Extrato extrato, ItemDeExtrato itemDeExtrato, String categoria) {
+	public boolean cadastrar(Extrato extrato, ItemDeExtrato itemDeExtrato) {
 		itemDeExtratoDAO.setIdExtrato(extrato.getId());
 		extratoDAO.cadastrar(extrato);
-		if (itemDeExtratoDAO.cadastrar(itemDeExtrato, categoria)) {
+		if (itemDeExtratoDAO.cadastrar(itemDeExtrato)) {
 			float valor = 0.0f;
 			if (itemDeExtrato.getTipo() == TipoItemDeExtrato.receita)
 				valor += itemDeExtrato.getValor();
@@ -44,7 +46,7 @@ public class ExtratoCon {
 	}
 
 	public boolean atualizar(long idAntExtrato, float valorInicialAnt, Extrato extrato, long idAntItemDeExtrato,
-			float valorAnt, ItemDeExtrato itemDeExtrato, String idCategoria) {
+			float valorAnt, ItemDeExtrato itemDeExtrato) {
 		itemDeExtratoDAO.setIdExtrato(idAntExtrato);
 		boolean temNovoExtrato = false;
 		if (extrato.getId() != idAntExtrato) {
@@ -53,7 +55,7 @@ public class ExtratoCon {
 			if (extratoDAO.cadastrar(extrato))
 				temNovoExtrato = true;
 		}
-		if (itemDeExtratoDAO.atualizar(idAntItemDeExtrato, itemDeExtrato, idCategoria)) {
+		if (itemDeExtratoDAO.atualizar(idAntItemDeExtrato, itemDeExtrato)) {
 			if (itemDeExtratoDAO.buscar().size() == 0) {
 				extratoDAO.remover(idAntExtrato);
 			}
@@ -82,35 +84,60 @@ public class ExtratoCon {
 		return false;
 	}
 
-	public void esperar10s() {
-		try {
-			Thread.sleep(10000);
-		} catch (Exception e) {
-			System.out.println(e);
+	private float valorTotalDoTipo(TipoItemDeExtrato tipo, List<ItemDeExtrato> items) {
+		float valor = 0;
+		for (ItemDeExtrato itemDeExtrato : items) {
+			if (itemDeExtrato.getTipo().equals(tipo)) {
+				valor += itemDeExtrato.getValor();
+			}
 		}
+		return valor;
 	}
 
-	//Teste e modelo para integração na tela
+	public List<ItemDoRelatorio> gerarRelatorio(TipoItemDeExtrato tipo, Extrato extrato) {
+		List<ItemDoRelatorio> relatorio = new ArrayList<ItemDoRelatorio>();
+		List<ItemDeExtrato> items = gerarExtrato(extrato.getId());
+		float valorTotal = valorTotalDoTipo(tipo, items);
+		String categoria;
+		int index;
+		for (ItemDeExtrato itemDeExtrato : items) {
+			if (itemDeExtrato.getTipo().equals(tipo)) {
+				categoria = itemDeExtrato.getCategoria();
+				if (relatorio.contains(categoria)) {
+					index = relatorio.indexOf(categoria);
+					relatorio.get(index).setPorcentagem(
+							relatorio.get(index).getPorcentagem() + (itemDeExtrato.getValor() / valorTotal) * 100);
+				} else
+					relatorio.add(new ItemDoRelatorio(categoria, (itemDeExtrato.getValor() / valorTotal) * 100));
+			}
+		}
+		return relatorio;
+	}
+
+	public List<ItemDeExtrato> gerarExtrato(long idExtrato) {
+		itemDeExtratoDAO.setIdExtrato(idExtrato);
+		return itemDeExtratoDAO.buscar();
+	}
+		
+	// Teste e modelo para integração na tela
 	public static void main(String[] args) {
 		System.out.println("Cadastro");
 		ExtratoCon extratoCon = new ExtratoCon(2119118357);
 		Extrato extrato = new Extrato(1, 2010, 0.0f, 0.0f, 0);
 		ItemDeExtrato itemDeExtrato = new ItemDeExtrato("Contracheque", 1500.0f, "", 10, 1, TipoItemDeExtrato.receita,
-				extrato.getId());
+				extrato.getId(), "Salario");
 
-		extratoCon.cadastrar(extrato, itemDeExtrato, "Salario");
+		extratoCon.cadastrar(extrato, itemDeExtrato);
 
 		extrato.setMes(12);
 		extrato.setAno(2009);
 		extrato.setValorFinal(0.0f);
 		itemDeExtrato.setIdExtrato(extrato.getId());
 
-		extratoCon.cadastrar(extrato, itemDeExtrato, "Salario");
-		
-		extratoCon.esperar10s();
+		extratoCon.cadastrar(extrato, itemDeExtrato);
 
 		System.out.println("Atualizacao");
-		
+
 		extrato.setMes(2);
 		extrato.setAno(2010);
 		extrato.setValorFinal(0.0f);
@@ -118,12 +145,10 @@ public class ExtratoCon {
 		itemDeExtrato.setValor(1300.0f);
 		itemDeExtrato.setIdExtrato(extrato.getId());
 
-		extratoCon.atualizar(147729275858L, 1500.0f, extrato, -37173075180636L, 1500.0f, itemDeExtrato, "Salario");
+		extratoCon.atualizar(147729275858L, 1500.0f, extrato, -37173075180636L, 1500.0f, itemDeExtrato);
 
-		extratoCon.esperar10s();
-		
 		System.out.println("Remocao");
-		
+
 		extrato.setMes(12);
 		extrato.setAno(2009);
 		itemDeExtrato.setIdExtrato(extrato.getId());

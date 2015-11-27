@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.ItemDeExtrato;
-import entities.TipoItemDeExtrato;
 import utilities.ConexaoSQL;
+import utilities.TipoItemDeExtrato;
 
 /**
  * @author Emanuel
@@ -25,10 +25,6 @@ public class ItemDeExtratoDAO {
 		this.idExtrato = idExtrato;
 	}
 
-	/**
-	 * @param idExtrato
-	 *            the idExtrato to set
-	 */
 	public void setIdExtrato(long idExtrato) {
 		this.idExtrato = idExtrato;
 	}
@@ -53,7 +49,7 @@ public class ItemDeExtratoDAO {
 		return existe;
 	}
 
-	public boolean cadastrar(ItemDeExtrato itemDeExtrato, String idCategoria) {
+	public boolean cadastrar(ItemDeExtrato itemDeExtrato) {
 		if (existe(itemDeExtrato.getId()))
 			return false;
 		String sql = "Insert into \"ItemDeExtrato\" (titulo, valor, observacao, dia, ocorrencia, tipo, \"idItemDeExtrato\", \"idExtrato\", \"idCategoria\") values (?, ?, ?, ?, ?, CAST(? as tipoitemdeextrato), ?, ?, ?)";
@@ -68,7 +64,7 @@ public class ItemDeExtratoDAO {
 			declaracao.setObject(6, itemDeExtrato.getTipo().toString());
 			declaracao.setLong(7, itemDeExtrato.getId());
 			declaracao.setLong(8, idExtrato);
-			declaracao.setString(9, idCategoria);
+			declaracao.setString(9, itemDeExtrato.getCategoria());
 			declaracao.executeUpdate();
 			declaracao.close();
 			conexao.close();
@@ -89,7 +85,8 @@ public class ItemDeExtratoDAO {
 			while (resultado.next())
 				itemDeExtratos.add(new ItemDeExtrato(resultado.getString("titulo"), resultado.getFloat("valor"),
 						resultado.getString("observacao"), resultado.getInt("dia"), resultado.getInt("ocorrencia"),
-						TipoItemDeExtrato.valueOf(resultado.getString("tipo")), resultado.getLong("idExtrato")));
+						TipoItemDeExtrato.valueOf(resultado.getString("tipo")), resultado.getLong("idExtrato"),
+						resultado.getString("idCategoria")));
 			resultado.close();
 			declaracao.close();
 			conexao.close();
@@ -99,7 +96,7 @@ public class ItemDeExtratoDAO {
 		return itemDeExtratos;
 	}
 
-	public boolean atualizar(long idAntigo, ItemDeExtrato itemDeExtrato, String idCategoria) {
+	public boolean atualizar(long idAntigo, ItemDeExtrato itemDeExtrato) {
 		if (!existe(idAntigo))
 			return false;
 		String sql = "Update \"ItemDeExtrato\" set \"idItemDeExtrato\" = ?, titulo = ?, valor = ?, observacao = ?, dia = ?, ocorrencia = ?, tipo = CAST(? as tipoitemdeextrato), \"idExtrato\" = ?, \"idCategoria\" = ? where \"idItemDeExtrato\" = ? and \"idExtrato\" = ?";
@@ -114,7 +111,7 @@ public class ItemDeExtratoDAO {
 			declaracao.setInt(6, itemDeExtrato.getOcorrencia());
 			declaracao.setObject(7, itemDeExtrato.getTipo().toString());
 			declaracao.setLong(8, itemDeExtrato.getIdExtrato());
-			declaracao.setString(9, idCategoria);
+			declaracao.setString(9, itemDeExtrato.getCategoria());
 			declaracao.setLong(10, idAntigo);
 			declaracao.setLong(11, idExtrato);
 			declaracao.executeUpdate();
