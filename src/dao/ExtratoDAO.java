@@ -67,7 +67,7 @@ public class ExtratoDAO {
 	}
 
 	public List<Extrato> buscar() {
-		String sql = "Select * from \"Extrato\" where \"idConta\" = ? order by \"idExtrato\"";
+		String sql = "Select * from \"Extrato\" where \"idConta\" = ? order by \"idExtrato\" desc";
 		List<Extrato> extratos = new ArrayList<Extrato>();
 		try {
 			conexao = ConexaoSQL.getConnection();

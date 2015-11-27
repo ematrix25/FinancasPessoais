@@ -117,7 +117,7 @@ public class Extrato {
 	public void setId() {
 		final int primo = 31;
 		id = 1;		
-		id = primo * id + Integer.toString(ano).hashCode();
+		id = primo * id + Integer.toString(ano).hashCode()*100;
 		id = primo * id + Integer.toString(mes).hashCode();
 		id = primo * id + Long.toString(idConta).hashCode();
 	}

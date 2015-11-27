@@ -137,7 +137,8 @@ public class ItemDeExtrato {
 	}
 
 	/**
-	 * @param idExtrato the idExtrato to set
+	 * @param idExtrato
+	 *            the idExtrato to set
 	 */
 	public void setIdExtrato(long idExtrato) {
 		this.idExtrato = idExtrato;
@@ -162,6 +163,6 @@ public class ItemDeExtrato {
 
 	@Override
 	public String toString() {
-		return "ItemDeExtrato [" + id + ", " + titulo + ", " + dia + ", " + tipo + ", "+ idExtrato +"]";
+		return "ItemDeExtrato [" + id + ", " + titulo + ", " + dia + ", " + tipo + ", " + idExtrato + "]";
 	}
 }

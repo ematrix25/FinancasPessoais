@@ -79,7 +79,7 @@ public class ItemDeExtratoDAO {
 	}
 
 	public List<ItemDeExtrato> buscar() {
-		String sql = "Select * from \"ItemDeExtrato\" where \"idExtrato\" = ?";
+		String sql = "Select * from \"ItemDeExtrato\" where \"idExtrato\" = ? order by dia";
 		List<ItemDeExtrato> itemDeExtratos = new ArrayList<ItemDeExtrato>();
 		try {
 			conexao = ConexaoSQL.getConnection();

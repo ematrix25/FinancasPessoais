@@ -11,22 +11,32 @@ $BODY$
 		extrato "Extrato"%rowtype;
 	BEGIN
 		IF(TG_OP = 'DELETE') THEN
+			RAISE NOTICE 'DELETE %',OLD."idExtrato";
+			SELECT * INTO extrato FROM "Extrato"
+				WHERE "idConta" = OLD."idConta"
+				AND "idExtrato" > OLD."idExtrato"
+				ORDER BY "idExtrato"
+				LIMIT 1;
+			valor := OLD."valorInicial";
+			diferenca := extrato."valorFinal" - extrato."valorInicial";	
 			UPDATE "Extrato"
-			SET "valorFinal" = OLD."valorFinal"
-			WHERE "idExtrato" = OLD."idExtrato";
+			SET "valorInicial" = valor, "valorFinal" = valor + diferenca
+			WHERE "idExtrato" = extrato."idExtrato";
 			return old;
-		ELSE
-			valor = NEW."valorFinal";
+		ELSIF(TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+			RAISE NOTICE 'INSERT OR UPDATE %',NEW."idExtrato";
+			valor := NEW."valorFinal";
 			FOR extrato IN 
 				SELECT * FROM "Extrato"
-				WHERE extrato."idConta" = NEW."idConta"
-				AND extrato."idExtrato" > NEW."idExtrato"
-				ORDER BY "idExtrato" DESC
+				WHERE "idConta" = NEW."idConta"
+				AND "idExtrato" > NEW."idExtrato"
+				ORDER BY "idExtrato"
 			LOOP
-				diferenca = extrato."valorFinal" - extrato."valorInicial";
-				extrato."valorInicial" = valor;
-				extrato."valorFinal" = valor + diferenca;
-				valor = extrato."valorFinal";
+				diferenca := extrato."valorFinal" - extrato."valorInicial";
+				UPDATE "Extrato"
+				SET "valorInicial" = valor, "valorFinal" = valor + diferenca
+				WHERE "idExtrato" = extrato."idExtrato";
+				valor := extrato."valorFinal";
 			END LOOP;
 			return new;			
 		END IF;
@@ -37,12 +47,7 @@ $BODY$
 ALTER FUNCTION atualizarvaloresdeextrato()
   OWNER TO postgres;
 
-CREATE TRIGGER atualizarvaloresdeextratoporatualizacao
-	AFTER INSERT OR UPDATE ON "Extrato"
-	FOR EACH ROW
-	EXECUTE PROCEDURE atualizarvaloresdeextrato();
-	
-CREATE TRIGGER atualizarvaloresdeextratoporremocao
-	BEFORE DELETE ON "Extrato"
+CREATE TRIGGER atualizarvaloresdeextrato
+	AFTER INSERT OR UPDATE OR DELETE ON "Extrato"
 	FOR EACH ROW
 	EXECUTE PROCEDURE atualizarvaloresdeextrato();
