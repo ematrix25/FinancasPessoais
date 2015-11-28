@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+
 import controllers.CategoriaCon;
 import entities.Categoria;
 
@@ -203,6 +204,59 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String titulo = txtTitulo.getText();
+				if (titulo.equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira um titulo para o item.", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				@SuppressWarnings("unused")
+				int ocorrencia = Integer.parseInt(txtOcorrencia.getText());
+				if (txtOcorrencia.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o numero de parcelas.", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				@SuppressWarnings("unused")
+				float valor = Float.parseFloat(txtValor.getText());
+				if (txtValor.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira um valor para o item.", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				
+				String categoria = cbCategoria.getSelectedItem().toString();
+				if (categoria.equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira a categoria", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				categoriaCon.cadastrar(new Categoria(categoria));
+				
+				@SuppressWarnings("unused")
+				int dia = Integer.parseInt(txtDia.getText());
+				if (txtDia.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o dia", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				
+				@SuppressWarnings("unused")
+				int mes = Integer.parseInt(txtMes.getText());
+				if (txtMes.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o mes", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				
+				@SuppressWarnings("unused")
+				int ano = Integer.parseInt(txtAno.getText());
+				if (txtAno.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o ano", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				@SuppressWarnings("unused")
+				String observacao = txtObservacoes.getText();
+				
+				@SuppressWarnings("unused")
+				String tipo = cbTipo.getSelectedItem().toString();
+				
+				//Falta pegar o Id do Extrato pra cadastrar o item.
+				//ItemDeExtrato itemextrato = new ItemDeExtrato(titulo, valor, observacao, dia, ocorrencia, tipo, , categoria);
 				dispose();
 			}
 		});
@@ -210,5 +264,4 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		btnSalvar.setBounds(180, 170, 80, 20);
 		panel.add(btnSalvar);
 	}
-
 }
