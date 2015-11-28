@@ -22,64 +22,37 @@ public class ExtratoCon {
 		itemDeExtratoDAO = new ItemDeExtratoDAO(0);
 	}
 
-	private boolean atualizarValorFinal(Extrato extrato, float valor) {
-		extrato.setValorFinal(extrato.getValorFinal() + valor);
-		return extratoDAO.atualizar(extrato);
-	}
-
 	public boolean cadastrar(Extrato extrato, ItemDeExtrato itemDeExtrato) {
 		itemDeExtratoDAO.setIdExtrato(extrato.getId());
 		extratoDAO.cadastrar(extrato);
-		if (itemDeExtratoDAO.cadastrar(itemDeExtrato)) {
-			float valor = 0.0f;
-			if (itemDeExtrato.getTipo() == TipoItemDeExtrato.receita)
-				valor += itemDeExtrato.getValor();
-			if (itemDeExtrato.getTipo() == TipoItemDeExtrato.despesa)
-				valor -= itemDeExtrato.getValor();
-			return atualizarValorFinal(extrato, valor);
-		}
-		return false;
+		return itemDeExtratoDAO.cadastrar(itemDeExtrato);
 	}
 
 	public List<Extrato> buscar() {
 		return extratoDAO.buscar();
 	}
 
-	public boolean atualizar(long idAntExtrato, float valorInicialAnt, Extrato extrato, long idAntItemDeExtrato,
-			float valorAnt, ItemDeExtrato itemDeExtrato) {
+	public boolean atualizar(long idAntExtrato, Extrato extrato, long idAntItemDeExtrato, ItemDeExtrato itemDeExtrato) {
 		itemDeExtratoDAO.setIdExtrato(idAntExtrato);
-		boolean temNovoExtrato = false;
 		if (extrato.getId() != idAntExtrato) {
-			extrato.setValorInicial(valorInicialAnt);
-			extrato.setValorFinal(extrato.getValorInicial());
-			if (extratoDAO.cadastrar(extrato))
-				temNovoExtrato = true;
+			extratoDAO.cadastrar(extrato);
 		}
 		if (itemDeExtratoDAO.atualizar(idAntItemDeExtrato, itemDeExtrato)) {
 			if (itemDeExtratoDAO.buscar().size() == 0) {
 				extratoDAO.remover(idAntExtrato);
 			}
-			if (itemDeExtrato.getValor() != valorAnt) {
-				if (!temNovoExtrato)
-					itemDeExtrato.setValor(itemDeExtrato.getValor() - valorAnt);
-				return atualizarValorFinal(extrato, itemDeExtrato.getValor());
-			}
+			return true;
 		}
 		return false;
 	}
 
-	public boolean remover(Extrato extrato, ItemDeExtrato itemDeExtrato) {
-		itemDeExtratoDAO.setIdExtrato(extrato.getId());
-		if (itemDeExtratoDAO.remover(itemDeExtrato.getId())) {
+	public boolean remover(long idExtrato, long idItemDeExtrato) {
+		itemDeExtratoDAO.setIdExtrato(idExtrato);
+		if (itemDeExtratoDAO.remover(idItemDeExtrato)) {
 			if (itemDeExtratoDAO.buscar().size() == 0) {
-				extratoDAO.remover(extrato.getId());
+				extratoDAO.remover(idExtrato);
 			}
-			float valor = 0.0f;
-			if (itemDeExtrato.getTipo() == TipoItemDeExtrato.receita)
-				valor -= itemDeExtrato.getValor();
-			if (itemDeExtrato.getTipo() == TipoItemDeExtrato.despesa)
-				valor += itemDeExtrato.getValor();
-			return atualizarValorFinal(extrato, valor);
+			return true;
 		}
 		return false;
 	}
@@ -118,42 +91,49 @@ public class ExtratoCon {
 		itemDeExtratoDAO.setIdExtrato(idExtrato);
 		return itemDeExtratoDAO.buscar();
 	}
-		
+
 	// Teste e modelo para integração na tela
 	public static void main(String[] args) {
-		System.out.println("Cadastro");
 		ExtratoCon extratoCon = new ExtratoCon(2119118357);
 		Extrato extrato = new Extrato(1, 2010, 0.0f, 0.0f, 0);
 		ItemDeExtrato itemDeExtrato = new ItemDeExtrato("Contracheque", 1500.0f, "", 10, 1, TipoItemDeExtrato.receita,
 				extrato.getId(), "Salario");
 
+		System.out.println(extrato);
+		System.out.println(itemDeExtrato);
+		System.out.println();
+		
 		extratoCon.cadastrar(extrato, itemDeExtrato);
 
 		extrato.setMes(12);
 		extrato.setAno(2009);
-		extrato.setValorFinal(0.0f);
 		itemDeExtrato.setIdExtrato(extrato.getId());
+		
+		System.out.println(extrato);
+		System.out.println(itemDeExtrato);
+		System.out.println();
 
 		extratoCon.cadastrar(extrato, itemDeExtrato);
-
-		System.out.println("Atualizacao");
 
 		extrato.setMes(2);
 		extrato.setAno(2010);
-		extrato.setValorFinal(0.0f);
-		extrato.setValorInicial(extrato.getValorFinal());
 		itemDeExtrato.setValor(1300.0f);
 		itemDeExtrato.setIdExtrato(extrato.getId());
-
-		extratoCon.atualizar(147729275858L, 1500.0f, extrato, -37173075180636L, 1500.0f, itemDeExtrato);
-
-		System.out.println("Remocao");
-
-		extrato.setMes(12);
-		extrato.setAno(2009);
+		
+		System.out.println(extrato);
+		System.out.println(itemDeExtrato);
+		System.out.println();
+		
+		extratoCon.atualizar(147727208778L, extrato, -37173077247716L, itemDeExtrato);
+		
+		extrato.setMes(2); 
+		extrato.setAno(2010);
 		itemDeExtrato.setIdExtrato(extrato.getId());
-
-		extratoCon.remover(extrato, itemDeExtrato);
-
+		
+		System.out.println(extrato);
+		System.out.println(itemDeExtrato);
+		System.out.println();
+		
+		extratoCon.remover(extrato.getId(), itemDeExtrato.getId());		 
 	}
 }

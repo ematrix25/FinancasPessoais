@@ -1,8 +1,4 @@
--- Function: atualizarvaloresdeextrato()
-
--- DROP FUNCTION atualizarvaloresdeextrato();
-
-CREATE OR REPLACE FUNCTION atualizarvaloresdeextrato()
+CREATE OR REPLACE FUNCTION atualizarvalorfinaldeextrato()
   RETURNS trigger AS
 $BODY$
 	DECLARE
@@ -10,6 +6,8 @@ $BODY$
 		extrato "Extrato"%rowtype;
 	BEGIN
 		IF(TG_OP = 'INSERT') THEN
+			RAISE NOTICE 'ItemDeExtrato INSERT %', NEW."idItemDeExtrato";
+			
 			SELECT * INTO extrato FROM "Extrato"
 			WHERE "idExtrato" = NEW."idExtrato";
 							
@@ -24,10 +22,14 @@ $BODY$
 			END IF;
 			
 			RETURN NEW;
-		ELSIF(TG_OP = 'UPDATE') THEN						
+		ELSIF(TG_OP = 'UPDATE') THEN
+			RAISE NOTICE 'ItemDeExtrato UPDATE %', OLD."idItemDeExtrato";
+						
 			IF(NEW."idExtrato" <> OLD."idExtrato") THEN
 				SELECT * INTO extrato FROM "Extrato"
 				WHERE "idExtrato" = OLD."idExtrato";
+
+				RAISE NOTICE 'Extrato(01a): %',extrato;
 				
 				IF(OLD.tipo = 'receita') THEN
 					UPDATE "Extrato"
@@ -38,6 +40,11 @@ $BODY$
 					SET "valorFinal" = extrato."valorFinal" + OLD.valor
 					WHERE "idExtrato" = OLD."idExtrato";
 				END IF;	
+
+				SELECT * INTO extrato FROM "Extrato"
+				WHERE "idExtrato" = OLD."idExtrato";
+
+				RAISE NOTICE 'Extrato(01b): %',extrato;
 				
 				SELECT count(*) INTO qtd FROM "ItemDeExtrato"
 				WHERE "idExtrato" = OLD."idExtrato";
@@ -61,7 +68,9 @@ $BODY$
 				END IF;
 			ELSIF(NEW."idExtrato" = OLD."idExtrato") THEN			
 				SELECT * INTO extrato FROM "Extrato"
-				WHERE "idExtrato" = NEW."idExtrato";		
+				WHERE "idExtrato" = NEW."idExtrato";
+
+				RAISE NOTICE 'Extrato(02a): %',extrato;			
 				
 				IF(NEW.tipo = 'receita') THEN
 					IF(OLD.tipo = 'receita') THEN
@@ -85,9 +94,16 @@ $BODY$
 					END IF;
 				END IF;
 			END IF;	
+
+			SELECT * INTO extrato FROM "Extrato"
+			WHERE "idExtrato" = NEW."idExtrato";
+
+			RAISE NOTICE 'Extrato(02b): %',extrato;
 						
 			RETURN NEW;
-		ELSIF(TG_OP = 'DELETE') THEN			
+		ELSIF(TG_OP = 'DELETE') THEN
+			RAISE NOTICE 'ItemDeExtrato DELETE %', OLD."idItemDeExtrato";
+			
 			SELECT * INTO extrato FROM "Extrato"
 				WHERE "idExtrato" = OLD."idExtrato";
 				
@@ -113,12 +129,9 @@ $BODY$
 		END IF;
 	END;
 $BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
-ALTER FUNCTION atualizarvaloresdeextrato()
-  OWNER TO postgres;
+  LANGUAGE plpgsql;
 
-CREATE TRIGGER atualizarvaloresdeextrato
-	AFTER INSERT OR UPDATE OR DELETE ON "Extrato"
+CREATE TRIGGER atualizarvalorfinaldeextrato
+	AFTER INSERT OR UPDATE OR DELETE ON "ItemDeExtrato"
 	FOR EACH ROW
-	EXECUTE PROCEDURE atualizarvaloresdeextrato();
+	EXECUTE PROCEDURE atualizarvalorfinaldeextrato();
