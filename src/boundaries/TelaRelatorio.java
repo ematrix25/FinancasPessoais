@@ -2,9 +2,7 @@ package boundaries;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -14,16 +12,21 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-//Ambiente de visualização do relatório
+import controllers.ExtratoCon;
+import entities.Extrato;
+import utilities.ItemDoRelatorio;
+import utilities.TipoItemDeExtrato;
+
 public class TelaRelatorio extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private ExtratoCon extratoCon;
 
 	/**
 	 * Create the frame.
 	 */
-	public TelaRelatorio() {
+	public TelaRelatorio(Extrato extrato, long idConta) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -57,15 +60,8 @@ public class TelaRelatorio extends JFrame {
 		lblReceitas.setBounds(160, 20, 50, 20);
 		panel.add(lblReceitas);
 
-		// Será uma lista de categorias com os respectivos tipo
-		List<String> listaCategorias = new ArrayList<String>();
-		listaCategorias.add("Viagem");
-		listaCategorias.add("Salário");
-		listaCategorias.add("Transporte");
-		listaCategorias.add("Hora Extra");
-		listaCategorias.add("Poupança");
-		listaCategorias.add("Aluguel");
-
+		extratoCon = new ExtratoCon(idConta);
+		
 		JLabel lblListaDeDespesas = new JLabel("");
 		lblListaDeDespesas.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblListaDeDespesas.setOpaque(true);
@@ -73,8 +69,8 @@ public class TelaRelatorio extends JFrame {
 		lblListaDeDespesas.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblListaDeDespesas.setBounds(20, 50, 100, 120);
 		panel.add(lblListaDeDespesas);
-		lblListaDeDespesas.setText(addDespesas(listaCategorias));
-
+		lblListaDeDespesas.setText(formatarRelatorio(extratoCon.gerarRelatorio(TipoItemDeExtrato.despesa, extrato)));
+		
 		JLabel lblListaDeReceitas = new JLabel("");
 		lblListaDeReceitas.setVerticalAlignment(SwingConstants.TOP);
 		lblListaDeReceitas.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -82,47 +78,17 @@ public class TelaRelatorio extends JFrame {
 		lblListaDeReceitas.setBorder(BorderFactory.createLineBorder(Color.black));
 		lblListaDeReceitas.setOpaque(true);
 		panel.add(lblListaDeReceitas);
-		lblListaDeReceitas.setText(addReceitas(listaCategorias));
+		lblListaDeReceitas.setText(formatarRelatorio(extratoCon.gerarRelatorio(TipoItemDeExtrato.receita, extrato)));
 	}
-
-	public String addDespesas(List<String> categorias) {
-		// O calculo das despesas substituirá esse cálculo aleatório
+	
+	public String formatarRelatorio(List<ItemDoRelatorio> relatorio) {
 		StringBuffer sb = new StringBuffer();
-		float aux[] = calcPorcentagens();
 		sb.append("<html>");
-		for (int i = 0; i < categorias.size(); i += 2) {
-			sb.append(categorias.get(i));
-			sb.append(": ");
-			sb.append(aux[ i / 2 ]);
-			sb.append("%<br>");
+		for (int i = 0; i < relatorio.size(); i++) {
+			sb.append(relatorio.get(i).toString());
+			sb.append("<br>");
 		}
 		sb.append("</html>");
 		return sb.toString();
-	}
-		
-	public String addReceitas(List<String> categorias) {
-		// O calculo das receitas substituirá esse cálculo aleatório
-		StringBuffer sb = new StringBuffer();
-		float aux[] = calcPorcentagens();
-		sb.append("<html>");
-		for (int i = 1; i < categorias.size(); i += 2) {
-			sb.append(categorias.get(i));
-			sb.append(": ");
-			sb.append(aux[(i - 1) / 2]);
-			sb.append("%<br>");
-		}
-		sb.append("</html>");
-		return sb.toString();
-	}
-
-	public float[] calcPorcentagens() {
-		int parcela = 100;
-		float aux[] = new float[3];
-		for (int i = 0; i < 3; i++) {
-			aux[i] = new Random().nextInt((int) (parcela / (i + 3))) + (parcela / (i + 2));
-			parcela -= aux[i];
-		}
-		aux[0] += parcela;
-		return aux;
 	}
 }

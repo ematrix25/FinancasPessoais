@@ -434,7 +434,11 @@ public class TelaExtrato extends JFrame {
 		JButton btnGerarRelatorio = new JButton("Gerar Relat\u00F3rio");
 		btnGerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new TelaRelatorio();
+				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
+						cbNumConta.getSelectedItem().toString(), 0);
+				Extrato extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
+						Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
+				new TelaRelatorio(extratoAux, contaAux.getId());
 			}
 		});
 		btnGerarRelatorio.setFont(new Font("Times New Roman", Font.PLAIN, 12));
