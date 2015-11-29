@@ -99,7 +99,7 @@ public class TelaExtrato extends JFrame {
 		DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
 		Extrato extratoAux;
 		String mes;
-		if (!extratos.isEmpty())
+		if (!extratos.get(0).isEmpty())
 			for (int i = 0; i < extratos.get(0).size(); i++) {
 				extratoAux = extratos.get(0).get(i);
 				if (extratos.get(0).get(0).getAno() == extratoAux.getAno()) {
@@ -120,7 +120,7 @@ public class TelaExtrato extends JFrame {
 		panel.add(lblAno);
 
 		modelo = new DefaultComboBoxModel<Object>();
-		if (!extratos.isEmpty())
+		if (!extratos.get(0).isEmpty())
 			for (int i = 0; i < extratos.get(0).size(); i++) {
 				extratoAux = extratos.get(0).get(i);
 				if (modelo.getIndexOf(extratoAux.getAno()) == -1)
@@ -367,16 +367,18 @@ public class TelaExtrato extends JFrame {
 		mnConta.add(mntmAtualizarConta);
 
 		modeloDeLista = new DefaultListModel<Object>();
-		contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
-				cbNumConta.getSelectedItem().toString(), 0);
-		extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
-				Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
-		extratoCon.setIdConta(contaAux.getId());
-		listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
-		for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
-			modeloDeLista.addElement(listaDosItensDeExtrato.get(i).getTitulo());
+		if (!extratos.get(0).isEmpty()) {
+			contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
+					cbNumConta.getSelectedItem().toString(), 0);
+			extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
+					Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
+			extratoCon.setIdConta(contaAux.getId());
+			listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
+			for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
+				modeloDeLista.addElement(listaDosItensDeExtrato.get(i).getTitulo());
+			}
 		}
-		
+
 		JButton btnListar = new JButton("Listar");
 		btnListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -406,7 +408,8 @@ public class TelaExtrato extends JFrame {
 						Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
 				ItemDeExtrato itemAux = null;
 				for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
-					if (lstItensDeExtrato.getSelectedValue().toString().equals(listaDosItensDeExtrato.get(i).getTitulo()))
+					if (lstItensDeExtrato.getSelectedValue().toString()
+							.equals(listaDosItensDeExtrato.get(i).getTitulo()))
 						itemAux = listaDosItensDeExtrato.get(i);
 				}
 				new TelaAtualizacaoItemDeExtrato(tela, nomeUsuario, contaAux.getId(), extratoAux, itemAux);
