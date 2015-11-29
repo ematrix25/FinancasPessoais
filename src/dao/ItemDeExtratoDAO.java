@@ -97,8 +97,10 @@ public class ItemDeExtratoDAO {
 	}
 
 	public boolean atualizar(long idAntigo, ItemDeExtrato itemDeExtrato) {
+		System.out.println(itemDeExtrato);
 		if (!existe(idAntigo))
 			return false;
+		System.out.println("Existe");
 		String sql = "Update \"ItemDeExtrato\" set \"idItemDeExtrato\" = ?, titulo = ?, valor = ?, observacao = ?, dia = ?, ocorrencia = ?, tipo = CAST(? as tipoitemdeextrato), \"idExtrato\" = ?, \"idCategoria\" = ? where \"idItemDeExtrato\" = ? and \"idExtrato\" = ?";
 		try {
 			conexao = ConexaoSQL.getConnection();

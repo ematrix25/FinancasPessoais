@@ -42,9 +42,6 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 	private ExtratoCon extratoCon;
 	private List<Categoria> categorias;
 
-	/**
-	 * Create the frame.
-	 */
 	public TelaAtualizacaoItemDeExtrato(final TelaExtrato tela, final String nomeUsuario, final long idConta,
 			final Extrato extratoAnt, final ItemDeExtrato itemDeExtratoAnt) {
 		setTitle("Finan\u00E7as Pessoais");
@@ -276,9 +273,9 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 				String tipo = cbTipo.getSelectedItem().toString();
 
 				Extrato extrato = new Extrato(mes, ano, 0.0f, 0.0f, idConta);
-				ItemDeExtrato itemextrato = new ItemDeExtrato(titulo, valor, observacao, dia, ocorrencia,
-						TipoItemDeExtrato.valueOf(tipo.toLowerCase()), extrato.getId(), categoria);
-				if (extratoCon.atualizar(extratoAnt.getId(), extrato, itemDeExtratoAnt.getId(), itemextrato))
+				ItemDeExtrato itemDeExtrato = new ItemDeExtrato(titulo, valor, observacao, dia, ocorrencia,
+						TipoItemDeExtrato.valueOf(tipo.toLowerCase()), extrato.getId(), categoria);				
+				if (extratoCon.atualizar(extratoAnt.getId(), extrato, itemDeExtratoAnt.getId(), itemDeExtrato))
 					JOptionPane.showMessageDialog(null, "O item de extrato foi atualizado com sucesso");
 				else
 					JOptionPane.showMessageDialog(null, "O item de extrato não foi atualizado");

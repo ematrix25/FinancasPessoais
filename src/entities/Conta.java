@@ -63,6 +63,10 @@ public class Conta {
 		return id;
 	}
 	
+	public boolean equals(Conta conta) {
+		return this.id == conta.id;
+	}
+
 	private void setId() {
 		final int primo = 31;
 		id = 1;

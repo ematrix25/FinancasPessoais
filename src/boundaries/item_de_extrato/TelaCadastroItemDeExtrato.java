@@ -298,10 +298,6 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 				}
 
 				String categoria = cbCategoria.getSelectedItem().toString();
-				if (categoria.equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira a categoria", "Aviso", JOptionPane.WARNING_MESSAGE);
-					return;
-				}
 				categoriaCon.cadastrar(new Categoria(categoria));
 
 				int dia = Integer.parseInt(txtDia.getText());

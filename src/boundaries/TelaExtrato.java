@@ -374,18 +374,17 @@ public class TelaExtrato extends JFrame {
 		extratoCon.setIdConta(contaAux.getId());
 		listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
 		for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
-			System.out.println(listaDosItensDeExtrato.get(i));
 			modeloDeLista.addElement(listaDosItensDeExtrato.get(i).getTitulo());
 		}
 		
 		JButton btnListar = new JButton("Listar");
 		btnListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				modeloDeLista.removeAllElements();
 				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
 						cbNumConta.getSelectedItem().toString(), 0);
 				Extrato extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
 						Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
-				System.out.println(extratoAux);
 				extratoCon.setIdConta(contaAux.getId());
 				listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
 				for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {

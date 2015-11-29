@@ -20,21 +20,15 @@ import javax.swing.border.LineBorder;
 import controllers.UsuarioCon;
 import entities.Usuario;
 
-//Ambiente de login do usuário
 public class TelaLogin extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JPasswordField pfSenha;
 	private UsuarioCon usuarioCon;
-
-	/**
-	 * Launch the application.
-	 */
+	private JButton btnEntrar;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -47,9 +41,6 @@ public class TelaLogin extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public TelaLogin() {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
@@ -97,8 +88,7 @@ public class TelaLogin extends JFrame {
 
 		usuarioCon = new UsuarioCon();
 
-		// Autentica o usuario
-		JButton btnEntrar = new JButton("Entrar");
+		btnEntrar = new JButton("Entrar");
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nome = txtUsuario.getText();
@@ -124,12 +114,9 @@ public class TelaLogin extends JFrame {
 		btnEntrar.setBounds(110, 120, 80, 20);
 		panel.add(btnEntrar);
 
-		// Cria conta verificando se os dados foram preenchidos e se o email é
-		// valido
 		JButton btnCriarConta = new JButton("Criar Conta");
 		btnCriarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// Lembrar de verificar se já existe usuário com esse nome
 				String nome = txtUsuario.getText();
 				if (usuarioEstaVazio(nome)) {
 					return;
@@ -159,7 +146,6 @@ public class TelaLogin extends JFrame {
 		btnCriarConta.setBounds(40, 160, 90, 20);
 		panel.add(btnCriarConta);
 
-		// Recupera o acesso a conta atraves de uma nova senha
 		JButton btnEsqueciASenha = new JButton("Esqueci a Senha");
 		btnEsqueciASenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
