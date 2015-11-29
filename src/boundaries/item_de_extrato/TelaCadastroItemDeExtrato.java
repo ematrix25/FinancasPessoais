@@ -263,7 +263,7 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		panel.add(txtObservacoes);
 		txtObservacoes.setColumns(10);
 
-		final String[] tiposDeTransacao = { "Despesa", "Receita" };
+		final String[] tiposDeTransacao = { "Receita", "Despesa" };
 
 		final JComboBox<Object> cbTipo = new JComboBox<Object>(tiposDeTransacao);
 		cbTipo.setFont(new Font("Times New Roman", Font.PLAIN, 12));

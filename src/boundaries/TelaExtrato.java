@@ -367,8 +367,17 @@ public class TelaExtrato extends JFrame {
 		mnConta.add(mntmAtualizarConta);
 
 		modeloDeLista = new DefaultListModel<Object>();
-
-		// Ainda não funciona
+		contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
+				cbNumConta.getSelectedItem().toString(), 0);
+		extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
+				Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
+		extratoCon.setIdConta(contaAux.getId());
+		listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
+		for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
+			System.out.println(listaDosItensDeExtrato.get(i));
+			modeloDeLista.addElement(listaDosItensDeExtrato.get(i).getTitulo());
+		}
+		
 		JButton btnListar = new JButton("Listar");
 		btnListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -377,12 +386,9 @@ public class TelaExtrato extends JFrame {
 				Extrato extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
 						Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
 				System.out.println(extratoAux);
-				extratoAux = new Extrato(2, 2010, 0.0f, 0.0f, 1967965787610L);
-				System.out.println(extratoAux);
 				extratoCon.setIdConta(contaAux.getId());
 				listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
 				for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
-					System.out.println(listaDosItensDeExtrato.get(i));
 					modeloDeLista.addElement(listaDosItensDeExtrato.get(i).getTitulo());
 				}
 			}
@@ -401,7 +407,7 @@ public class TelaExtrato extends JFrame {
 						Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
 				ItemDeExtrato itemAux = null;
 				for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
-					if (lstItensDeExtrato.getSelectedValue().equals(listaDosItensDeExtrato.get(i).toString()))
+					if (lstItensDeExtrato.getSelectedValue().toString().equals(listaDosItensDeExtrato.get(i).getTitulo()))
 						itemAux = listaDosItensDeExtrato.get(i);
 				}
 				new TelaAtualizacaoItemDeExtrato(tela, nomeUsuario, contaAux.getId(), extratoAux, itemAux);

@@ -37,7 +37,7 @@ CREATE TABLE "ItemDeExtrato" (
     ocorrencia smallint NOT NULL,
     "idExtrato" numeric(30,0) NOT NULL,
     "idCategoria" character varying(50),
-    tipo tipoitemdeextrato
+    tipo tipoitemdeextrato NOT NULL
 );
 
 CREATE TABLE "Usuario" (

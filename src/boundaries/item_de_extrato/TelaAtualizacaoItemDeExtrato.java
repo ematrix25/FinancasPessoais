@@ -118,8 +118,11 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 
 		DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
 		Categoria categoriaAux;
+		int index = -1;
 		for (int i = 0; i < categorias.size(); i++) {
 			categoriaAux = categorias.get(i);
+			if(itemDeExtratoAnt.getCategoria().equals(categoriaAux.getNome()))
+				index = i;
 			if (modelo.getIndexOf(categoriaAux.getNome()) == -1)
 				modelo.addElement(categoriaAux.getNome());
 		}
@@ -128,7 +131,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		cbCategoria.setEditable(true);
 		cbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbCategoria.setBounds(70, 80, 100, 20);
-		cbCategoria.setSelectedIndex(-1);
+		cbCategoria.setSelectedIndex(index);
 		panel.add(cbCategoria);
 
 		categoriaCon = new CategoriaCon(nomeUsuario);
@@ -175,6 +178,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		txtDia.setBounds(70, 110, 40, 20);
 		panel.add(txtDia);
 		txtDia.setColumns(10);
+		txtDia.setText(Integer.toString(itemDeExtratoAnt.getDia()));
 
 		JLabel lblBarra1 = new JLabel("/");
 		lblBarra1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -188,6 +192,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		txtMes.setColumns(10);
 		txtMes.setBounds(130, 110, 40, 20);
 		panel.add(txtMes);
+		txtMes.setText(Integer.toString(extratoAnt.getMes()));
 
 		JLabel lblBarra2 = new JLabel("/");
 		lblBarra2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -201,6 +206,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		txtAno.setColumns(10);
 		txtAno.setBounds(200, 110, 60, 20);
 		panel.add(txtAno);
+		txtAno.setText(Integer.toString(extratoAnt.getAno()));
 
 		txtObservacoes = new JTextField();
 		txtObservacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -208,13 +214,17 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		txtObservacoes.setBounds(20, 140, 240, 20);
 		panel.add(txtObservacoes);
 		txtObservacoes.setColumns(10);
+		txtObservacoes.setText(itemDeExtratoAnt.getObservacao());
 
-		final String[] tiposDeTransacao = { "Despesa", "Receita" };
+		final String[] tiposDeTransacao = { "Receita", "Despesa"};
 
 		final JComboBox<Object> cbTipo = new JComboBox<Object>(tiposDeTransacao);
 		cbTipo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbTipo.setBounds(20, 170, 70, 20);
-		cbTipo.setSelectedIndex(0);
+		if(itemDeExtratoAnt.getTipo().toString().equals(tiposDeTransacao[0].toLowerCase()))
+			cbTipo.setSelectedIndex(0);
+		else
+			cbTipo.setSelectedIndex(1);
 		panel.add(cbTipo);
 
 		extratoCon = new ExtratoCon(idConta);
@@ -242,10 +252,6 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 				}
 
 				String categoria = cbCategoria.getSelectedItem().toString();
-				if (categoria.equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira a categoria", "Aviso", JOptionPane.WARNING_MESSAGE);
-					return;
-				}
 				categoriaCon.cadastrar(new Categoria(categoria));
 
 				int dia = Integer.parseInt(txtDia.getText());
@@ -275,7 +281,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 				if (extratoCon.atualizar(extratoAnt.getId(), extrato, itemDeExtratoAnt.getId(), itemextrato))
 					JOptionPane.showMessageDialog(null, "O item de extrato foi atualizado com sucesso");
 				else
-					JOptionPane.showMessageDialog(null, "O item de extrato nem foi atualizado");
+					JOptionPane.showMessageDialog(null, "O item de extrato não foi atualizado");
 				dispose();
 			}
 		});
