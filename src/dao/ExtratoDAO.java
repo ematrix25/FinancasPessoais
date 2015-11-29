@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import entities.Extrato;
 import utilities.ConexaoSQL;
@@ -66,9 +65,9 @@ public class ExtratoDAO {
 		return true;
 	}
 
-	public List<Extrato> buscar() {
+	public ArrayList<Extrato> buscar() {
 		String sql = "Select * from \"Extrato\" where \"idConta\" = ? order by \"idExtrato\" desc";
-		List<Extrato> extratos = new ArrayList<Extrato>();
+		ArrayList<Extrato> extratos = new ArrayList<Extrato>();
 		try {
 			conexao = ConexaoSQL.getConnection();
 			declaracao = conexao.prepareStatement(sql);

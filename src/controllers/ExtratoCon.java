@@ -17,7 +17,7 @@ public class ExtratoCon {
 	private ExtratoDAO extratoDAO;
 	private ItemDeExtratoDAO itemDeExtratoDAO;
 
-	public ExtratoCon(int idConta) {
+	public ExtratoCon(long idConta) {
 		extratoDAO = new ExtratoDAO(idConta);
 		itemDeExtratoDAO = new ItemDeExtratoDAO(0);
 	}
@@ -28,7 +28,7 @@ public class ExtratoCon {
 		return itemDeExtratoDAO.cadastrar(itemDeExtrato);
 	}
 
-	public List<Extrato> buscar() {
+	public ArrayList<Extrato> buscar() {
 		return extratoDAO.buscar();
 	}
 

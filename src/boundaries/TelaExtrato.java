@@ -28,7 +28,9 @@ import boundaries.conta.TelaCadastroConta;
 import boundaries.item_de_extrato.TelaAtualizacaoItemDeExtrato;
 import boundaries.item_de_extrato.TelaCadastroItemDeExtrato;
 import controllers.ContaCon;
+import controllers.ExtratoCon;
 import entities.Conta;
+import entities.Extrato;
 
 //Ambiente de visualização do extrato
 public class TelaExtrato extends JFrame {
@@ -63,7 +65,41 @@ public class TelaExtrato extends JFrame {
 		panel.setBounds(22, 40, 450, 310);
 		contentPane.add(panel);
 		panel.setLayout(null);
+		
+		JLabel lblAno = new JLabel("Ano");
+		lblAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblAno.setBounds(220, 40, 30, 20);
+		panel.add(lblAno);
 
+		// Esses anos serão buscados do banco de dados
+		List<String> listaAnos = new ArrayList<String>();
+		listaAnos.add("2015");
+		listaAnos.add("2014");
+
+		JComboBox<Object> cbAno = new JComboBox<Object>(listaAnos.toArray());
+		cbAno.setSelectedIndex(0);
+		cbAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbAno.setBounds(260, 40, 70, 20);
+		panel.add(cbAno);
+
+		JLabel lblMes = new JLabel("M\u00EAs");
+		lblMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblMes.setBounds(20, 40, 30, 20);
+		panel.add(lblMes);
+
+		// Esses meses serão buscados do banco de dados
+		List<String> listaMeses = new ArrayList<String>();
+		listaMeses.add("Janeiro");
+		listaMeses.add("Fevereiro");
+		listaMeses.add("Março");
+		listaMeses.add("Abril");
+
+		JComboBox<Object> cbMes = new JComboBox<Object>(listaMeses.toArray());
+		cbMes.setSelectedIndex(0);
+		cbMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		cbMes.setBounds(60, 40, 140, 20);
+		panel.add(cbMes);
+		
 		JLabel lblConta = new JLabel("Conta");
 		lblConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblConta.setBounds(220, 10, 40, 20);
@@ -71,6 +107,11 @@ public class TelaExtrato extends JFrame {
 
 		contaCon = new ContaCon(nomeUsuario);
 		final List<Conta> contas = contaCon.buscar();
+		
+		List<ArrayList<Extrato>> extratos = new ArrayList<ArrayList<Extrato>>();		
+		for (Conta conta : contas) {
+			extratos.add(new ExtratoCon(conta.getId()).buscar());
+		}
 
 		DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
 		Conta contaAux;
@@ -82,6 +123,11 @@ public class TelaExtrato extends JFrame {
 		}
 
 		final JComboBox<Object> cbNumConta = new JComboBox<Object>(modelo);
+		cbNumConta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
 		cbNumConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbNumConta.setBounds(260, 10, 70, 20);
 		panel.add(cbNumConta);
@@ -187,41 +233,7 @@ public class TelaExtrato extends JFrame {
 			}
 		});
 		mntmAtualizarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		mnConta.add(mntmAtualizarConta);
-
-		JLabel lblAno = new JLabel("Ano");
-		lblAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblAno.setBounds(220, 40, 30, 20);
-		panel.add(lblAno);
-
-		// Esses anos serão buscados do banco de dados
-		List<String> listaAnos = new ArrayList<String>();
-		listaAnos.add("2015");
-		listaAnos.add("2014");
-
-		JComboBox<Object> cbAno = new JComboBox<Object>(listaAnos.toArray());
-		cbAno.setSelectedIndex(0);
-		cbAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbAno.setBounds(260, 40, 70, 20);
-		panel.add(cbAno);
-
-		JLabel lblMes = new JLabel("M\u00EAs");
-		lblMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblMes.setBounds(20, 40, 30, 20);
-		panel.add(lblMes);
-
-		// Esses meses serão buscados do banco de dados
-		List<String> listaMeses = new ArrayList<String>();
-		listaMeses.add("Janeiro");
-		listaMeses.add("Fevereiro");
-		listaMeses.add("Março");
-		listaMeses.add("Abril");
-
-		JComboBox<Object> cbMes = new JComboBox<Object>(listaMeses.toArray());
-		cbMes.setSelectedIndex(0);
-		cbMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbMes.setBounds(60, 40, 140, 20);
-		panel.add(cbMes);
+		mnConta.add(mntmAtualizarConta);		
 
 		JButton btnListar = new JButton("Listar");
 		btnListar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
