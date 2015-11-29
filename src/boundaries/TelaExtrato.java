@@ -257,7 +257,7 @@ public class TelaExtrato extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(),
 						cbAgencia.getSelectedItem().toString(), cbNumConta.getSelectedItem().toString(), 0);
-				new TelaAtualizacaoItemDeExtrato(nomeUsuario, contaAux.getId(), lstItensDeExtrato.getSelectedValue().toString());
+				new TelaAtualizacaoItemDeExtrato(tela, nomeUsuario, contaAux.getId(), lstItensDeExtrato.getSelectedValue().toString());
 			}
 		});
 		lstItensDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));
