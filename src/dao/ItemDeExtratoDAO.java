@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.ItemDeExtrato;
-import utilities.ConexaoSQL;
 import utilities.TipoItemDeExtrato;
+import utilities.support.ConexaoSQL;
 
 /**
  * @author Emanuel

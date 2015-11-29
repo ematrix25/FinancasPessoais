@@ -3,10 +3,10 @@ package controllers;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import utilities.CorreioEletronico;
-import utilities.Criptografia;
 import dao.UsuarioDAO;
 import entities.Usuario;
+import utilities.support.CorreioEletronico;
+import utilities.support.Criptografia;
 
 /**
  * @author Emanuel

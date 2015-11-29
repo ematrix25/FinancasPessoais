@@ -1,4 +1,4 @@
-package utilities;
+package utilities.support;
 
 import java.security.Key;
 import java.security.SecureRandom;

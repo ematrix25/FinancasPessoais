@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import utilities.ConexaoSQL;
 import entities.Conta;
+import utilities.support.ConexaoSQL;
 
 public class ContaDAO {
 

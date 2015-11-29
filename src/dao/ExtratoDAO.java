@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import entities.Extrato;
-import utilities.ConexaoSQL;
+import utilities.support.ConexaoSQL;
 
 /**
  * @author Emanuel

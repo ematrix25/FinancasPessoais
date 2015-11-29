@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import utilities.ConexaoSQL;
 import entities.Categoria;
+import utilities.support.ConexaoSQL;
 
 /**
  * @author Danilo

@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import utilities.ConexaoSQL;
 import entities.Usuario;
+import utilities.support.ConexaoSQL;
 
 /**
  * @author Emanuel

@@ -44,7 +44,7 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaCadastroItemDeExtrato(final TelaExtrato tela, String nomeUsuario, long idConta) {
+	public TelaCadastroItemDeExtrato(final TelaExtrato tela, final String nomeUsuario, final long idConta) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
