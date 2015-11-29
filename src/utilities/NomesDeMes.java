@@ -9,7 +9,7 @@ import java.util.List;
  *
  */
 public final class NomesDeMes {
-	private static String[] meses = { "Janeiro", "Feveiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
+	private static String[] meses = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
 			"Setembro", "Outubro", "Novembro", "Dezembro" };
 	private final static List<String> nomes = new ArrayList<String>(Arrays.asList(meses));
 

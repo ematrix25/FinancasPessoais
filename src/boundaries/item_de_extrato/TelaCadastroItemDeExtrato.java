@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -33,17 +35,20 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtTitulo;
 	private JTextField txtOcorrencia;
+	boolean txtOcorLimpo;
 	private JTextField txtValor;
 	private JTextField txtDia;
+	boolean txtDiaLimpo;
 	private JTextField txtMes;
+	boolean txtMesLimpo;
 	private JTextField txtAno;
+	boolean txtAnoLimpo;
 	private JTextField txtObservacoes;
+	boolean txtObservacoesLimpo;
 	private CategoriaCon categoriaCon;
 	private ExtratoCon extratoCon;
+	private List<Categoria> categorias;
 
-	/**
-	 * Create the frame.
-	 */
 	public TelaCadastroItemDeExtrato(final TelaExtrato tela, final String nomeUsuario, final long idConta) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
@@ -87,6 +92,17 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 
 		txtOcorrencia = new JTextField();
 		txtOcorrencia.setText("Vezes");
+		txtOcorLimpo = false;
+		txtOcorrencia.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				if (!txtOcorLimpo)
+					txtOcorrencia.setText("");
+			}
+
+			public void focusLost(FocusEvent e) {
+				txtOcorLimpo = true;
+			}
+		});
 		txtOcorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtOcorrencia.setBounds(190, 50, 70, 20);
 		panel.add(txtOcorrencia);
@@ -108,19 +124,23 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		lblCategoria.setBounds(20, 80, 50, 20);
 		panel.add(lblCategoria);
 
-		// Esses dados serão buscados do banco de dados
-		List<String> listaCategorias = new ArrayList<String>();
-		listaCategorias.add("Viagem");
-		listaCategorias.add("Salário");
+		categoriaCon = new CategoriaCon(nomeUsuario);
+		categorias = categoriaCon.buscar();
 
-		final JComboBox<Object> cbCategoria = new JComboBox<Object>(listaCategorias.toArray());
+		DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
+		Categoria categoriaAux;
+		for (int i = 0; i < categorias.size(); i++) {
+			categoriaAux = categorias.get(i);
+			if (modelo.getIndexOf(categoriaAux.getNome()) == -1)
+				modelo.addElement(categoriaAux.getNome());
+		}
+
+		final JComboBox<Object> cbCategoria = new JComboBox<Object>(modelo);
 		cbCategoria.setEditable(true);
 		cbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbCategoria.setBounds(70, 80, 100, 20);
 		cbCategoria.setSelectedIndex(-1);
 		panel.add(cbCategoria);
-
-		categoriaCon = new CategoriaCon(nomeUsuario);
 
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
@@ -161,6 +181,17 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 
 		txtDia = new JTextField();
 		txtDia.setText("Dia");
+		txtDiaLimpo = false;
+		txtDia.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				if (!txtDiaLimpo)
+					txtDia.setText("");
+			}
+
+			public void focusLost(FocusEvent e) {
+				txtDiaLimpo = true;
+			}
+		});
 		txtDia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtDia.setBounds(70, 110, 40, 20);
 		panel.add(txtDia);
@@ -174,6 +205,17 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 
 		txtMes = new JTextField();
 		txtMes.setText("M\u00EAs");
+		txtMesLimpo = false;
+		txtMes.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				if (!txtMesLimpo)
+					txtMes.setText("");
+			}
+
+			public void focusLost(FocusEvent e) {
+				txtMesLimpo = true;
+			}
+		});
 		txtMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtMes.setColumns(10);
 		txtMes.setBounds(130, 110, 40, 20);
@@ -187,14 +229,36 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 
 		txtAno = new JTextField();
 		txtAno.setText("Ano");
+		txtAnoLimpo = false;
+		txtAno.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				if (!txtAnoLimpo)
+					txtAno.setText("");
+			}
+
+			public void focusLost(FocusEvent e) {
+				txtAnoLimpo = true;
+			}
+		});
 		txtAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtAno.setColumns(10);
 		txtAno.setBounds(200, 110, 60, 20);
 		panel.add(txtAno);
 
 		txtObservacoes = new JTextField();
-		txtObservacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtObservacoes.setText("Observa\u00E7\u00F5es");
+		txtObservacoesLimpo = false;
+		txtObservacoes.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				if (!txtObservacoesLimpo)
+					txtObservacoes.setText("");
+			}
+
+			public void focusLost(FocusEvent e) {
+				txtObservacoesLimpo = true;
+			}
+		});
+		txtObservacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtObservacoes.setBounds(20, 140, 240, 20);
 		panel.add(txtObservacoes);
 		txtObservacoes.setColumns(10);
@@ -262,7 +326,7 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 
 				Extrato extrato = new Extrato(mes, ano, 0.0f, 0.0f, idConta);
 				ItemDeExtrato itemExtrato = new ItemDeExtrato(titulo, valor, observacao, dia, ocorrencia,
-						TipoItemDeExtrato.valueOf(tipo), extrato.getId(), categoria);
+						TipoItemDeExtrato.valueOf(tipo.toLowerCase()), extrato.getId(), categoria);
 				if (extratoCon.cadastrar(extrato, itemExtrato)) {
 					JOptionPane.showMessageDialog(null, "O item de extrato foi registrado com sucesso");
 					tela.dispose();

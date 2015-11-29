@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -31,9 +32,9 @@ import controllers.ContaCon;
 import controllers.ExtratoCon;
 import entities.Conta;
 import entities.Extrato;
+import entities.ItemDeExtrato;
 import utilities.NomesDeMes;
 
-//Ambiente de visualização do extrato
 public class TelaExtrato extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -43,7 +44,13 @@ public class TelaExtrato extends JFrame {
 	private JComboBox<Object> cbNumConta;
 	private JComboBox<Object> cbAno;
 	private JComboBox<Object> cbMes;
+	private JList<Object> lstItensDeExtrato;
 	private ContaCon contaCon;
+	private ExtratoCon extratoCon;
+	private List<Conta> contas;
+	private List<ArrayList<Extrato>> extratos;
+	private List<ItemDeExtrato> listaDosItensDeExtrato;
+	private DefaultListModel<Object> modeloDeLista;
 
 	public TelaExtrato(final String nomeUsuario) {
 		setTitle("Finan\u00E7as Pessoais");
@@ -70,46 +77,55 @@ public class TelaExtrato extends JFrame {
 		panel.setLayout(null);
 
 		contaCon = new ContaCon(nomeUsuario);
-		final List<Conta> contas = contaCon.buscar();
+		contas = contaCon.buscar();
 
-		final List<ArrayList<Extrato>> extratos = new ArrayList<ArrayList<Extrato>>();
+		extratoCon = new ExtratoCon(0);
+		extratos = new ArrayList<ArrayList<Extrato>>();
 		for (Conta conta : contas) {
-			extratos.add(new ExtratoCon(conta.getId()).buscar());
+			extratoCon.setIdConta(conta.getId());
+			extratos.add(extratoCon.buscar());
 		}
+
+		JLabel lblData = new JLabel("Data do Extrato:");
+		lblData.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblData.setBounds(20, 40, 85, 20);
+		panel.add(lblData);
 
 		JLabel lblMes = new JLabel("M\u00EAs");
 		lblMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblMes.setBounds(20, 40, 30, 20);
+		lblMes.setBounds(225, 40, 30, 20);
 		panel.add(lblMes);
 
 		DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
 		Extrato extratoAux;
 		String mes;
-		for (int i = 0; i < extratos.get(0).size(); i++) {
-			extratoAux = extratos.get(0).get(i);
-			if (extratos.get(0).get(0).getAno() == extratoAux.getAno()) {
-				mes = NomesDeMes.getNome(extratoAux.getMes());
-				if (modelo.getIndexOf(mes) == -1)
-					modelo.addElement(mes);
+		if (!extratos.isEmpty())
+			for (int i = 0; i < extratos.get(0).size(); i++) {
+				extratoAux = extratos.get(0).get(i);
+				if (extratos.get(0).get(0).getAno() == extratoAux.getAno()) {
+					mes = NomesDeMes.getNome(extratoAux.getMes());
+					if (modelo.getIndexOf(mes) == -1)
+						modelo.addElement(mes);
+				}
 			}
-		}
 
 		cbMes = new JComboBox<Object>(modelo);
 		cbMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbMes.setBounds(60, 40, 140, 20);
+		cbMes.setBounds(265, 40, 100, 20);
 		panel.add(cbMes);
 
 		JLabel lblAno = new JLabel("Ano");
 		lblAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblAno.setBounds(220, 40, 30, 20);
+		lblAno.setBounds(115, 40, 30, 20);
 		panel.add(lblAno);
 
 		modelo = new DefaultComboBoxModel<Object>();
-		for (int i = 0; i < extratos.get(0).size(); i++) {
-			extratoAux = extratos.get(0).get(i);
-			if (modelo.getIndexOf(extratoAux.getAno()) == -1)
-				modelo.addElement(extratoAux.getAno());
-		}
+		if (!extratos.isEmpty())
+			for (int i = 0; i < extratos.get(0).size(); i++) {
+				extratoAux = extratos.get(0).get(i);
+				if (modelo.getIndexOf(extratoAux.getAno()) == -1)
+					modelo.addElement(extratoAux.getAno());
+			}
 
 		cbAno = new JComboBox<Object>(modelo);
 		cbAno.addActionListener(new ActionListener() {
@@ -135,12 +151,12 @@ public class TelaExtrato extends JFrame {
 			}
 		});
 		cbAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbAno.setBounds(260, 40, 70, 20);
+		cbAno.setBounds(155, 40, 60, 20);
 		panel.add(cbAno);
 
 		JLabel lblConta = new JLabel("Conta");
 		lblConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblConta.setBounds(220, 10, 40, 20);
+		lblConta.setBounds(305, 10, 35, 20);
 		panel.add(lblConta);
 
 		modelo = new DefaultComboBoxModel<Object>();
@@ -186,12 +202,12 @@ public class TelaExtrato extends JFrame {
 			}
 		});
 		cbNumConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbNumConta.setBounds(260, 10, 70, 20);
+		cbNumConta.setBounds(350, 10, 70, 20);
 		panel.add(cbNumConta);
 
 		JLabel lblAgencia = new JLabel("Agencia");
 		lblAgencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblAgencia.setBounds(99, 10, 50, 20);
+		lblAgencia.setBounds(180, 10, 45, 20);
 		panel.add(lblAgencia);
 
 		modelo = new DefaultComboBoxModel<Object>();
@@ -247,8 +263,13 @@ public class TelaExtrato extends JFrame {
 			}
 		});
 		cbAgencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbAgencia.setBounds(150, 10, 60, 20);
+		cbAgencia.setBounds(235, 10, 60, 20);
 		panel.add(cbAgencia);
+
+		JLabel lblBanco = new JLabel("Banco");
+		lblBanco.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblBanco.setBounds(20, 10, 35, 20);
+		panel.add(lblBanco);
 
 		modelo = new DefaultComboBoxModel<Object>();
 		for (int i = 0; i < contas.size(); i++) {
@@ -311,21 +332,21 @@ public class TelaExtrato extends JFrame {
 			}
 		});
 		cbBanco.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		cbBanco.setBounds(20, 10, 70, 20);
+		cbBanco.setBounds(65, 10, 105, 20);
 		panel.add(cbBanco);
 
 		JMenuBar mnbConta = new JMenuBar();
 		mnbConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		mnbConta.setBounds(340, 10, 80, 20);
+		mnbConta.setBounds(375, 40, 45, 20);
 		panel.add(mnbConta);
 
-		JMenu mnConta = new JMenu("Op\u00E7\u00F5es Conta");
+		JMenu mnConta = new JMenu("Op\u00E7\u00F5es");
 		mnConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		mnbConta.add(mnConta);
 
 		final TelaExtrato tela = this;
 
-		JMenuItem mntmCadastrarConta = new JMenuItem("Cadastrar");
+		JMenuItem mntmCadastrarConta = new JMenuItem("Cadastrar Conta");
 		mntmCadastrarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new TelaCadastroConta(tela, nomeUsuario);
@@ -334,7 +355,7 @@ public class TelaExtrato extends JFrame {
 		mntmCadastrarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		mnConta.add(mntmCadastrarConta);
 
-		JMenuItem mntmAtualizarConta = new JMenuItem("Atualizar");
+		JMenuItem mntmAtualizarConta = new JMenuItem("Atualizar Conta");
 		mntmAtualizarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
@@ -345,30 +366,45 @@ public class TelaExtrato extends JFrame {
 		mntmAtualizarConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		mnConta.add(mntmAtualizarConta);
 
+		modeloDeLista = new DefaultListModel<Object>();
+
+		// Ainda não funciona
 		JButton btnListar = new JButton("Listar");
+		btnListar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
+						cbNumConta.getSelectedItem().toString(), 0);
+				Extrato extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
+						Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
+				System.out.println(extratoAux);
+				extratoAux = new Extrato(2, 2010, 0.0f, 0.0f, 1967965787610L);
+				System.out.println(extratoAux);
+				extratoCon.setIdConta(contaAux.getId());
+				listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
+				for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
+					System.out.println(listaDosItensDeExtrato.get(i));
+					modeloDeLista.addElement(listaDosItensDeExtrato.get(i).getTitulo());
+				}
+			}
+		});
 		btnListar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnListar.setBounds(340, 40, 80, 20);
+		btnListar.setBounds(190, 280, 80, 20);
 		panel.add(btnListar);
 
-		// Esses itens de extrato serão buscados do banco de dados
-		List<String> listaDeItensDeExtrato = new ArrayList<String>();
-		listaDeItensDeExtrato.add("IPTU");
-		listaDeItensDeExtrato.add("Pensão");
-		listaDeItensDeExtrato.add("Passagem para Miami");
-		listaDeItensDeExtrato.add("Playstation 4");
-		listaDeItensDeExtrato.add("Noitada");
-		listaDeItensDeExtrato.add("Taxi");
-		listaDeItensDeExtrato.add("Lanche no Burger King");
-		listaDeItensDeExtrato.add("Taxa de AABB");
-
-		final JList<Object> lstItensDeExtrato = new JList<Object>(listaDeItensDeExtrato.toArray());
+		lstItensDeExtrato = new JList<Object>(modeloDeLista);
 		lstItensDeExtrato.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lstItensDeExtrato.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
 						cbNumConta.getSelectedItem().toString(), 0);
-				new TelaAtualizacaoItemDeExtrato(tela, nomeUsuario, contaAux.getId(),
-						lstItensDeExtrato.getSelectedValue().toString());
+				Extrato extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
+						Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
+				ItemDeExtrato itemAux = null;
+				for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
+					if (lstItensDeExtrato.getSelectedValue().equals(listaDosItensDeExtrato.get(i).toString()))
+						itemAux = listaDosItensDeExtrato.get(i);
+				}
+				new TelaAtualizacaoItemDeExtrato(tela, nomeUsuario, contaAux.getId(), extratoAux, itemAux);
 			}
 		});
 		lstItensDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));

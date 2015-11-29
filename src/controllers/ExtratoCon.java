@@ -21,6 +21,10 @@ public class ExtratoCon {
 		extratoDAO = new ExtratoDAO(idConta);
 		itemDeExtratoDAO = new ItemDeExtratoDAO(0);
 	}
+	
+	public void setIdConta(long idConta){
+		extratoDAO.setIdConta(idConta);
+	}
 
 	public boolean cadastrar(Extrato extrato, ItemDeExtrato itemDeExtrato) {
 		itemDeExtratoDAO.setIdExtrato(extrato.getId());
@@ -94,7 +98,7 @@ public class ExtratoCon {
 
 	// Teste e modelo para integração na tela
 	public static void main(String[] args) {
-		ExtratoCon extratoCon = new ExtratoCon(2119118357);
+		ExtratoCon extratoCon = new ExtratoCon(1967965787610L);
 		Extrato extrato = new Extrato(1, 2010, 0.0f, 0.0f, 0);
 		ItemDeExtrato itemDeExtrato = new ItemDeExtrato("Contracheque", 1500.0f, "", 10, 1, TipoItemDeExtrato.receita,
 				extrato.getId(), "Salario");
@@ -126,14 +130,14 @@ public class ExtratoCon {
 		
 		extratoCon.atualizar(147727208778L, extrato, -37173077247716L, itemDeExtrato);
 		
-		extrato.setMes(2); 
-		extrato.setAno(2010);
-		itemDeExtrato.setIdExtrato(extrato.getId());
-		
-		System.out.println(extrato);
-		System.out.println(itemDeExtrato);
-		System.out.println();
-		
-		extratoCon.remover(extrato.getId(), itemDeExtrato.getId());		 
+//		extrato.setMes(2); 
+//		extrato.setAno(2010);
+//		itemDeExtrato.setIdExtrato(extrato.getId());
+//		
+//		System.out.println(extrato);
+//		System.out.println(itemDeExtrato);
+//		System.out.println();
+//		
+//		extratoCon.remover(extrato.getId(), itemDeExtrato.getId());		 
 	}
 }

@@ -24,68 +24,41 @@ public class Conta {
 		this("", "", "", 0);
 	}
 
-	/**
-	 * @return the banco
-	 */
 	public String getBanco() {
 		return banco;
 	}
 
-	/**
-	 * @param banco the banco to set
-	 */
 	public void setBanco(String banco) {
 		this.banco = banco;
 		setId();
 	}
 
-	/**
-	 * @return the agencia
-	 */
 	public String getAgencia() {
 		return agencia;
 	}
 
-	/**
-	 * @param agencia the agencia to set
-	 */
 	public void setAgencia(String agencia) {
 		this.agencia = agencia;
 		setId();
 	}
 
-	/**
-	 * @return the numero
-	 */
 	public String getNumero() {
 		return numero;
 	}
 
-	/**
-	 * @param conta the numero to set
-	 */
 	public void setNumero(String numero) {
 		this.numero = numero;
 		setId();
 	}
-	
-	/**
-	 * @return the saldo
-	 */
+
 	public float getSaldo() {
 		return saldo;
 	}
 
-	/**
-	 * @param banco the banco to set
-	 */
 	public void setSaldo(float saldo) {
 		this.saldo = saldo;
 	}
 
-	/**
-	 * @return the id
-	 */
 	public long getId() {
 		return id;
 	}

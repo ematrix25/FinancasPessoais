@@ -30,86 +30,48 @@ public class Extrato {
 		this(0, 0, 0.0f, 0.0f, 0);
 	}
 
-	/**
-	 * @return the mes
-	 */
 	public int getMes() {
 		return mes;
 	}
 
-	/**
-	 * @param mes
-	 *            the mes to set
-	 */
 	public void setMes(int mes) {
 		this.mes = mes;
 		setId();
 	}
 
-	/**
-	 * @return the ano
-	 */
 	public int getAno() {
 		return ano;
 	}
 
-	/**
-	 * @param ano
-	 *            the ano to set
-	 */
 	public void setAno(int ano) {
 		this.ano = ano;
 		setId();
 	}
 
-	/**
-	 * @return the valorInicial
-	 */
 	public float getValorInicial() {
 		return valorInicial;
 	}
 
-	/**
-	 * @param valorInicial
-	 *            the valorInicial to set
-	 */
 	public void setValorInicial(float valorInicial) {
 		this.valorInicial = valorInicial;
 	}
 
-	/**
-	 * @return the valorFinal
-	 */
 	public float getValorFinal() {
 		return valorFinal;
 	}
 
-	/**
-	 * @param valorFinal
-	 *            the valorFinal to set
-	 */
 	public void setValorFinal(float valorFinal) {
 		this.valorFinal = valorFinal;
 	}
 
-	/**
-	 * @return the idConta
-	 */
 	public long getIdConta() {
 		return idConta;
 	}
 
-	/**
-	 * @param idConta
-	 *            the idConta to set
-	 */
 	public void setIdConta(long idConta) {
 		this.idConta = idConta;
 	}
 
-	/**
-	 * @return the id
-	 */
 	public long getId() {
 		return id;
 	}

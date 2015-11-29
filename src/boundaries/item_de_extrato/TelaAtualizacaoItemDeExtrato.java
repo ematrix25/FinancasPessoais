@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -40,12 +40,13 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 	private JTextField txtObservacoes;
 	private CategoriaCon categoriaCon;
 	private ExtratoCon extratoCon;
-
+	private List<Categoria> categorias;
 
 	/**
 	 * Create the frame.
 	 */
-	public TelaAtualizacaoItemDeExtrato(final TelaExtrato tela, final String nomeUsuario, final long idConta, String tituloItemDeExtrato) {
+	public TelaAtualizacaoItemDeExtrato(final TelaExtrato tela, final String nomeUsuario, final long idConta,
+			final Extrato extratoAnt, final ItemDeExtrato itemDeExtratoAnt) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -79,8 +80,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		txtTitulo.setBounds(70, 20, 190, 20);
 		panel.add(txtTitulo);
 		txtTitulo.setColumns(10);
-		// Buscar os dados pelo titulo da transacao
-		txtTitulo.setText(tituloItemDeExtrato.toString());
+		txtTitulo.setText(itemDeExtratoAnt.getTitulo());
 
 		JLabel lblOcorrencia = new JLabel("x");
 		lblOcorrencia.setHorizontalAlignment(SwingConstants.CENTER);
@@ -94,6 +94,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		txtOcorrencia.setBounds(190, 50, 70, 20);
 		panel.add(txtOcorrencia);
 		txtOcorrencia.setColumns(10);
+		txtOcorrencia.setText(Integer.toString(itemDeExtratoAnt.getOcorrencia()));
 
 		JLabel lblValor = new JLabel("Valor");
 		lblValor.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -105,18 +106,25 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		txtValor.setBounds(70, 50, 100, 20);
 		panel.add(txtValor);
 		txtValor.setColumns(10);
+		txtValor.setText(Float.toString(itemDeExtratoAnt.getValor()));
 
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblCategoria.setBounds(20, 80, 50, 20);
 		panel.add(lblCategoria);
 
-		// Esses dados serão buscados do banco de dados
-		List<String> listaCategorias = new ArrayList<String>();
-		listaCategorias.add("Viagem");
-		listaCategorias.add("Salário");
+		categoriaCon = new CategoriaCon(nomeUsuario);
+		categorias = categoriaCon.buscar();
 
-		final JComboBox<Object> cbCategoria = new JComboBox<Object>(listaCategorias.toArray());
+		DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
+		Categoria categoriaAux;
+		for (int i = 0; i < categorias.size(); i++) {
+			categoriaAux = categorias.get(i);
+			if (modelo.getIndexOf(categoriaAux.getNome()) == -1)
+				modelo.addElement(categoriaAux.getNome());
+		}
+
+		final JComboBox<Object> cbCategoria = new JComboBox<Object>(modelo);
 		cbCategoria.setEditable(true);
 		cbCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbCategoria.setBounds(70, 80, 100, 20);
@@ -201,95 +209,90 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		panel.add(txtObservacoes);
 		txtObservacoes.setColumns(10);
 
-		final String[] tiposDeTransacao = {"Despesa","Receita"};
-		
+		final String[] tiposDeTransacao = { "Despesa", "Receita" };
+
 		final JComboBox<Object> cbTipo = new JComboBox<Object>(tiposDeTransacao);
 		cbTipo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbTipo.setBounds(20, 170, 70, 20);
 		cbTipo.setSelectedIndex(0);
 		panel.add(cbTipo);
-		
+
 		extratoCon = new ExtratoCon(idConta);
-		
+
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String titulo = txtTitulo.getText();
 				if (titulo.equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira um titulo para o item.", "Aviso", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Insira um titulo para o item.", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				int ocorrencia = Integer.parseInt(txtOcorrencia.getText());
 				if (txtOcorrencia.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira o numero de parcelas.", "Aviso", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Insira o numero de parcelas.", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				float valor = Float.parseFloat(txtValor.getText());
 				if (txtValor.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira um valor para o item.", "Aviso", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Insira um valor para o item.", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				
+
 				String categoria = cbCategoria.getSelectedItem().toString();
 				if (categoria.equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira a categoria", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				categoriaCon.cadastrar(new Categoria(categoria));
-				
+
 				int dia = Integer.parseInt(txtDia.getText());
 				if (txtDia.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o dia", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				
+
 				int mes = Integer.parseInt(txtMes.getText());
 				if (txtMes.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o mes", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				
+
 				int ano = Integer.parseInt(txtAno.getText());
 				if (txtAno.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o ano", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				String observacao = txtObservacoes.getText();
-				
 
 				String tipo = cbTipo.getSelectedItem().toString();
-				
-				
-				Extrato extrato = new Extrato(mes, ano, 0, 0, idConta);
-				ItemDeExtrato itemextrato = new ItemDeExtrato(titulo, valor, observacao, dia, ocorrencia, TipoItemDeExtrato.valueOf(tipo), extrato.getId(), categoria);
-								
-				//TERMINE ESSE BAGULHO EMANUEL
-				if(extratoCon.atualizar(0, extrato, 0, itemextrato))
+
+				Extrato extrato = new Extrato(mes, ano, 0.0f, 0.0f, idConta);
+				ItemDeExtrato itemextrato = new ItemDeExtrato(titulo, valor, observacao, dia, ocorrencia,
+						TipoItemDeExtrato.valueOf(tipo.toLowerCase()), extrato.getId(), categoria);
+				if (extratoCon.atualizar(extratoAnt.getId(), extrato, itemDeExtratoAnt.getId(), itemextrato))
 					JOptionPane.showMessageDialog(null, "O item de extrato foi atualizado com sucesso");
 				else
 					JOptionPane.showMessageDialog(null, "O item de extrato nem foi atualizado");
-				
-				
-				
-				
 				dispose();
 			}
 		});
 		btnSalvar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnSalvar.setBounds(100, 170, 70, 20);
 		panel.add(btnSalvar);
-		
 
 		JButton btnApagar = new JButton("Apagar");
 		btnApagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (extratoCon.remover(0, 0)) {
+				if (extratoCon.remover(extratoAnt.getId(), itemDeExtratoAnt.getId())) {
 					JOptionPane.showMessageDialog(null, "O item de extrato foi removido com sucesso");
 					tela.dispose();
 					new TelaExtrato(nomeUsuario);
 				} else
 					JOptionPane.showMessageDialog(null, "A item de extrato não foi removido");
-				
+
 				dispose();
 			}
 		});

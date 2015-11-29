@@ -22,6 +22,10 @@ public class ExtratoDAO {
 	public ExtratoDAO(long idConta) {
 		this.idConta = idConta;
 	}
+	
+	public void setIdConta(long idConta) {
+		this.idConta = idConta;
+	}
 
 	private boolean existe(long id) {
 		String sql = "Select 1 from \"Extrato\" where \"idExtrato\" = ? and \"idConta\" = ?";
@@ -75,8 +79,8 @@ public class ExtratoDAO {
 			resultado = declaracao.executeQuery();
 			while (resultado.next())
 				extratos.add(new Extrato(resultado.getInt("mes"), resultado.getInt("ano"),
-						resultado.getFloat("\"valorInicial\""), resultado.getFloat("\"valorFinal\""),
-						resultado.getLong("\"idConta\"")));
+						resultado.getFloat("valorInicial"), resultado.getFloat("valorFinal"),
+						resultado.getLong("idConta")));
 			resultado.close();
 			declaracao.close();
 			conexao.close();
