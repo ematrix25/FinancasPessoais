@@ -118,7 +118,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		int index = -1;
 		for (int i = 0; i < categorias.size(); i++) {
 			categoriaAux = categorias.get(i);
-			if(itemDeExtratoAnt.getCategoria().equals(categoriaAux.getNome()))
+			if (itemDeExtratoAnt.getCategoria().equals(categoriaAux.getNome()))
 				index = i;
 			if (modelo.getIndexOf(categoriaAux.getNome()) == -1)
 				modelo.addElement(categoriaAux.getNome());
@@ -213,12 +213,12 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		txtObservacoes.setColumns(10);
 		txtObservacoes.setText(itemDeExtratoAnt.getObservacao());
 
-		final String[] tiposDeTransacao = { "Receita", "Despesa"};
+		final String[] tiposDeTransacao = { "Receita", "Despesa" };
 
 		final JComboBox<Object> cbTipo = new JComboBox<Object>(tiposDeTransacao);
 		cbTipo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		cbTipo.setBounds(20, 170, 70, 20);
-		if(itemDeExtratoAnt.getTipo().toString().equals(tiposDeTransacao[0].toLowerCase()))
+		if (itemDeExtratoAnt.getTipo().toString().equals(tiposDeTransacao[0].toLowerCase()))
 			cbTipo.setSelectedIndex(0);
 		else
 			cbTipo.setSelectedIndex(1);
@@ -229,52 +229,55 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String titulo = txtTitulo.getText();
-				if (titulo.equals("")) {
+				if (txtTitulo.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira um titulo para o item.", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				int ocorrencia = Integer.parseInt(txtOcorrencia.getText());
+				String titulo = txtTitulo.getText();
+
 				if (txtOcorrencia.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o numero de parcelas.", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				float valor = Float.parseFloat(txtValor.getText());
+				int ocorrencia = Integer.parseInt(txtOcorrencia.getText());
+
 				if (txtValor.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira um valor para o item.", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				float valor = Float.parseFloat(txtValor.getText());
 
 				String categoria = cbCategoria.getSelectedItem().toString();
 				categoriaCon.cadastrar(new Categoria(categoria));
 
-				int dia = Integer.parseInt(txtDia.getText());
 				if (txtDia.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o dia", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				int dia = Integer.parseInt(txtDia.getText());
 
-				int mes = Integer.parseInt(txtMes.getText());
 				if (txtMes.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o mes", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				int mes = Integer.parseInt(txtMes.getText());
 
-				int ano = Integer.parseInt(txtAno.getText());
 				if (txtAno.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o ano", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				int ano = Integer.parseInt(txtAno.getText());
+
 				String observacao = txtObservacoes.getText();
 
 				String tipo = cbTipo.getSelectedItem().toString();
 
 				Extrato extrato = new Extrato(mes, ano, 0.0f, 0.0f, idConta);
 				ItemDeExtrato itemDeExtrato = new ItemDeExtrato(titulo, valor, observacao, dia, ocorrencia,
-						TipoItemDeExtrato.valueOf(tipo.toLowerCase()), extrato.getId(), categoria);				
+						TipoItemDeExtrato.valueOf(tipo.toLowerCase()), extrato.getId(), categoria);
 				if (extratoCon.atualizar(extratoAnt.getId(), extrato, itemDeExtratoAnt.getId(), itemDeExtrato))
 					JOptionPane.showMessageDialog(null, "O item de extrato foi atualizado com sucesso");
 				else
@@ -289,6 +292,60 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 		JButton btnApagar = new JButton("Apagar");
 		btnApagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (txtTitulo.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira um titulo para o item.", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				String titulo = txtTitulo.getText();
+
+				if (txtOcorrencia.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o numero de parcelas.", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				int ocorrencia = Integer.parseInt(txtOcorrencia.getText());
+
+				if (txtValor.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira um valor para o item.", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				float valor = Float.parseFloat(txtValor.getText());
+
+				String categoria = cbCategoria.getSelectedItem().toString();
+				categoriaCon.cadastrar(new Categoria(categoria));
+
+				if (txtDia.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o dia", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				int dia = Integer.parseInt(txtDia.getText());
+
+				if (txtMes.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o mes", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				int mes = Integer.parseInt(txtMes.getText());
+
+				if (txtAno.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o ano", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				int ano = Integer.parseInt(txtAno.getText());
+
+				String observacao = txtObservacoes.getText();
+
+				String tipo = cbTipo.getSelectedItem().toString();
+
+				Extrato extrato = new Extrato(mes, ano, 0.0f, 0.0f, idConta);
+				ItemDeExtrato itemDeExtrato = new ItemDeExtrato(titulo, valor, observacao, dia, ocorrencia,
+						TipoItemDeExtrato.valueOf(tipo.toLowerCase()), extrato.getId(), categoria);
+				if (extratoAnt.getId() != extrato.getId() || itemDeExtratoAnt.getId() != itemDeExtrato.getId()) {
+					JOptionPane.showMessageDialog(null, "Não altere os dados se quiser remover", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				
 				if (extratoCon.remover(extratoAnt.getId(), itemDeExtratoAnt.getId())) {
 					JOptionPane.showMessageDialog(null, "O item de extrato foi removido com sucesso");
 					tela.dispose();

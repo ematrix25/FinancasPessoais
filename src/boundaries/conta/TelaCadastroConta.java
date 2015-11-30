@@ -19,7 +19,6 @@ import boundaries.TelaExtrato;
 import controllers.ContaCon;
 import entities.Conta;
 
-//Ambiente de cadastro da conta
 public class TelaCadastroConta extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -30,9 +29,6 @@ public class TelaCadastroConta extends JFrame {
 	private ContaCon contaCon;
 	private JTextField txtSaldo;
 
-	/**
-	 * Create the frame.
-	 */
 	public TelaCadastroConta(final TelaExtrato tela, final String nomeUsuario) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
@@ -68,7 +64,7 @@ public class TelaCadastroConta extends JFrame {
 		panel.add(txtBanco);
 		txtBanco.setColumns(10);
 
-		JLabel lblAgencia = new JLabel("Ag\u00EAncia");
+		JLabel lblAgencia = new JLabel("Agência");
 		lblAgencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblAgencia.setBounds(20, 50, 40, 20);
 		panel.add(lblAgencia);
@@ -95,35 +91,34 @@ public class TelaCadastroConta extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String banco = txtBanco.getText();
-				if (banco.equals("")) {
+				if (txtBanco.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o nome do banco", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-
-				String agencia = txtAgencia.getText();
-				if (agencia.equals("")) {
+				String banco = txtBanco.getText();
+				
+				if (txtAgencia.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o nome da agencia", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-
-				String numero = txtNumero.getText();
-				if (numero.equals("")) {
+				String agencia = txtAgencia.getText();
+				
+				if (txtNumero.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o numero da conta", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				
-				float saldo = Float.parseFloat(txtSaldo.getText());
+				String numero = txtNumero.getText();
+								
 				if (txtSaldo.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o saldo da conta", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-
-				Conta conta = new Conta(banco, agencia, numero, saldo);
-				if (contaCon.cadastrar(conta)) {
+				float saldo = Float.parseFloat(txtSaldo.getText());
+				
+				if (contaCon.cadastrar(new Conta(banco, agencia, numero, saldo))) {
 					JOptionPane.showMessageDialog(null, "A conta foi registrada com sucesso");
 					tela.dispose();
 					new TelaExtrato(nomeUsuario);

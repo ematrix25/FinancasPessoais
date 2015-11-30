@@ -19,7 +19,6 @@ import boundaries.TelaExtrato;
 import controllers.ContaCon;
 import entities.Conta;
 
-//Ambiente de atualização da conta
 public class TelaAtualizacaoConta extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -30,10 +29,7 @@ public class TelaAtualizacaoConta extends JFrame {
 	private JTextField txtSaldo;
 	private ContaCon contaCon;
 
-	/**
-	 * Create the frame.
-	 */
-	public TelaAtualizacaoConta(final TelaExtrato tela, final String nomeUsuario, final Conta conta) {
+	public TelaAtualizacaoConta(final TelaExtrato tela, final String nomeUsuario, final Conta contaAux) {
 		setTitle("Finan\u00E7as Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -65,18 +61,18 @@ public class TelaAtualizacaoConta extends JFrame {
 		txtBanco = new JTextField();
 		txtBanco.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtBanco.setBounds(70, 20, 140, 20);
-		txtBanco.setText(conta.getBanco());
+		txtBanco.setText(contaAux.getBanco());
 		panel.add(txtBanco);
 
 		JLabel lblAgencia = new JLabel("Ag\u00EAncia");
 		lblAgencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblAgencia.setBounds(20, 50, 40, 20);
 		panel.add(lblAgencia);
-		
+
 		txtAgencia = new JTextField();
 		txtAgencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtAgencia.setBounds(70, 50, 140, 20);
-		txtAgencia.setText(conta.getAgencia());
+		txtAgencia.setText(contaAux.getAgencia());
 		panel.add(txtAgencia);
 
 		JLabel lblNumero = new JLabel("Numero");
@@ -87,14 +83,14 @@ public class TelaAtualizacaoConta extends JFrame {
 		txtNumero = new JTextField();
 		txtNumero.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtNumero.setBounds(70, 80, 140, 20);
-		txtNumero.setText(conta.getNumero());
+		txtNumero.setText(contaAux.getNumero());
 		panel.add(txtNumero);
-				
+
 		JLabel lblSaldo = new JLabel("Saldo");
 		lblSaldo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblSaldo.setBounds(20, 110, 40, 20);
 		panel.add(lblSaldo);
-		
+
 		txtSaldo = new JTextField();
 		txtSaldo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtSaldo.setColumns(10);
@@ -105,8 +101,34 @@ public class TelaAtualizacaoConta extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (contaCon.atualizar(conta.getId(),
-						new Conta(txtBanco.getText(), txtAgencia.getText(), txtNumero.getText(), Float.parseFloat(txtSaldo.getText())))) {
+				if (txtBanco.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o nome do banco", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				String banco = txtBanco.getText();
+
+				if (txtAgencia.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o nome da agencia", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				String agencia = txtAgencia.getText();
+
+				if (txtNumero.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o numero da conta", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				String numero = txtNumero.getText();
+
+				if (txtSaldo.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o saldo da conta", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				float saldo = Float.parseFloat(txtSaldo.getText());
+
+				if (contaCon.atualizar(contaAux.getId(), new Conta(banco, agencia, numero, saldo))) {
 					JOptionPane.showMessageDialog(null, "A conta foi atualizada com sucesso");
 					tela.dispose();
 					new TelaExtrato(nomeUsuario);
@@ -123,6 +145,39 @@ public class TelaAtualizacaoConta extends JFrame {
 		JButton btnApagar = new JButton("Apagar");
 		btnApagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (txtBanco.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o nome do banco", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				String banco = txtBanco.getText();
+
+				if (txtAgencia.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o nome da agencia", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				String agencia = txtAgencia.getText();
+
+				if (txtNumero.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o numero da conta", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				String numero = txtNumero.getText();
+
+				if (txtSaldo.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Insira o saldo da conta", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				float saldo = Float.parseFloat(txtSaldo.getText());
+				
+				Conta conta = new Conta(banco, agencia, numero, saldo);
+				if (contaAux.getId() != conta.getId()) {
+					JOptionPane.showMessageDialog(null, "Não altere os dados se quiser remover", "Aviso", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				
 				if (contaCon.remover(conta.getId())) {
 					JOptionPane.showMessageDialog(null, "A conta foi removida com sucesso");
 					tela.dispose();

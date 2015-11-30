@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -26,6 +24,7 @@ import controllers.ExtratoCon;
 import entities.Categoria;
 import entities.Extrato;
 import entities.ItemDeExtrato;
+import utilities.CampoDeTexto;
 import utilities.TipoItemDeExtrato;
 
 //Ambiente de cadastro do item do extrato
@@ -34,16 +33,12 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtTitulo;
-	private JTextField txtOcorrencia;
-	boolean txtOcorLimpo;
+	private CampoDeTexto txtOcorrencia;
 	private JTextField txtValor;
-	private JTextField txtDia;
-	boolean txtDiaLimpo;
-	private JTextField txtMes;
-	boolean txtMesLimpo;
-	private JTextField txtAno;
-	boolean txtAnoLimpo;
-	private JTextField txtObservacoes;
+	private CampoDeTexto txtDia;
+	private CampoDeTexto txtMes;
+	private CampoDeTexto txtAno;
+	private CampoDeTexto txtObservacoes;
 	boolean txtObservacoesLimpo;
 	private CategoriaCon categoriaCon;
 	private ExtratoCon extratoCon;
@@ -90,19 +85,7 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		lblOcorrencia.setBounds(170, 50, 20, 20);
 		panel.add(lblOcorrencia);
 
-		txtOcorrencia = new JTextField();
-		txtOcorrencia.setText("Vezes");
-		txtOcorLimpo = false;
-		txtOcorrencia.addFocusListener(new FocusListener() {
-			public void focusGained(FocusEvent e) {
-				if (!txtOcorLimpo)
-					txtOcorrencia.setText("");
-			}
-
-			public void focusLost(FocusEvent e) {
-				txtOcorLimpo = true;
-			}
-		});
+		txtOcorrencia = new CampoDeTexto("Vezes");
 		txtOcorrencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtOcorrencia.setBounds(190, 50, 70, 20);
 		panel.add(txtOcorrencia);
@@ -179,19 +162,7 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		lblData.setBounds(20, 110, 40, 20);
 		panel.add(lblData);
 
-		txtDia = new JTextField();
-		txtDia.setText("Dia");
-		txtDiaLimpo = false;
-		txtDia.addFocusListener(new FocusListener() {
-			public void focusGained(FocusEvent e) {
-				if (!txtDiaLimpo)
-					txtDia.setText("");
-			}
-
-			public void focusLost(FocusEvent e) {
-				txtDiaLimpo = true;
-			}
-		});
+		txtDia = new CampoDeTexto("Dia");
 		txtDia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtDia.setBounds(70, 110, 40, 20);
 		panel.add(txtDia);
@@ -203,19 +174,7 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		lblBarra1.setBounds(110, 110, 20, 20);
 		panel.add(lblBarra1);
 
-		txtMes = new JTextField();
-		txtMes.setText("M\u00EAs");
-		txtMesLimpo = false;
-		txtMes.addFocusListener(new FocusListener() {
-			public void focusGained(FocusEvent e) {
-				if (!txtMesLimpo)
-					txtMes.setText("");
-			}
-
-			public void focusLost(FocusEvent e) {
-				txtMesLimpo = true;
-			}
-		});
+		txtMes = new CampoDeTexto("Mês");
 		txtMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtMes.setColumns(10);
 		txtMes.setBounds(130, 110, 40, 20);
@@ -227,37 +186,13 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		lblBarra2.setBounds(170, 111, 20, 20);
 		panel.add(lblBarra2);
 
-		txtAno = new JTextField();
-		txtAno.setText("Ano");
-		txtAnoLimpo = false;
-		txtAno.addFocusListener(new FocusListener() {
-			public void focusGained(FocusEvent e) {
-				if (!txtAnoLimpo)
-					txtAno.setText("");
-			}
-
-			public void focusLost(FocusEvent e) {
-				txtAnoLimpo = true;
-			}
-		});
+		txtAno = new CampoDeTexto("Ano");
 		txtAno.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtAno.setColumns(10);
 		txtAno.setBounds(200, 110, 60, 20);
 		panel.add(txtAno);
 
-		txtObservacoes = new JTextField();
-		txtObservacoes.setText("Observa\u00E7\u00F5es");
-		txtObservacoesLimpo = false;
-		txtObservacoes.addFocusListener(new FocusListener() {
-			public void focusGained(FocusEvent e) {
-				if (!txtObservacoesLimpo)
-					txtObservacoes.setText("");
-			}
-
-			public void focusLost(FocusEvent e) {
-				txtObservacoesLimpo = true;
-			}
-		});
+		txtObservacoes = new CampoDeTexto("Observação");
 		txtObservacoes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtObservacoes.setBounds(20, 140, 240, 20);
 		panel.add(txtObservacoes);
@@ -275,49 +210,52 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String titulo = txtTitulo.getText();
-				if (titulo.equals("")) {
+			public void actionPerformed(ActionEvent e) {				
+				if (txtTitulo.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira um titulo para o item.", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				String titulo = txtTitulo.getText();
 
-				int ocorrencia = Integer.parseInt(txtOcorrencia.getText());
 				if (txtOcorrencia.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o numero de parcelas.", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				int ocorrencia = Integer.parseInt(txtOcorrencia.getText());
+				
 
-				float valor = Float.parseFloat(txtValor.getText());
 				if (txtValor.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira um valor para o item.", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-
+				float valor = Float.parseFloat(txtValor.getText());
+				
 				String categoria = cbCategoria.getSelectedItem().toString();
 				categoriaCon.cadastrar(new Categoria(categoria));
 
-				int dia = Integer.parseInt(txtDia.getText());
 				if (txtDia.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o dia", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				int dia = Integer.parseInt(txtDia.getText());
 
-				int mes = Integer.parseInt(txtMes.getText());
 				if (txtMes.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o mes", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-
-				int ano = Integer.parseInt(txtAno.getText());
+				int mes = Integer.parseInt(txtMes.getText());
+				
 				if (txtAno.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o ano", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				int ano = Integer.parseInt(txtAno.getText());
+				
 				String observacao = txtObservacoes.getText();
+				
 				String tipo = cbTipo.getSelectedItem().toString();
 
 				Extrato extrato = new Extrato(mes, ano, 0.0f, 0.0f, idConta);
