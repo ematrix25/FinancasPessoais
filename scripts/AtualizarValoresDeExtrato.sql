@@ -9,28 +9,42 @@ DECLARE
 		valor real;
 		diferenca real;
 		extrato "Extrato"%rowtype;
+		conta "Conta"%rowtype;
+		qtd bigint;
 	BEGIN
-		IF(TG_OP = 'INSERT') THEN			
+		IF(TG_OP = 'INSERT') THEN	
+			SELECT count(*) INTO qtd FROM "Extrato"
+			WHERE "idConta" = NEW."idConta";
+			
+			IF(qtd = 1) THEN				
+				SELECT * INTO conta FROM "Conta"
+				WHERE "idConta" = NEW."idConta";
+			
+				UPDATE "Extrato"
+				SET "valorInicial" = conta."saldo", "valorFinal" = conta."saldo"
+				WHERE "idExtrato" = NEW."idExtrato";
+			END IF;
+			
 			SELECT * INTO extrato FROM "Extrato"
-				WHERE "idConta" = NEW."idConta"
-				AND "idExtrato" < NEW."idExtrato"
-				ORDER BY "idExtrato" DESC
-				LIMIT 1;
+			WHERE "idConta" = NEW."idConta"
+			AND "idExtrato" < NEW."idExtrato"
+			ORDER BY "idExtrato" DESC
+			LIMIT 1;
 				
 			IF(extrato IS NOT NULL)	THEN
 				valor := extrato."valorFinal";
 				UPDATE "Extrato"
-					SET "valorInicial" = valor, "valorFinal" = valor
-					WHERE "idExtrato" = NEW."idExtrato";
+				SET "valorInicial" = valor, "valorFinal" = valor
+				WHERE "idExtrato" = NEW."idExtrato";
 			END IF;
 
 			return new;
 		ELSIF(TG_OP = 'UPDATE') THEN			
 			SELECT * INTO extrato FROM "Extrato"
-				WHERE "idConta" = NEW."idConta"
-				AND "idExtrato" > NEW."idExtrato"
-				ORDER BY "idExtrato"
-				LIMIT 1;
+			WHERE "idConta" = NEW."idConta"
+			AND "idExtrato" > NEW."idExtrato"
+			ORDER BY "idExtrato"
+			LIMIT 1;
 
 			IF(extrato IS NULL) THEN
 				return new;
@@ -46,10 +60,10 @@ DECLARE
 			return new;
 		ELSIF(TG_OP = 'DELETE') THEN
 			SELECT * INTO extrato FROM "Extrato"
-				WHERE "idConta" = OLD."idConta"
-				AND "idExtrato" > OLD."idExtrato"
-				ORDER BY "idExtrato"
-				LIMIT 1;
+			WHERE "idConta" = OLD."idConta"
+			AND "idExtrato" > OLD."idExtrato"
+			ORDER BY "idExtrato"
+			LIMIT 1;
 
 			IF(extrato IS NULL) THEN
 				return new;

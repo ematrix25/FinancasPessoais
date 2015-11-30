@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -27,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import boundaries.conta.TelaAtualizacaoConta;
 import boundaries.conta.TelaCadastroConta;
@@ -49,15 +48,13 @@ public class TelaExtrato extends JFrame {
 	private JComboBox<Object> cbNumConta;
 	private JComboBox<Object> cbAno;
 	private JComboBox<Object> cbMes;
-	@SuppressWarnings("unused")
-	private JList<Object> lstItensDeExtrato;
 	private JTable tabela;
 	private ContaCon contaCon;
 	private ExtratoCon extratoCon;
 	private List<Conta> contas;
 	private List<ArrayList<Extrato>> extratos;
 	private List<ItemDeExtrato> listaDosItensDeExtrato;
-	private DefaultListModel<Object> modeloDeLista;
+	private DefaultTableModel modeloDeTabela;
 	private JTextField txtSaldoInicial;
 	private JTextField txtSaldoFinal;
 
@@ -383,19 +380,30 @@ public class TelaExtrato extends JFrame {
 		mnConta.add(mntmAtualizarConta);
 
 		listaDosItensDeExtrato = new ArrayList<ItemDeExtrato>();
-
+		modeloDeTabela = new DefaultTableModel();
+		
 		JButton btnListar = new JButton("Listar");
 		btnListar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				modeloDeLista.removeAllElements();
-				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
-						cbNumConta.getSelectedItem().toString(), 0);
-				Extrato extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
-						Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
-				extratoCon.setIdConta(contaAux.getId());
-				listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
+			public void actionPerformed(ActionEvent arg0) {				
+				if (!extratos.isEmpty() && !extratos.get(0).isEmpty()) {
+					Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
+							cbNumConta.getSelectedItem().toString(), 0);
+					Extrato extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
+							Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
+					extratoCon.setIdConta(contaAux.getId());
+					listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
+				}
+				
+				for (int i = 0; i < modeloDeTabela.getRowCount(); i++) {
+					modeloDeTabela.removeRow(i);
+				}
+				String[] dados = new String[4];
 				for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
-					modeloDeLista.addElement(listaDosItensDeExtrato.get(i).getTitulo());
+					dados[0] = Integer.toString(listaDosItensDeExtrato.get(i).getDia());
+					dados[1] = listaDosItensDeExtrato.get(i).getTitulo();
+					dados[2] = listaDosItensDeExtrato.get(i).getTipo().toString();
+					dados[3] = Float.toString(listaDosItensDeExtrato.get(i).getValor());
+					modeloDeTabela.addRow(dados);
 				}
 			}
 		});
@@ -465,22 +473,34 @@ public class TelaExtrato extends JFrame {
 			listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
 		}
 
-		String[] cabecalho = { "Dia", "Titulo", "Tipo", "Valor" };
-		String[][] dados = new String[listaDosItensDeExtrato.size()][4];
-		for (int i = 0; i < dados.length; i++) {
-			dados[i][0] = Integer.toString(listaDosItensDeExtrato.get(i).getDia());
-			dados[i][1] = listaDosItensDeExtrato.get(i).getTitulo();
-			dados[i][2] = listaDosItensDeExtrato.get(i).getTipo().toString();
-			dados[i][3] = Float.toString(listaDosItensDeExtrato.get(i).getValor());
+		String[] cabecalho = { "Dia", "Titulo", "Tipo", "Valor" };	
+		modeloDeTabela.setColumnIdentifiers(cabecalho);
+		
+		String[] dados = new String[4];
+		for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
+			dados[0] = Integer.toString(listaDosItensDeExtrato.get(i).getDia());
+			dados[1] = listaDosItensDeExtrato.get(i).getTitulo();
+			dados[2] = listaDosItensDeExtrato.get(i).getTipo().toString();
+			dados[3] = Float.toString(listaDosItensDeExtrato.get(i).getValor());
+			modeloDeTabela.addRow(dados);
 		}
-		tabela = new JTable(dados, cabecalho);
+		
+		tabela = new JTable() {
+			private static final long serialVersionUID = 1L;
+
+			public boolean isCellEditable(int nRow, int nCol) {
+                return false;
+            }
+		};
 		tabela.setSize(400, 200);
 		tabela.setLocation(0, 25);
+		tabela.setFillsViewportHeight(true);
+		tabela.setModel(modeloDeTabela);
+
 		JScrollPane painelDeRolagem = new JScrollPane(tabela);
 		painelDeRolagem.setViewportBorder(null);
 		painelDeRolagem.setSize(396, 200);
 		painelDeRolagem.setLocation(2, 25);
-		tabela.setFillsViewportHeight(true);
 		panelInterno.add(painelDeRolagem);
 
 		ListSelectionModel modeloDeSelecao = tabela.getSelectionModel();
