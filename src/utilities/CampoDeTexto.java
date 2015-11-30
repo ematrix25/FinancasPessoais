@@ -23,7 +23,6 @@ public class CampoDeTexto extends JTextField implements FocusListener {
 	}
 
 	public void focusGained(FocusEvent e) {
-		System.out.println("Antes: " + this.getText());
 		if (super.getText().equals(dica)) {
 			super.setText("");
 			mostrandoDica = false;
@@ -31,7 +30,6 @@ public class CampoDeTexto extends JTextField implements FocusListener {
 	}
 
 	public void focusLost(FocusEvent e) {
-		System.out.println("Depois: " + this.getText());
 		if (super.getText().equals("")) {
 			super.setText(dica);
 			mostrandoDica = true;

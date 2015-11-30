@@ -27,7 +27,6 @@ import entities.ItemDeExtrato;
 import utilities.CampoDeTexto;
 import utilities.TipoItemDeExtrato;
 
-//Ambiente de cadastro do item do extrato
 public class TelaCadastroItemDeExtrato extends JFrame {
 
 	private static final long serialVersionUID = 1L;

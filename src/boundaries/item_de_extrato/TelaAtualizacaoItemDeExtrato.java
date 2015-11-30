@@ -26,7 +26,6 @@ import entities.Extrato;
 import entities.ItemDeExtrato;
 import utilities.TipoItemDeExtrato;
 
-//Ambiente de atualização do item do extrato
 public class TelaAtualizacaoItemDeExtrato extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -44,7 +43,7 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 
 	public TelaAtualizacaoItemDeExtrato(final TelaExtrato tela, final String nomeUsuario, final long idConta,
 			final Extrato extratoAnt, final ItemDeExtrato itemDeExtratoAnt) {
-		setTitle("Finan\u00E7as Pessoais");
+		setTitle("Finanças Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 320, 300);
@@ -273,11 +272,13 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 
 				String observacao = txtObservacoes.getText();
 
-				String tipo = cbTipo.getSelectedItem().toString();
-
+				String tipo = cbTipo.getSelectedItem().toString();				
+				
 				Extrato extrato = new Extrato(mes, ano, 0.0f, 0.0f, idConta);
 				ItemDeExtrato itemDeExtrato = new ItemDeExtrato(titulo, valor, observacao, dia, ocorrencia,
 						TipoItemDeExtrato.valueOf(tipo.toLowerCase()), extrato.getId(), categoria);
+				System.out.println(extrato);
+				System.out.println(itemDeExtrato);
 				if (extratoCon.atualizar(extratoAnt.getId(), extrato, itemDeExtratoAnt.getId(), itemDeExtrato))
 					JOptionPane.showMessageDialog(null, "O item de extrato foi atualizado com sucesso");
 				else
