@@ -5,111 +5,63 @@
 CREATE OR REPLACE FUNCTION atualizarvaloresdeextrato()
   RETURNS trigger AS
 $BODY$
-	DECLARE
-		qtd bigint;
+DECLARE
+		valor real;
+		diferenca real;
 		extrato "Extrato"%rowtype;
 	BEGIN
-		IF(TG_OP = 'INSERT') THEN
+		IF(TG_OP = 'INSERT') THEN			
 			SELECT * INTO extrato FROM "Extrato"
-			WHERE "idExtrato" = NEW."idExtrato";
-							
-			IF(NEW.tipo = 'receita') THEN
-				UPDATE "Extrato"
-				SET "valorFinal" = extrato."valorFinal" + NEW.valor
-				WHERE "idExtrato" = NEW."idExtrato";
-			ELSIF(NEW.tipo = 'despesa') THEN
-				UPDATE "Extrato"
-				SET "valorFinal" = extrato."valorFinal" - NEW.valor
-				WHERE "idExtrato" = NEW."idExtrato";
-			END IF;
-			
-			RETURN NEW;
-		ELSIF(TG_OP = 'UPDATE') THEN						
-			IF(NEW."idExtrato" <> OLD."idExtrato") THEN
-				SELECT * INTO extrato FROM "Extrato"
-				WHERE "idExtrato" = OLD."idExtrato";
+				WHERE "idConta" = NEW."idConta"
+				AND "idExtrato" < NEW."idExtrato"
+				ORDER BY "idExtrato" DESC
+				LIMIT 1;
 				
-				IF(OLD.tipo = 'receita') THEN
-					UPDATE "Extrato"
-					SET "valorFinal" = extrato."valorFinal" - OLD.valor
-					WHERE "idExtrato" = OLD."idExtrato";
-				ELSIF(OLD.tipo = 'despesa') THEN
-					UPDATE "Extrato"
-					SET "valorFinal" = extrato."valorFinal" + OLD.valor
-					WHERE "idExtrato" = OLD."idExtrato";
-				END IF;	
-				
-				SELECT count(*) INTO qtd FROM "ItemDeExtrato"
-				WHERE "idExtrato" = OLD."idExtrato";
-					
-				IF(qtd = 0) THEN
-					DELETE FROM "Extrato"
-					WHERE "idExtrato" = OLD."idExtrato";
-				END IF;
-
-				SELECT * INTO extrato FROM "Extrato"
-				WHERE "idExtrato" = NEW."idExtrato";
-
-				IF(NEW.tipo = 'receita') THEN
-					UPDATE "Extrato"
-					SET "valorFinal" = extrato."valorFinal" + NEW.valor
+			IF(extrato IS NOT NULL)	THEN
+				valor := extrato."valorFinal";
+				UPDATE "Extrato"
+					SET "valorInicial" = valor, "valorFinal" = valor
 					WHERE "idExtrato" = NEW."idExtrato";
-				ELSIF(NEW.tipo = 'despesa') THEN
-					UPDATE "Extrato"
-					SET "valorFinal" = extrato."valorFinal" - NEW.valor
-					WHERE "idExtrato" = NEW."idExtrato";				
-				END IF;
-			ELSIF(NEW."idExtrato" = OLD."idExtrato") THEN			
-				SELECT * INTO extrato FROM "Extrato"
-				WHERE "idExtrato" = NEW."idExtrato";		
-				
-				IF(NEW.tipo = 'receita') THEN
-					IF(OLD.tipo = 'receita') THEN
-						UPDATE "Extrato"
-						SET "valorFinal" = extrato."valorFinal" + (NEW.valor - OLD.valor)
-						WHERE "idExtrato" = NEW."idExtrato";
-					ELSIF(OLD.tipo = 'despesa') THEN
-						UPDATE "Extrato"
-						SET "valorFinal" = extrato."valorFinal" + (NEW.valor + OLD.valor)
-						WHERE "idExtrato" = NEW."idExtrato";
-					END IF;
-				ELSIF(NEW.tipo = 'despesa') THEN
-					IF(OLD.tipo = 'receita') THEN
-						UPDATE "Extrato"
-						SET "valorFinal" = extrato."valorFinal" - (NEW.valor + OLD.valor)
-						WHERE "idExtrato" = NEW."idExtrato";
-					ELSIF(OLD.tipo = 'despesa') THEN
-						UPDATE "Extrato"
-						SET "valorFinal" = extrato."valorFinal" - (NEW.valor - OLD.valor)
-						WHERE "idExtrato" = NEW."idExtrato";
-					END IF;
-				END IF;
-			END IF;	
-						
-			RETURN NEW;
-		ELSIF(TG_OP = 'DELETE') THEN			
+			END IF;
+
+			return new;
+		ELSIF(TG_OP = 'UPDATE') THEN			
 			SELECT * INTO extrato FROM "Extrato"
-				WHERE "idExtrato" = OLD."idExtrato";
-				
-			IF(OLD.tipo = 'receita') THEN
-				UPDATE "Extrato"
-				SET "valorFinal" = extrato."valorFinal" - OLD.valor
-				WHERE "idExtrato" = OLD."idExtrato";
-			ELSIF(OLD.tipo = 'despesa') THEN
-				UPDATE "Extrato"
-				SET "valorFinal" = extrato."valorFinal" + OLD.valor
-				WHERE "idExtrato" = OLD."idExtrato";
+				WHERE "idConta" = NEW."idConta"
+				AND "idExtrato" > NEW."idExtrato"
+				ORDER BY "idExtrato"
+				LIMIT 1;
+
+			IF(extrato IS NULL) THEN
+				return new;
 			END IF;
+							
+			valor := NEW."valorFinal";
+			diferenca := extrato."valorFinal" - extrato."valorInicial";
 			
-			SELECT count(*) INTO qtd FROM "ItemDeExtrato"
-			WHERE "idExtrato" = OLD."idExtrato";
-				
-			IF(qtd = 0) THEN
-				DELETE FROM "Extrato"
-				WHERE "idExtrato" = OLD."idExtrato";
+			UPDATE "Extrato"
+			SET "valorInicial" = valor, "valorFinal" = valor + diferenca
+			WHERE "idExtrato" = extrato."idExtrato";
+			
+			return new;
+		ELSIF(TG_OP = 'DELETE') THEN
+			SELECT * INTO extrato FROM "Extrato"
+				WHERE "idConta" = OLD."idConta"
+				AND "idExtrato" > OLD."idExtrato"
+				ORDER BY "idExtrato"
+				LIMIT 1;
+
+			IF(extrato IS NULL) THEN
+				return new;
 			END IF;
+				
+			valor := OLD."valorInicial";
+			diferenca := extrato."valorFinal" - extrato."valorInicial";	
+			UPDATE "Extrato"
+			SET "valorInicial" = valor, "valorFinal" = valor + diferenca
+			WHERE "idExtrato" = extrato."idExtrato";
 			
-			RETURN OLD;
+			return old;					
 		END IF;
 	END;
 $BODY$
