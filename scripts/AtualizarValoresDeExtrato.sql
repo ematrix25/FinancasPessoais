@@ -10,19 +10,20 @@ DECLARE
 		diferenca real;
 		extrato "Extrato"%rowtype;
 		conta "Conta"%rowtype;
-		qtd bigint;
 	BEGIN
-		IF(TG_OP = 'INSERT') THEN	
-			SELECT count(*) INTO qtd FROM "Extrato"
-			WHERE "idConta" = NEW."idConta";
+		IF(TG_OP = 'INSERT') THEN				
+			SELECT * INTO extrato FROM "Extrato"
+			WHERE "idConta" = NEW."idConta"
+			ORDER BY "idExtrato"
+			LIMIT 1;
 			
-			IF(qtd = 1) THEN				
+			IF(extrato IS NOT NULL) THEN				
 				SELECT * INTO conta FROM "Conta"
 				WHERE "idConta" = NEW."idConta";
 			
 				UPDATE "Extrato"
 				SET "valorInicial" = conta."saldo", "valorFinal" = conta."saldo"
-				WHERE "idExtrato" = NEW."idExtrato";
+				WHERE "idExtrato" = extrato."idExtrato";
 			END IF;
 			
 			SELECT * INTO extrato FROM "Extrato"

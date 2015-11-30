@@ -148,7 +148,7 @@ public class TelaExtrato extends JFrame {
 				Extrato extratoAux;
 				String mes;
 				int index = contas.indexOf(contaAux);
-				if (!extratos.isEmpty())
+				if (!extratos.isEmpty() && index != -1 && index < extratos.size())
 					for (int i = 0; i < extratos.get(index).size(); i++) {
 						extratoAux = extratos.get(index).get(i);
 						if (cbAno.getSelectedItem().toString().equals(extratoAux.getAno())) {
@@ -192,21 +192,28 @@ public class TelaExtrato extends JFrame {
 				Extrato extratoAux;
 				String mes;
 				int anoInicial = 0;
-				int index = contas.indexOf(contaAux);
+				int index = -1;
 				if (cbNumConta.getSelectedItem().toString().equals(contaAux.getNumero())) {
-					if (!extratos.isEmpty())
-						for (int j = 0; j < extratos.get(index).size(); j++) {
-							extratoAux = extratos.get(index).get(j);
-							if (modelo.getSize() == 0)
-								anoInicial = extratoAux.getAno();
-							if (modelo.getIndexOf(extratoAux.getAno()) == -1)
-								modelo.addElement(extratoAux.getAno());
-							if (anoInicial == extratoAux.getAno()) {
-								mes = NomesDeMes.getNome(extratoAux.getMes());
-								if (modeloAux.getIndexOf(mes) == -1)
-									modeloAux.addElement(mes);
-							}
+					if (!extratos.isEmpty() && index != -1 && index < extratos.size())
+						for (int x = 0; x < contas.size(); x++) {
+							if (contas.get(x).equals(contaAux))
+								index = x;
 						}
+						if (!extratos.isEmpty() && index != -1 && index < extratos.size())
+							for (int j = 0; j < extratos.get(index).size(); j++) {
+								extratoAux = extratos.get(index).get(j);
+								if (modelo.getSize() == 0)
+									anoInicial = extratoAux.getAno();
+								if (modelo.getIndexOf(extratoAux.getAno()) == -1)
+									modelo.addElement(extratoAux.getAno());
+								if (anoInicial == extratoAux.getAno()) {
+									mes = NomesDeMes.getNome(extratoAux.getMes());
+									if (modeloAux.getIndexOf(mes) == -1)
+										modeloAux.addElement(mes);
+								}
+							}
+
+					
 				}
 				cbMes.setModel(modeloAux);
 				cbAno.setModel(modelo);
@@ -245,28 +252,38 @@ public class TelaExtrato extends JFrame {
 				Extrato extratoAux;
 				String mes;
 				int anoInicial = 0;
-				int index;
+				int index = -1;
+				String numeroInicial = "";
 				for (int i = 0; i < contas.size(); i++) {
 					contaAux = contas.get(i);
 					if (cbAgencia.getSelectedItem().toString().equals(contaAux.getAgencia())) {
-						if (modelos.get(0).getSize() == 0) {
-							index = contas.indexOf(contaAux);
-							if (!extratos.isEmpty())
-								for (int j = 0; j < extratos.get(index).size(); j++) {
-									extratoAux = extratos.get(index).get(j);
-									if (modelos.get(1).getSize() == 0)
-										anoInicial = extratoAux.getAno();
-									if (modelos.get(1).getIndexOf(extratoAux.getAno()) == -1)
-										modelos.get(1).addElement(extratoAux.getAno());
-									if (anoInicial == extratoAux.getAno()) {
-										mes = NomesDeMes.getNome(extratoAux.getMes());
-										if (modelos.get(2).getIndexOf(mes) == -1)
-											modelos.get(2).addElement(mes);
-									}
-								}
+						if (modelos.get(1).getSize() == 0) {
+							numeroInicial = contaAux.getNumero();
 						}
-						if (modelos.get(0).getIndexOf(contaAux.getNumero()) == -1)
-							modelos.get(0).addElement(contaAux.getNumero());
+						if (modelos.get(1).getIndexOf(contaAux.getNumero()) == -1)
+							modelos.get(1).addElement(contaAux.getNumero());
+					}
+					if (modelos.get(1).getSize() != 0) {
+						contaAux = new Conta(cbBanco.getSelectedItem().toString(), contaAux.getAgencia(), numeroInicial,
+								0);
+						for (int x = 0; x < contas.size(); x++) {
+							if (contas.get(x).equals(contaAux))
+								index = x;
+						}
+						if (!extratos.isEmpty() && index != -1 && index < extratos.size())
+							for (int j = 0; j < extratos.get(index).size(); j++) {
+								extratoAux = extratos.get(index).get(j);
+								if (modelos.get(1).getSize() == 0)
+									anoInicial = extratoAux.getAno();
+								if (modelos.get(1).getIndexOf(extratoAux.getAno()) == -1)
+									modelos.get(1).addElement(extratoAux.getAno());
+								if (anoInicial == extratoAux.getAno()) {
+									mes = NomesDeMes.getNome(extratoAux.getMes());
+									if (modelos.get(2).getIndexOf(mes) == -1)
+										modelos.get(2).addElement(mes);
+								}
+							}
+
 					}
 				}
 				cbMes.setModel(modelos.get(2));
@@ -304,11 +321,12 @@ public class TelaExtrato extends JFrame {
 				if (cbBanco.getSelectedIndex() == -1)
 					return;
 				String agenciaInicial = "";
+				String numeroInicial = "";
 				Conta contaAux;
 				Extrato extratoAux;
 				String mes;
 				int anoInicial = 0;
-				int index;
+				int index = -1;
 				for (int i = 0; i < contas.size(); i++) {
 					contaAux = contas.get(i);
 					if (cbBanco.getSelectedItem().toString().equals(contaAux.getBanco())) {
@@ -317,25 +335,34 @@ public class TelaExtrato extends JFrame {
 						}
 						if (modelos.get(0).getIndexOf(contaAux.getAgencia()) == -1)
 							modelos.get(0).addElement(contaAux.getAgencia());
-						if (modelos.get(1).getSize() == 0) {
-							index = contas.indexOf(contaAux);
-							if (!extratos.isEmpty())
-								for (int j = 0; j < extratos.get(index).size(); j++) {
-									extratoAux = extratos.get(index).get(j);
-									if (modelos.get(2).getSize() == 0)
-										anoInicial = extratoAux.getAno();
-									if (modelos.get(2).getIndexOf(extratoAux.getAno()) == -1)
-										modelos.get(2).addElement(extratoAux.getAno());
-									if (anoInicial == extratoAux.getAno()) {
-										mes = NomesDeMes.getNome(extratoAux.getMes());
-										if (modelos.get(3).getIndexOf(mes) == -1)
-											modelos.get(3).addElement(mes);
-									}
-								}
-						}
-						if (agenciaInicial.equals(contaAux.getAgencia()))
+						if (agenciaInicial.equals(contaAux.getAgencia())) {
+							if (modelos.get(1).getSize() == 0) {
+								numeroInicial = contaAux.getNumero();
+							}
 							if (modelos.get(1).getIndexOf(contaAux.getNumero()) == -1)
 								modelos.get(1).addElement(contaAux.getNumero());
+						}
+						if (modelos.get(1).getSize() != 0) {
+							contaAux = new Conta(cbBanco.getSelectedItem().toString(), agenciaInicial, numeroInicial,
+									0);
+							for (int x = 0; x < contas.size(); x++) {
+								if (contas.get(x).equals(contaAux))
+									index = x;
+							}
+							if (!extratos.isEmpty() && index != -1 && index < extratos.size())
+									for (int j = 0; j < extratos.get(index).size(); j++) {
+										extratoAux = extratos.get(index).get(j);
+										if (modelos.get(2).getSize() == 0)
+											anoInicial = extratoAux.getAno();
+										if (modelos.get(2).getIndexOf(extratoAux.getAno()) == -1)
+											modelos.get(2).addElement(extratoAux.getAno());
+										if (anoInicial == extratoAux.getAno()) {
+											mes = NomesDeMes.getNome(extratoAux.getMes());
+											if (modelos.get(3).getIndexOf(mes) == -1)
+												modelos.get(3).addElement(mes);
+										}
+									}
+						}
 					}
 				}
 				cbMes.setModel(modelos.get(3));
@@ -381,19 +408,33 @@ public class TelaExtrato extends JFrame {
 
 		listaDosItensDeExtrato = new ArrayList<ItemDeExtrato>();
 		modeloDeTabela = new DefaultTableModel();
-		
+
 		JButton btnListar = new JButton("Listar");
 		btnListar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
+			public void actionPerformed(ActionEvent arg0) {
 				if (!extratos.isEmpty() && !extratos.get(0).isEmpty()) {
-					Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
-							cbNumConta.getSelectedItem().toString(), 0);
+					Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(),
+							cbAgencia.getSelectedItem().toString(), cbNumConta.getSelectedItem().toString(), 0);
 					Extrato extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
 							Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
+
+					int index = -1;
+					for (int i = 0; i < contas.size(); i++) {
+						if (contas.get(i).equals(contaAux))
+							index = i;
+					}
+
+					if (!extratos.isEmpty() && index != -1)
+						for (int i = 0; i < extratos.get(index).size(); i++) {
+							if (extratoAux.getId() == extratos.get(index).get(i).getId()) {
+								txtSaldoInicial.setText(Float.toString(extratos.get(index).get(i).getValorInicial()));
+								txtSaldoFinal.setText(Float.toString(extratos.get(index).get(i).getValorFinal()));
+							}
+						}
 					extratoCon.setIdConta(contaAux.getId());
 					listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
 				}
-				
+
 				for (int i = 0; i < modeloDeTabela.getRowCount(); i++) {
 					modeloDeTabela.removeRow(i);
 				}
@@ -473,9 +514,9 @@ public class TelaExtrato extends JFrame {
 			listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
 		}
 
-		String[] cabecalho = { "Dia", "Titulo", "Tipo", "Valor" };	
+		String[] cabecalho = { "Dia", "Titulo", "Tipo", "Valor" };
 		modeloDeTabela.setColumnIdentifiers(cabecalho);
-		
+
 		String[] dados = new String[4];
 		for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
 			dados[0] = Integer.toString(listaDosItensDeExtrato.get(i).getDia());
@@ -484,13 +525,13 @@ public class TelaExtrato extends JFrame {
 			dados[3] = Float.toString(listaDosItensDeExtrato.get(i).getValor());
 			modeloDeTabela.addRow(dados);
 		}
-		
+
 		tabela = new JTable() {
 			private static final long serialVersionUID = 1L;
 
 			public boolean isCellEditable(int nRow, int nCol) {
-                return false;
-            }
+				return false;
+			}
 		};
 		tabela.setSize(400, 200);
 		tabela.setLocation(0, 25);
