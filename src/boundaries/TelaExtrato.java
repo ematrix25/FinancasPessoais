@@ -34,6 +34,8 @@ import entities.Conta;
 import entities.Extrato;
 import entities.ItemDeExtrato;
 import utilities.NomesDeMes;
+import javax.swing.JTextField;
+import javax.swing.JSeparator;
 
 public class TelaExtrato extends JFrame {
 
@@ -51,12 +53,14 @@ public class TelaExtrato extends JFrame {
 	private List<ArrayList<Extrato>> extratos;
 	private List<ItemDeExtrato> listaDosItensDeExtrato;
 	private DefaultListModel<Object> modeloDeLista;
+	private JTextField txtSaldoInicial;
+	private JTextField txtSaldoFinal;
 
 	public TelaExtrato(final String nomeUsuario) {
-		setTitle("Finan\u00E7as Pessoais");
+		setTitle("Finanças Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 400);
+		setBounds(100, 100, 500, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -72,7 +76,7 @@ public class TelaExtrato extends JFrame {
 		final JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBounds(22, 40, 450, 310);
+		panel.setBounds(22, 40, 450, 360);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -81,9 +85,12 @@ public class TelaExtrato extends JFrame {
 
 		extratoCon = new ExtratoCon(0);
 		extratos = new ArrayList<ArrayList<Extrato>>();
+		ArrayList<Extrato> extratosAux = new ArrayList<Extrato>();
 		for (Conta conta : contas) {
 			extratoCon.setIdConta(conta.getId());
-			extratos.add(extratoCon.buscar());
+			extratosAux = extratoCon.buscar();
+			if (extratosAux.isEmpty())
+				extratos.add(extratosAux);
 		}
 
 		JLabel lblData = new JLabel("Data do Extrato:");
@@ -91,7 +98,7 @@ public class TelaExtrato extends JFrame {
 		lblData.setBounds(20, 40, 85, 20);
 		panel.add(lblData);
 
-		JLabel lblMes = new JLabel("M\u00EAs");
+		JLabel lblMes = new JLabel("Mês");
 		lblMes.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		lblMes.setBounds(225, 40, 30, 20);
 		panel.add(lblMes);
@@ -99,7 +106,7 @@ public class TelaExtrato extends JFrame {
 		DefaultComboBoxModel<Object> modelo = new DefaultComboBoxModel<Object>();
 		Extrato extratoAux;
 		String mes;
-		if (!extratos.get(0).isEmpty())
+		if (!extratos.isEmpty())
 			for (int i = 0; i < extratos.get(0).size(); i++) {
 				extratoAux = extratos.get(0).get(i);
 				if (extratos.get(0).get(0).getAno() == extratoAux.getAno()) {
@@ -120,7 +127,7 @@ public class TelaExtrato extends JFrame {
 		panel.add(lblAno);
 
 		modelo = new DefaultComboBoxModel<Object>();
-		if (!extratos.get(0).isEmpty())
+		if (!extratos.isEmpty())
 			for (int i = 0; i < extratos.get(0).size(); i++) {
 				extratoAux = extratos.get(0).get(i);
 				if (modelo.getIndexOf(extratoAux.getAno()) == -1)
@@ -139,14 +146,15 @@ public class TelaExtrato extends JFrame {
 				Extrato extratoAux;
 				String mes;
 				int index = contas.indexOf(contaAux);
-				for (int i = 0; i < extratos.get(index).size(); i++) {
-					extratoAux = extratos.get(index).get(i);
-					if (cbAno.getSelectedItem().toString().equals(extratoAux.getAno())) {
-						mes = NomesDeMes.getNome(extratoAux.getMes());
-						if (modelo.getIndexOf(mes) == -1)
-							modelo.addElement(mes);
+				if (!extratos.isEmpty())
+					for (int i = 0; i < extratos.get(index).size(); i++) {
+						extratoAux = extratos.get(index).get(i);
+						if (cbAno.getSelectedItem().toString().equals(extratoAux.getAno())) {
+							mes = NomesDeMes.getNome(extratoAux.getMes());
+							if (modelo.getIndexOf(mes) == -1)
+								modelo.addElement(mes);
+						}
 					}
-				}
 				cbMes.setModel(modelo);
 			}
 		});
@@ -184,18 +192,19 @@ public class TelaExtrato extends JFrame {
 				int anoInicial = 0;
 				int index = contas.indexOf(contaAux);
 				if (cbNumConta.getSelectedItem().toString().equals(contaAux.getNumero())) {
-					for (int j = 0; j < extratos.get(index).size(); j++) {
-						extratoAux = extratos.get(index).get(j);
-						if (modelo.getSize() == 0)
-							anoInicial = extratoAux.getAno();
-						if (modelo.getIndexOf(extratoAux.getAno()) == -1)
-							modelo.addElement(extratoAux.getAno());
-						if (anoInicial == extratoAux.getAno()) {
-							mes = NomesDeMes.getNome(extratoAux.getMes());
-							if (modeloAux.getIndexOf(mes) == -1)
-								modeloAux.addElement(mes);
+					if (!extratos.isEmpty())
+						for (int j = 0; j < extratos.get(index).size(); j++) {
+							extratoAux = extratos.get(index).get(j);
+							if (modelo.getSize() == 0)
+								anoInicial = extratoAux.getAno();
+							if (modelo.getIndexOf(extratoAux.getAno()) == -1)
+								modelo.addElement(extratoAux.getAno());
+							if (anoInicial == extratoAux.getAno()) {
+								mes = NomesDeMes.getNome(extratoAux.getMes());
+								if (modeloAux.getIndexOf(mes) == -1)
+									modeloAux.addElement(mes);
+							}
 						}
-					}
 				}
 				cbMes.setModel(modeloAux);
 				cbAno.setModel(modelo);
@@ -240,18 +249,19 @@ public class TelaExtrato extends JFrame {
 					if (cbAgencia.getSelectedItem().toString().equals(contaAux.getAgencia())) {
 						if (modelos.get(0).getSize() == 0) {
 							index = contas.indexOf(contaAux);
-							for (int j = 0; j < extratos.get(index).size(); j++) {
-								extratoAux = extratos.get(index).get(j);
-								if (modelos.get(1).getSize() == 0)
-									anoInicial = extratoAux.getAno();
-								if (modelos.get(1).getIndexOf(extratoAux.getAno()) == -1)
-									modelos.get(1).addElement(extratoAux.getAno());
-								if (anoInicial == extratoAux.getAno()) {
-									mes = NomesDeMes.getNome(extratoAux.getMes());
-									if (modelos.get(2).getIndexOf(mes) == -1)
-										modelos.get(2).addElement(mes);
+							if (!extratos.isEmpty())
+								for (int j = 0; j < extratos.get(index).size(); j++) {
+									extratoAux = extratos.get(index).get(j);
+									if (modelos.get(1).getSize() == 0)
+										anoInicial = extratoAux.getAno();
+									if (modelos.get(1).getIndexOf(extratoAux.getAno()) == -1)
+										modelos.get(1).addElement(extratoAux.getAno());
+									if (anoInicial == extratoAux.getAno()) {
+										mes = NomesDeMes.getNome(extratoAux.getMes());
+										if (modelos.get(2).getIndexOf(mes) == -1)
+											modelos.get(2).addElement(mes);
+									}
 								}
-							}
 						}
 						if (modelos.get(0).getIndexOf(contaAux.getNumero()) == -1)
 							modelos.get(0).addElement(contaAux.getNumero());
@@ -307,18 +317,19 @@ public class TelaExtrato extends JFrame {
 							modelos.get(0).addElement(contaAux.getAgencia());
 						if (modelos.get(1).getSize() == 0) {
 							index = contas.indexOf(contaAux);
-							for (int j = 0; j < extratos.get(index).size(); j++) {
-								extratoAux = extratos.get(index).get(j);
-								if (modelos.get(2).getSize() == 0)
-									anoInicial = extratoAux.getAno();
-								if (modelos.get(2).getIndexOf(extratoAux.getAno()) == -1)
-									modelos.get(2).addElement(extratoAux.getAno());
-								if (anoInicial == extratoAux.getAno()) {
-									mes = NomesDeMes.getNome(extratoAux.getMes());
-									if (modelos.get(3).getIndexOf(mes) == -1)
-										modelos.get(3).addElement(mes);
+							if (!extratos.isEmpty())
+								for (int j = 0; j < extratos.get(index).size(); j++) {
+									extratoAux = extratos.get(index).get(j);
+									if (modelos.get(2).getSize() == 0)
+										anoInicial = extratoAux.getAno();
+									if (modelos.get(2).getIndexOf(extratoAux.getAno()) == -1)
+										modelos.get(2).addElement(extratoAux.getAno());
+									if (anoInicial == extratoAux.getAno()) {
+										mes = NomesDeMes.getNome(extratoAux.getMes());
+										if (modelos.get(3).getIndexOf(mes) == -1)
+											modelos.get(3).addElement(mes);
+									}
 								}
-							}
 						}
 						if (agenciaInicial.equals(contaAux.getAgencia()))
 							if (modelos.get(1).getIndexOf(contaAux.getNumero()) == -1)
@@ -340,7 +351,7 @@ public class TelaExtrato extends JFrame {
 		mnbConta.setBounds(375, 40, 45, 20);
 		panel.add(mnbConta);
 
-		JMenu mnConta = new JMenu("Op\u00E7\u00F5es");
+		JMenu mnConta = new JMenu("Opições");
 		mnConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		mnbConta.add(mnConta);
 
@@ -375,7 +386,7 @@ public class TelaExtrato extends JFrame {
 			extratoCon.setIdConta(contaAux.getId());
 			listaDosItensDeExtrato = extratoCon.gerarExtrato(extratoAux.getId());
 			for (int i = 0; i < listaDosItensDeExtrato.size(); i++) {
-				modeloDeLista.addElement(listaDosItensDeExtrato.get(i).getTitulo());
+				modeloDeLista.addElement("<html><pre>" + listaDosItensDeExtrato.get(i).getTitulo() + "</pre></html>");
 			}
 		}
 
@@ -395,10 +406,85 @@ public class TelaExtrato extends JFrame {
 			}
 		});
 		btnListar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnListar.setBounds(190, 280, 80, 20);
+		btnListar.setBounds(190, 330, 80, 20);
 		panel.add(btnListar);
 
+		JButton btnCriarItemDeExtrato = new JButton("Criar Item de Extrato");
+		btnCriarItemDeExtrato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
+						cbNumConta.getSelectedItem().toString(), 0);
+				new TelaCadastroItemDeExtrato(tela, nomeUsuario, contaAux.getId());
+			}
+		});
+		btnCriarItemDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnCriarItemDeExtrato.setBounds(20, 330, 140, 20);
+		panel.add(btnCriarItemDeExtrato);
+
+		JButton btnGerarRelatorio = new JButton("Gerar Relat\u00F3rio");
+		btnGerarRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
+						cbNumConta.getSelectedItem().toString(), 0);
+				Extrato extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
+						Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
+				new TelaRelatorio(extratoAux, contaAux.getId());
+			}
+		});
+		btnGerarRelatorio.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnGerarRelatorio.setBounds(300, 330, 120, 20);
+		panel.add(btnGerarRelatorio);
+
+		JPanel panelInterno = new JPanel();
+		panelInterno.setBackground(Color.GRAY);
+		panelInterno.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelInterno.setBounds(20, 70, 400, 250);
+		panel.add(panelInterno);
+		panelInterno.setLayout(null);
+
+		JLabel lblDia = new JLabel("Dia");
+		lblDia.setBounds(30, 3, 30, 20);
+		lblDia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		panelInterno.add(lblDia);
+
+		JSeparator separator = new JSeparator();
+		separator.setForeground(Color.BLACK);
+		separator.setBackground(Color.WHITE);
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBounds(80, 0, 1, 325);
+		panelInterno.add(separator);
+
+		JLabel lblTitulo = new JLabel("Titulo");
+		lblTitulo.setBounds(140, 3, 30, 20);
+		lblTitulo.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		panelInterno.add(lblTitulo);
+
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		separator_1.setForeground(Color.BLACK);
+		separator_1.setBackground(Color.WHITE);
+		separator_1.setBounds(230, 0, 1, 300);
+		panelInterno.add(separator_1);
+
+		JLabel lblSaldoInicial = new JLabel("Saldo Inicial");
+		lblSaldoInicial.setBounds(250, 3, 60, 20);
+		lblSaldoInicial.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		panelInterno.add(lblSaldoInicial);
+
+		txtSaldoInicial = new JTextField();
+		txtSaldoInicial.setEditable(false);
+		txtSaldoInicial.setBounds(320, 3, 70, 20);
+		panelInterno.add(txtSaldoInicial);
+		txtSaldoInicial.setColumns(10);
+
+		JLabel lblSaldoFinal = new JLabel("Saldo Final");
+		lblSaldoFinal.setBounds(250, 227, 60, 20);
+		lblSaldoFinal.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		panelInterno.add(lblSaldoFinal);
+
 		lstItensDeExtrato = new JList<Object>(modeloDeLista);
+		lstItensDeExtrato.setBounds(0, 25, 400, 200);
+		panelInterno.add(lstItensDeExtrato);
 		lstItensDeExtrato.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lstItensDeExtrato.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -416,33 +502,11 @@ public class TelaExtrato extends JFrame {
 			}
 		});
 		lstItensDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lstItensDeExtrato.setBounds(20, 70, 400, 200);
-		panel.add(lstItensDeExtrato);
 
-		JButton btnCriarItemDeExtrato = new JButton("Criar Item de Extrato");
-		btnCriarItemDeExtrato.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
-						cbNumConta.getSelectedItem().toString(), 0);
-				new TelaCadastroItemDeExtrato(tela, nomeUsuario, contaAux.getId());
-			}
-		});
-		btnCriarItemDeExtrato.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnCriarItemDeExtrato.setBounds(20, 280, 140, 20);
-		panel.add(btnCriarItemDeExtrato);
-
-		JButton btnGerarRelatorio = new JButton("Gerar Relat\u00F3rio");
-		btnGerarRelatorio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Conta contaAux = new Conta(cbBanco.getSelectedItem().toString(), cbAgencia.getSelectedItem().toString(),
-						cbNumConta.getSelectedItem().toString(), 0);
-				Extrato extratoAux = new Extrato(NomesDeMes.getNumero(cbMes.getSelectedItem().toString()),
-						Integer.parseInt(cbAno.getSelectedItem().toString()), 0.0f, 0.0f, contaAux.getId());
-				new TelaRelatorio(extratoAux, contaAux.getId());
-			}
-		});
-		btnGerarRelatorio.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnGerarRelatorio.setBounds(300, 280, 120, 20);
-		panel.add(btnGerarRelatorio);
+		txtSaldoFinal = new JTextField();
+		txtSaldoFinal.setEditable(false);
+		txtSaldoFinal.setBounds(320, 227, 70, 20);
+		panelInterno.add(txtSaldoFinal);
+		txtSaldoFinal.setColumns(10);
 	}
 }
