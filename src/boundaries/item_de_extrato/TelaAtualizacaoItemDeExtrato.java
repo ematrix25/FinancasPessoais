@@ -279,9 +279,11 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 						TipoItemDeExtrato.valueOf(tipo.toLowerCase()), extrato.getId(), categoria);
 				System.out.println(extrato);
 				System.out.println(itemDeExtrato);
-				if (extratoCon.atualizar(extratoAnt.getId(), extrato, itemDeExtratoAnt.getId(), itemDeExtrato))
+				if (extratoCon.atualizar(extratoAnt.getId(), extrato, itemDeExtratoAnt.getId(), itemDeExtrato)) {
 					JOptionPane.showMessageDialog(null, "O item de extrato foi atualizado com sucesso");
-				else
+					tela.dispose();
+					new TelaExtrato(nomeUsuario);
+				} else
 					JOptionPane.showMessageDialog(null, "O item de extrato não foi atualizado");
 				dispose();
 			}

@@ -117,7 +117,7 @@ public class ItemDeExtrato {
 		id = 1;
 		id = primo * id + titulo.hashCode();
 		id = primo * id + Integer.valueOf(dia).hashCode();
-		id = primo * id + tipo.hashCode();
+		id = primo * id + tipo.toString().hashCode();
 		id = primo * id + Long.valueOf(idExtrato).hashCode();
 	}
 

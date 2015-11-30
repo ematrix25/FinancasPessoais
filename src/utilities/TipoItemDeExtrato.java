@@ -5,12 +5,5 @@ package utilities;
  *
  */
 public enum TipoItemDeExtrato {
-	despesa("despesa"), receita("receita");
-
-	public String tipo;
-
-	 TipoItemDeExtrato(String tipo) {
-		this.tipo = tipo.toLowerCase();
-	}
-
+	despesa, receita;
 }
