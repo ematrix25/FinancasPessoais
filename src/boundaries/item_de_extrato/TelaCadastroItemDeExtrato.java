@@ -144,10 +144,14 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 					String novaCategoria = JOptionPane.showInputDialog(null,
 							"Qual será o novo nome da categoria " + categoria + "?", "Atualizar Categoria",
 							JOptionPane.PLAIN_MESSAGE);
-					if (categoriaCon.atualizar(categoria, new Categoria(novaCategoria)))
-						JOptionPane.showMessageDialog(null, "A categoria foi atualizada com sucesso");
+					if (categoriaCon.validar(novaCategoria))
+						if (categoriaCon.atualizar(categoria, new Categoria(novaCategoria)))
+							JOptionPane.showMessageDialog(null, "A categoria foi atualizada com sucesso");
+						else
+							JOptionPane.showMessageDialog(null, "A categoria não foi atualizada com sucesso");
 					else
-						JOptionPane.showMessageDialog(null, "A categoria não foi atualizada com sucesso");
+						JOptionPane.showMessageDialog(null, "Nova categoria inválida! Use somente letras", "Aviso",
+								JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -209,7 +213,7 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {				
+			public void actionPerformed(ActionEvent e) {
 				if (txtTitulo.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira um titulo para o item.", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
@@ -223,7 +227,6 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 					return;
 				}
 				int ocorrencia = Integer.parseInt(txtOcorrencia.getText());
-				
 
 				if (txtValor.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira um valor para o item.", "Aviso",
@@ -231,10 +234,15 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 					return;
 				}
 				float valor = Float.parseFloat(txtValor.getText());
-				
+
 				String categoria = "";
 				if (cbCategoria.getSelectedItem() != null) {
 					categoria = cbCategoria.getSelectedItem().toString();
+					if (!categoriaCon.validar(categoria)) {
+						JOptionPane.showMessageDialog(null, "Categoria inválida! Use somente letras", "Aviso",
+								JOptionPane.WARNING_MESSAGE);
+						return;
+					}
 				}
 				categoriaCon.cadastrar(new Categoria(categoria));
 
@@ -249,15 +257,15 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 					return;
 				}
 				int mes = Integer.parseInt(txtMes.getText());
-				
+
 				if (txtAno.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o ano", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				int ano = Integer.parseInt(txtAno.getText());
-				
+
 				String observacao = txtObservacoes.getText();
-				
+
 				String tipo = cbTipo.getSelectedItem().toString();
 
 				Extrato extrato = new Extrato(mes, ano, 0.0f, 0.0f, idConta);

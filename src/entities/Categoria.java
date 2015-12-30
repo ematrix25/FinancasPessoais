@@ -18,4 +18,8 @@ public class Categoria {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	public static boolean validateNome(String nome) {
+		return nome.matches("^[a-zA-Z]+$");
+	}
 }

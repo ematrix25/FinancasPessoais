@@ -152,10 +152,14 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 					String novaCategoria = JOptionPane.showInputDialog(null,
 							"Qual será o novo nome da categoria " + categoria + "?", "Atualizar Categoria",
 							JOptionPane.PLAIN_MESSAGE);
-					if (categoriaCon.atualizar(categoria, new Categoria(novaCategoria)))
-						JOptionPane.showMessageDialog(null, "A categoria foi atualizada com sucesso");
+					if (categoriaCon.validar(novaCategoria))
+						if (categoriaCon.atualizar(categoria, new Categoria(novaCategoria)))
+							JOptionPane.showMessageDialog(null, "A categoria foi atualizada com sucesso");
+						else
+							JOptionPane.showMessageDialog(null, "A categoria não foi atualizada com sucesso");
 					else
-						JOptionPane.showMessageDialog(null, "A categoria não foi atualizada com sucesso");
+						JOptionPane.showMessageDialog(null, "Nova categoria inválida! Use somente letras", "Aviso",
+								JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -252,6 +256,11 @@ public class TelaAtualizacaoItemDeExtrato extends JFrame {
 				String categoria = "";
 				if (cbCategoria.getSelectedItem() != null) {
 					categoria = cbCategoria.getSelectedItem().toString();
+					if (!categoriaCon.validar(categoria)) {
+						JOptionPane.showMessageDialog(null, "Categoria inválida! Use somente letras", "Aviso",
+								JOptionPane.WARNING_MESSAGE);
+						return;
+					}
 				}
 				categoriaCon.cadastrar(new Categoria(categoria));
 

@@ -27,6 +27,10 @@ public class CategoriaCon {
 		return categoriaDAO.atualizar(idAntigo, categoria);
 	}
 	
+	public boolean validar(String nome) {
+		return Categoria.validateNome(nome);
+	}
+	
 	public boolean remover(String nome) {
 		return categoriaDAO.remover(nome);
 	}	
