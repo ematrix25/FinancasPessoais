@@ -101,25 +101,26 @@ public class TelaAtualizacaoConta extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (txtBanco.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira o nome do banco", "Aviso", JOptionPane.WARNING_MESSAGE);
-					return;
-				}
 				String banco = txtBanco.getText();
-
-				if (txtAgencia.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira o nome da agencia", "Aviso",
+				if (!contaCon.validarBanco(banco)) {
+					JOptionPane.showMessageDialog(null, "Banco inválido! Tente de novo", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+
 				String agencia = txtAgencia.getText();
-
-				if (txtNumero.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira o numero da conta", "Aviso",
+				if (!contaCon.validarAgencia(agencia)) {
+					JOptionPane.showMessageDialog(null, "Agencia inválida! Tente de novo", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+
 				String numero = txtNumero.getText();
+				if (!contaCon.validarNumero(numero)) {
+					JOptionPane.showMessageDialog(null, "Número inválido! Tente de novo", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 
 				if (txtSaldo.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o saldo da conta", "Aviso",
@@ -145,25 +146,26 @@ public class TelaAtualizacaoConta extends JFrame {
 		JButton btnApagar = new JButton("Apagar");
 		btnApagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (txtBanco.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira o nome do banco", "Aviso", JOptionPane.WARNING_MESSAGE);
-					return;
-				}
 				String banco = txtBanco.getText();
-
-				if (txtAgencia.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira o nome da agencia", "Aviso",
+				if (!contaCon.validarBanco(banco)) {
+					JOptionPane.showMessageDialog(null, "Banco inválido! Tente de novo", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+
 				String agencia = txtAgencia.getText();
-
-				if (txtNumero.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira o numero da conta", "Aviso",
+				if (!contaCon.validarAgencia(agencia)) {
+					JOptionPane.showMessageDialog(null, "Agencia inválida! Tente de novo", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+
 				String numero = txtNumero.getText();
+				if (!contaCon.validarNumero(numero)) {
+					JOptionPane.showMessageDialog(null, "Número inválido! Tente de novo", "Aviso",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 
 				if (txtSaldo.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o saldo da conta", "Aviso",

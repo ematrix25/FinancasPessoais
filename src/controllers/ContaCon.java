@@ -16,15 +16,27 @@ public class ContaCon {
 	public boolean cadastrar(Conta conta) {
 		return contaDAO.cadastrar(conta);
 	}
-	
+
 	public List<Conta> buscar() {
 		return contaDAO.buscar();
 	}
-	
+
 	public boolean atualizar(long idAntigo, Conta conta) {
 		return contaDAO.atualizar(idAntigo, conta);
 	}
-	
+
+	public boolean validarBanco(String banco) {
+		return Conta.validateBanco(banco);
+	}
+
+	public boolean validarAgencia(String agencia) {
+		return Conta.validateAgencia(agencia);
+	}
+
+	public boolean validarNumero(String numero) {
+		return Conta.validateNumero(numero);
+	}
+
 	public boolean remover(long id) {
 		return contaDAO.remover(id);
 	}

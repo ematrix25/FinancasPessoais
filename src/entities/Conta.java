@@ -6,12 +6,12 @@ public class Conta {
 	private String agencia;
 	private String numero;
 	private float saldo;
-	
+
 	public Conta(int id, String banco, String agencia, String numero, float saldo) {
 		this(banco, agencia, numero, saldo);
 		this.id = id;
 	}
-	
+
 	public Conta(String banco, String agencia, String numero, float saldo) {
 		this.banco = banco;
 		this.agencia = agencia;
@@ -19,7 +19,7 @@ public class Conta {
 		this.saldo = saldo;
 		setId();
 	}
-	
+
 	public Conta() {
 		this("", "", "", 0);
 	}
@@ -33,6 +33,10 @@ public class Conta {
 		setId();
 	}
 
+	public static boolean validateBanco(String banco) {
+		return banco.matches("^[\\p{L} .'-]+$");
+	}
+
 	public String getAgencia() {
 		return agencia;
 	}
@@ -42,6 +46,10 @@ public class Conta {
 		setId();
 	}
 
+	public static boolean validateAgencia(String agencia) {
+		return agencia.matches("^[\\d-]{6,6}$");
+	}
+
 	public String getNumero() {
 		return numero;
 	}
@@ -49,6 +57,10 @@ public class Conta {
 	public void setNumero(String numero) {
 		this.numero = numero;
 		setId();
+	}
+
+	public static boolean validateNumero(String numero) {
+		return numero.matches("^[\\d-]{7,7}$");
 	}
 
 	public float getSaldo() {
@@ -62,7 +74,7 @@ public class Conta {
 	public long getId() {
 		return id;
 	}
-	
+
 	public boolean equals(Conta conta) {
 		return this.id == conta.id;
 	}
