@@ -232,7 +232,10 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 				}
 				float valor = Float.parseFloat(txtValor.getText());
 				
-				String categoria = cbCategoria.getSelectedItem().toString();
+				String categoria = "";
+				if (cbCategoria.getSelectedItem() != null) {
+					categoria = cbCategoria.getSelectedItem().toString();
+				}
 				categoriaCon.cadastrar(new Categoria(categoria));
 
 				if (txtDia.getText().equals("")) {
