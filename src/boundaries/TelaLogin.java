@@ -92,12 +92,14 @@ public class TelaLogin extends JFrame {
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nome = txtUsuario.getText();
-				if (usuarioEstaVazio(nome)) {
+				if (!usuarioCon.validarNome(nome)) {
+					JOptionPane.showMessageDialog(null, "Nome inválido. Tente de novo", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
 				String senha = new String(pfSenha.getPassword());
-				if (senhaEstaVazio(senha)) {
+				if (!usuarioCon.validarSenha(senha)) {
+					JOptionPane.showMessageDialog(null, "Senha inválida. Tente de novo", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
@@ -118,18 +120,20 @@ public class TelaLogin extends JFrame {
 		btnCriarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nome = txtUsuario.getText();
-				if (usuarioEstaVazio(nome)) {
+				if (!usuarioCon.validarNome(nome)) {
+					JOptionPane.showMessageDialog(null, "Nome inválido. Tente de novo", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
 				String senha = new String(pfSenha.getPassword());
-				if (senhaEstaVazio(senha)) {
+				if (!usuarioCon.validarSenha(senha)) {
+					JOptionPane.showMessageDialog(null, "Senha inválida. Tente de novo", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
 				String email = JOptionPane.showInputDialog(null, "Digite seu e-mail", "Criar Conta do Usuario",
 						JOptionPane.PLAIN_MESSAGE);
-				if (!usuarioCon.validaEmail(email)) {
+				if (!usuarioCon.validarEmail(email)) {
 					JOptionPane.showMessageDialog(null, "E-mail inválido. Tente de novo", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
@@ -150,7 +154,8 @@ public class TelaLogin extends JFrame {
 		btnEsqueciASenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nome = txtUsuario.getText();
-				if (usuarioEstaVazio(nome)) {
+				if (!usuarioCon.validarNome(nome)) {
+					JOptionPane.showMessageDialog(null, "Nome inválido. Tente de novo", "Aviso", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
@@ -174,21 +179,5 @@ public class TelaLogin extends JFrame {
 		btnEsqueciASenha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnEsqueciASenha.setBounds(160, 160, 110, 20);
 		panel.add(btnEsqueciASenha);
-	}
-
-	private boolean usuarioEstaVazio(String nome) {
-		if (nome.equals("")) {
-			JOptionPane.showMessageDialog(null, "Insira o nome do usuario", "Aviso", JOptionPane.WARNING_MESSAGE);
-			return true;
-		}
-		return false;
-	}
-
-	private boolean senhaEstaVazio(String senha) {
-		if (senha.equals("")) {
-			JOptionPane.showMessageDialog(null, "Insira a senha do usuario", "Aviso", JOptionPane.WARNING_MESSAGE);
-			return true;
-		}
-		return false;
 	}
 }

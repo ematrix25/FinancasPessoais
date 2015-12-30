@@ -30,6 +30,10 @@ public class Usuario {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	public static boolean validateNome(String nome) {
+		return nome.matches("^[a-zA-Z0-9_-]+$");
+	}
 
 	public String getSenha() {
 		return senha;
@@ -38,6 +42,10 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	
+	public static boolean validateSenha(String senha) {
+		return senha.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}");
+	}
 
 	public String getEmail() {
 		return email;
@@ -45,5 +53,9 @@ public class Usuario {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public static boolean validateEmail(String email) {
+		return email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}");
 	}
 }

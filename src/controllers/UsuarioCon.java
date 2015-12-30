@@ -1,8 +1,5 @@
 package controllers;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import dao.UsuarioDAO;
 import entities.Usuario;
 import utilities.support.CorreioEletronico;
@@ -44,6 +41,18 @@ public class UsuarioCon {
 		}
 		return usuarioDAO.atualizar(usuario);
 	}
+	
+	public boolean validarNome(String nome) {
+		return Usuario.validateNome(nome);
+	}
+	
+	public boolean validarSenha(String senha) {
+		return Usuario.validateSenha(senha);
+	}
+
+	public boolean validarEmail(String email) {
+		return Usuario.validateEmail(email);
+	}
 
 	private String gerarCodigo() {
 		char[] caracteres = new char[4];
@@ -66,14 +75,5 @@ public class UsuarioCon {
 		CorreioEletronico ce = new CorreioEletronico();
 		ce.enviar(email, codigo);
 		return true;
-	}
-
-	public boolean validaEmail(String email) {
-		if (email.equals(""))
-			return false;
-		String emailPattern = "\\b(^[_A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+(\\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
-		Pattern regexPattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
-		Matcher regMatcher = regexPattern.matcher(email);
-		return regMatcher.matches();
 	}
 }
