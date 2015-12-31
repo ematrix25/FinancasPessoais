@@ -48,6 +48,10 @@ public class ItemDeExtrato {
 		this.titulo = titulo;
 		setId();
 	}
+	
+	public static boolean validateTitulo(String titulo) {
+		return titulo.matches("^[\\p{L} .'-]+$");
+	}
 
 	public float getValor() {
 		return valor;

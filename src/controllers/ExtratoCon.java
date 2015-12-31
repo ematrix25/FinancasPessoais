@@ -49,6 +49,10 @@ public class ExtratoCon {
 		}
 		return false;
 	}
+	
+	public boolean validarTitulo(String titulo) {
+		return ItemDeExtrato.validateTitulo(titulo);
+	}
 
 	public boolean remover(long idExtrato, long idItemDeExtrato) {
 		itemDeExtratoDAO.setIdExtrato(idExtrato);

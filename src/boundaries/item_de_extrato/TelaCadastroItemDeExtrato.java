@@ -214,12 +214,12 @@ public class TelaCadastroItemDeExtrato extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (txtTitulo.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Insira um titulo para o item.", "Aviso",
+				String titulo = txtTitulo.getText();
+				if (!extratoCon.validarTitulo(titulo)) {
+					JOptionPane.showMessageDialog(null, "Título inválido! Tente de novo", "Aviso",
 							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
-				String titulo = txtTitulo.getText();
 
 				if (txtOcorrencia.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Insira o numero de parcelas.", "Aviso",
