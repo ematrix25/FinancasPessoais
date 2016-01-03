@@ -24,8 +24,8 @@ import controllers.ExtratoCon;
 import entities.Categoria;
 import entities.Extrato;
 import entities.ItemDeExtrato;
-import utilities.CampoDeTexto;
 import utilities.TipoItemDeExtrato;
+import utilities.campo_de_texto.CampoDeTexto;
 
 public class TelaCadastroItemDeExtrato extends JFrame {
 

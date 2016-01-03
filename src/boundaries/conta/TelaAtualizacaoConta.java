@@ -30,7 +30,7 @@ public class TelaAtualizacaoConta extends JFrame {
 	private ContaCon contaCon;
 
 	public TelaAtualizacaoConta(final TelaExtrato tela, final String nomeUsuario, final Conta contaAux) {
-		setTitle("Finan\u00E7as Pessoais");
+		setTitle("Finanças Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 270, 270);

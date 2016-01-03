@@ -37,12 +37,12 @@ public class TelaLogin extends JFrame {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+			} 
 		});
 	}
 
 	public TelaLogin() {
-		setTitle("Finan\u00E7as Pessoais");
+		setTitle("Finanças Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 400);

@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,23 +16,25 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.text.MaskFormatter;
 
 import boundaries.TelaExtrato;
 import controllers.ContaCon;
 import entities.Conta;
+import utilities.campo_de_texto.CampoDeTexto;
 
 public class TelaCadastroConta extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txtBanco;
-	private JTextField txtAgencia;
-	private JTextField txtNumero;
-	private ContaCon contaCon;
+	private CampoDeTexto txtBanco;
+	private JFormattedTextField txtAgencia;
+	private JFormattedTextField txtNumero;
 	private JTextField txtSaldo;
+	private ContaCon contaCon;
 
 	public TelaCadastroConta(final TelaExtrato tela, final String nomeUsuario) {
-		setTitle("Finan\u00E7as Pessoais");
+		setTitle("Finanças Pessoais");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 270, 270);
@@ -58,7 +62,7 @@ public class TelaCadastroConta extends JFrame {
 		lblBanco.setBounds(20, 20, 40, 20);
 		panel.add(lblBanco);
 
-		txtBanco = new JTextField();
+		txtBanco = new CampoDeTexto("Nome do Banco");
 		txtBanco.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtBanco.setBounds(70, 20, 140, 20);
 		panel.add(txtBanco);
@@ -69,7 +73,11 @@ public class TelaCadastroConta extends JFrame {
 		lblAgencia.setBounds(20, 50, 40, 20);
 		panel.add(lblAgencia);
 
-		txtAgencia = new JTextField();
+		try {
+			txtAgencia = new JFormattedTextField(new MaskFormatter("####-#"));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
 		txtAgencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtAgencia.setColumns(10);
 		txtAgencia.setBounds(70, 50, 140, 20);
@@ -80,7 +88,11 @@ public class TelaCadastroConta extends JFrame {
 		lblNumero.setBounds(20, 80, 40, 20);
 		panel.add(lblNumero);
 
-		txtNumero = new JTextField();
+		try {
+			txtNumero = new JFormattedTextField(new MaskFormatter("#####-#"));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
 		txtNumero.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtNumero.setColumns(10);
 		txtNumero.setBounds(70, 80, 140, 20);
