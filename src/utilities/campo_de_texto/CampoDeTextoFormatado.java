@@ -11,7 +11,7 @@ public class CampoDeTextoFormatado extends CampoDeTexto implements KeyListener {
 
 	private static final long serialVersionUID = 6268002285130562524L;
 	private String formato;
-	private int pos;
+	int tam;
 
 	/**
 	 * @param dica
@@ -26,15 +26,16 @@ public class CampoDeTextoFormatado extends CampoDeTexto implements KeyListener {
 	public CampoDeTextoFormatado(String dica, String formato) {
 		super(dica);
 		this.formato = processarFormato(formato.toUpperCase());
-		this.pos = 0;
 		super.addKeyListener(this);
 	}
 
 	private String processarFormato(String formato) {
 		StringBuilder formatoAux = new StringBuilder();
 		char aux;
+		int pos = 0;
 		boolean wasNumeric = false;
-		for (int i = 0; i < formato.length(); i++) {
+		tam = formato.length();
+		for (int i = 0; i < tam; i++) {
 			aux = formato.charAt(i);
 			if (Character.isDigit(aux)) {
 				pos = i;
@@ -47,6 +48,7 @@ public class CampoDeTextoFormatado extends CampoDeTexto implements KeyListener {
 			} else
 				formatoAux.append(aux);
 		}
+		tam = formatoAux.length();
 		return formatoAux.toString();
 	}
 
@@ -56,23 +58,22 @@ public class CampoDeTextoFormatado extends CampoDeTexto implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		char c = arg0.getKeyChar();
 		if (c == KeyEvent.VK_DELETE) {
-			if (pos > 0)
-				pos--;
 			return;
 		}
-		if (pos < formato.length())
+		int pos = this.getCaretPosition();
+		if (pos < tam && this.getText().length() != tam)
 			switch (formato.charAt(pos)) {
 			case 'N':
 				if (Character.isDigit(c)) {
