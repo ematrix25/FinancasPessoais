@@ -22,6 +22,18 @@ public class CampoDeTexto extends JTextField implements FocusListener {
 		mostrandoDica = true;
 	}
 
+	public String getDica() {
+		return dica;
+	}
+
+	public boolean isMostrandoDica() {
+		return mostrandoDica;
+	}
+
+	public void setMostrandoDica(boolean mostrandoDica) {
+		this.mostrandoDica = mostrandoDica;
+	}
+
 	public void focusGained(FocusEvent e) {
 		if (super.getText().equals(dica)) {
 			super.setText("");

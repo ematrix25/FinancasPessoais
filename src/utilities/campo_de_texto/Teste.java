@@ -18,8 +18,8 @@ public class Teste extends JFrame {
 
 	private static final long serialVersionUID = -4814814510626621697L;
 	private JPanel contentPane;
-	private CampoDeTextoFormatado numeroAgencia;
-	private CampoDeTextoFormatado numeroConta;
+	private CampoDeTextoLimitado usuario;
+	private CampoDeSenha senha;
 
 	/**
 	 * Launch the application.
@@ -49,25 +49,25 @@ public class Teste extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		numeroAgencia = new CampoDeTextoFormatado("# da Agencia", "4n$n");
-		numeroAgencia.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		numeroAgencia.setColumns(10);
-		numeroAgencia.setBounds(10, 10, 164, 20);
-		contentPane.add(numeroAgencia);
+		usuario = new CampoDeTextoLimitado("Usuario", "nl$");
+		usuario.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		usuario.setColumns(10);
+		usuario.setBounds(10, 10, 164, 20);
+		contentPane.add(usuario);
 
-		numeroConta = new CampoDeTextoFormatado("# da Conta", "5n$n");
-		numeroConta.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		numeroConta.setColumns(10);
-		numeroConta.setBounds(10, 40, 164, 20);
-		contentPane.add(numeroConta);
+		senha = new CampoDeSenha("Senha", "nl$");
+		senha.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		senha.setColumns(10);
+		senha.setBounds(10, 40, 164, 20);
+		contentPane.add(senha);
 
 		JButton btnTestar = new JButton("Testar");
 		btnTestar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println();
 				System.out.println("Conta");
-				System.out.println("Agencia = " + numeroAgencia.getText());
-				System.out.println("Numero = " + numeroConta.getText());
+				System.out.println("Usuario = " + usuario.getText());
+				System.out.println("Senha = " + senha.getText());
 				System.out.println();
 			}
 		});

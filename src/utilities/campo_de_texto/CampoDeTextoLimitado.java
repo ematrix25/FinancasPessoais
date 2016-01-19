@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
 public class CampoDeTextoLimitado extends CampoDeTexto implements KeyListener {
 
 	private static final long serialVersionUID = -8362805320052465324L;
-	private String limites;
+	private final String limites;
 
 	/**
 	 * @param dica
@@ -28,7 +28,11 @@ public class CampoDeTextoLimitado extends CampoDeTexto implements KeyListener {
 		super.addKeyListener(this);
 	}
 
-	private boolean isSpecialCharacter(char c) {
+	public String getLimites() {
+		return limites;
+	}
+
+	protected boolean isSpecialCharacter(char c) {
 		return !(Character.isDigit(c) || Character.isLetter(c) || Character.isWhitespace(c));
 	}
 
@@ -45,7 +49,7 @@ public class CampoDeTextoLimitado extends CampoDeTexto implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		char c = arg0.getKeyChar();
-		if (c == KeyEvent.VK_DELETE)
+		if (c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE)
 			return;
 		if (limites.contains("N") && Character.isDigit(c))
 			return;

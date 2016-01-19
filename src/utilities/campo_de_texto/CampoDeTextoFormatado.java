@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
 public class CampoDeTextoFormatado extends CampoDeTexto implements KeyListener {
 
 	private static final long serialVersionUID = 6268002285130562524L;
-	private String formato;
+	private final String formato;
 	int tam;
 
 	/**
@@ -69,11 +69,11 @@ public class CampoDeTextoFormatado extends CampoDeTexto implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		char c = arg0.getKeyChar();
-		if (c == KeyEvent.VK_DELETE) {
+		if (c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE) {
 			return;
 		}
-		int pos = this.getCaretPosition();
-		if (pos < tam && this.getText().length() != tam)
+		int pos = super.getCaretPosition();
+		if (pos < tam && super.getText().length() != tam)
 			switch (formato.charAt(pos)) {
 			case 'N':
 				if (Character.isDigit(c)) {
